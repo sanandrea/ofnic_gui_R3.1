@@ -1,0 +1,36 @@
+
+Enable URL rewriting (.htaccess)
+
+sudo a2enmod rewrite
+
+sudo gedit /etc/apache2/sites-available/default
+
+Add the following lines in <VirtualHost *:80></VirtualHost>
+
+<Directory /var/www/smartv2g>
+	    AllowOverride All
+</Directory>
+
+sudo /etc/init.d/apache2 restart
+
+
+PHP DOC
+
+Install required dependencies
+
+$ sudo apt-get install php5 php5-xsl
+
+Install with PEAR
+
+$ sudo apt-get install php-pear 
+// run this if you don't have pear installed
+$ sudo pear channel-discover pear.phpdoc.org 
+// should see adding and discovery of channel succeeded
+$ sudo pear install phpdoc/phpDocumentor-alpha
+// this might take a while with just a blank cursor flashing
+$ phpdoc --version
+// output should be similar to: phpDocumentor version 2.0.0a8 if install successful
+
+Basic usage
+
+phpdoc project:run -d [path/to/code] -t [path/to/output/directory] 
