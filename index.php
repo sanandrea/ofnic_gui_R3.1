@@ -45,7 +45,8 @@ if (file_exists($path)) {
 
 	if (is_callable(array($controller, $action), false)) {
 
-		if (!hasDoneLogin()) {
+		#if (!hasDoneLogin()) {
+        if (TRUE) {
 			$controller -> showLogin();
 		}else{
 		    $controller -> $action($format);

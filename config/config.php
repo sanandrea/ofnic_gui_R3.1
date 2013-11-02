@@ -41,6 +41,11 @@ if (is_dir($win_dir_root))
     $slash = '\\';
 }
 
-
+/* Database connection */
+$config['dbhost'] = '130.206.82.172';
+$config['dbuser'] = 'root';
+$config['dbpass'] = 'openflow';
+$config['dbname'] = 'openflow_users';
+$config['dberrors'] = true;
 
 ?>

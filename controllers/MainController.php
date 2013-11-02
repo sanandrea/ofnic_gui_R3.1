@@ -53,17 +53,17 @@ Class MainController Extends Controller {
 		$view -> assign('content', 'Main page');
 		
 		$modules['navbar'][] = '<a href="#" class="brand">OFNIC</a>';
-		$modules['navbar'][] = '<ul class="nav"><li class="active"><a href="./home.html">Home</a></li></ul>';
+		$modules['navbar'][] = '<ul class="nav"><li class="active"><a href="./home.html">Synchronize</a></li></ul>';
+		$modules['navbar'][] = '<ul class="nav"><li class="active"><a href="./home.html">Statistics</a></li></ul>';
+		$modules['navbar'][] = '<ul class="nav"><li class="active"><a href="./home.html">Routing</a></li></ul>';
 		
 		$view -> page(array('title' => 'Main', 'modules' => $modules));
 	}
 
 	public function showLogin(){
 		$view = new View('login','login.html');
-		$modules['navbar'][] = '<a href="#" class="brand">OFNIC</a>';
-		$modules['navbar'][] = '<ul class="nav"><li class="active"><a href="./home.html">Home</a></li></ul>';
-		
-		$view -> page(array('title' => 'Main', 'modules' => $modules));	
+		$modules['login'] = TRUE;
+		$view -> page(array('title' => 'Login', 'modules' => $modules));
 	}
 
 	

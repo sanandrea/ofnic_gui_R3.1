@@ -21,9 +21,8 @@
  * @created 02/11/2014
  */
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<title><?=$title ?></title>
 
@@ -32,12 +31,8 @@
 		<meta name="keywords" content="<?=$keywords ?>" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Le styles -->
-    	<link href="webroot/assets/css/aplication.css" rel="stylesheet">
     	<link href="webroot/assets/css/bootstrap.css" rel="stylesheet">
-    	<link href="webroot/assets/css/bootstrap-responsive.css" rel="stylesheet">
-    	<link href="webroot/assets/css/docs.css" rel="stylesheet">
-    	<link href="webroot/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
-	     
+    	<link href="webroot/assets/css/signin.css" rel="stylesheet">	     
 	</head>
 		
 	<body>
@@ -53,15 +48,69 @@
 		}
 		?>
 		
+		<?php 
+		if (isset($modules['login'])) {
+		?>
+		
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<h2>Welcome to OFNIC GEi Web Gui</h2>
+					<h4>Provided by Uniroma1</h4>
+				</div>
+				<div class="col-md-4">
+					<?php 
+					readfile(__ROOT_PATH . '/views'.'/login_section.html');
+					?>
+				</div>
+			</div>
+		</div>
+		
+		<?php 
+		}
+		?>
+
 		<div class="container">  
-   			<h1><?=$title?></h1>
+   			<!-- <h1><?=$title?></h1> -->
 		
    			<?=$content ?>
 		</div>
 		
-		 
-<script src="js/main.js" type="text/javascript"></script>
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    
+<script src="webroot/assets/js/jquery.js"></script>
+<script src="webroot/assets/js/arbor.js"></script>
+<script src="webroot/assets/js/arbor-tween.js"></script>
+<script src="webroot/assets/js/graphics.js"></script>
+<script src="webroot/assets/js/jquery.flot.js"></script>
+<script src="webroot/assets/js/jstorage.js"></script>
+
+<!--
+<script src="js/template.js"></script>
+<script src="js/synchronization.js"></script>    
+<script src="js/grafo.js"></script>    
+<script src="js/renderer.js"></script>
+<script src="js/routing.js"></script>
+<script src="js/statistics.js"></script>
+<script src="js/grafoStatistics.js"></script>
+<script src="js/panel.js"></script>
+
+
+
+<script src="webroot/assets/js/google-code-prettify/prettify.js"></script>
+<script src="webroot/assets/js/bootstrap-transition.js"></script>
+<script src="webroot/assets/js/bootstrap-alert.js"></script>
+<script src="webroot/assets/js/bootstrap-modal.js"></script>
+<script src="webroot/assets/js/bootstrap-dropdown.js"></script>
+<script src="webroot/assets/js/bootstrap-scrollspy.js"></script>
+<script src="webroot/assets/js/bootstrap-tab.js"></script>
+<script src="webroot/assets/js/bootstrap-tooltip.js"></script>
+<script src="webroot/assets/js/bootstrap-popover.js"></script>
+<script src="webroot/assets/js/bootstrap-button.js"></script>
+<script src="webroot/assets/js/bootstrap-collapse.js"></script>
+<script src="webroot/assets/js/bootstrap-carousel.js"></script>
+<script src="webroot/assets/js/bootstrap-typeahead.js"></script>
+<script src="webroot/assets/js/application.js"></script>
+-->
 </body>
-	</html>
+</html>
