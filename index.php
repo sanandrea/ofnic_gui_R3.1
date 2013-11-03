@@ -45,8 +45,7 @@ if (file_exists($path)) {
 
 	if (is_callable(array($controller, $action), false)) {
 
-		#if (!hasDoneLogin()) {
-        if (TRUE) {
+		if (!hasDoneLogin()) {
 			$controller -> showLogin();
 		}else{
 		    $controller -> $action($format);
@@ -69,12 +68,12 @@ function hasDoneLogin() {
 
     if (isset($_POST['uid'])) {
         $uid = $_POST['uid'];
-    } else {
+    } else if (isset($_SESSION['uid'])){
         $uid = $_SESSION['uid'];
     }
     if (isset($_POST['pwd'])) {
         $pwd = $_POST['pwd'];
-    } else {
+    } else if (isset($_SESSION['pwd'])){
         $pwd = $_SESSION['pwd'];
     }
     if(!isset($uid)) {
