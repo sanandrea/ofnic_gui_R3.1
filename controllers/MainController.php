@@ -66,6 +66,23 @@ Class MainController Extends Controller {
 		$view -> page(array('title' => 'Login', 'modules' => $modules));
 	}
 
+	public function login(){
+		echo "ok";
+		$data = array();
+		$data['username'] = $_POST['uid'];
+		$data['password'] = $_POST['pwd'];
+
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_POST, 1);
+		curl_setopt($curl, CURLOPT_HEADER, true);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($curl, CURLOPT_URL, "https://130.206.82.172/netic.v1/login");
+
+		$result = curl_exec($curl);
+		print_r($result);
+	}
+
 	
 	
 }

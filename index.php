@@ -26,7 +26,6 @@
 define('OFNIC', 1);
 
 include 'include.php';
-include 'accesscontrol.php';
 
 // Session to maintain current timeslot	 
 
@@ -49,9 +48,10 @@ if (file_exists($path)) {
 			$controller -> showLogin();
 		}else{
 		    $controller -> $action($format);
-		    Logger::setController($class);
-		    Logger::setAction($action);
         }
+        #echo $action;
+        Logger::setController($class);
+        Logger::setAction($action);
 	} else {
 		Logger::error('Wrong action "' . $action . '"!');
 	}
