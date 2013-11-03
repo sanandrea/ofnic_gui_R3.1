@@ -71,6 +71,8 @@ Class MainController Extends Controller {
 		$data['username'] = $_POST['uid'];
 		$data['password'] = $_POST['pwd'];
 
+		$cookieFile = '/tmp/ofnic_' . $_POST['uid'] . '_cookie.txt';
+
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_POST, 1);
 		curl_setopt($curl, CURLOPT_HEADER, true);
@@ -79,24 +81,27 @@ Class MainController Extends Controller {
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($curl, CURLOPT_URL, "https://130.206.82.172/netic.v1/login");
 		//write cookie to jar
-		curl_setopt($curl, CURLOPT_COOKIEJAR, '/tmp/cookie.txt');
+		curl_setopt($curl, CURLOPT_COOKIEJAR, $cookieFile);
 
-		$result = curl_exec($curl);
+		ob_start();      // prevent any output
+		curl_exec ($curl); // execute the curl command
+		ob_end_clean();  // stop preventing output
+
+		//release memory and file handlers
 		curl_close($curl);
-		#print_r($result);
 
 		$ch = curl_init();
 		// Set query data here with the URL
 		curl_setopt($ch, CURLOPT_URL, 'https://130.206.82.172/netic.v1/doc');
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_TIMEOUT, '3');
-		curl_setopt($ch, CURLOPT_COOKIEFILE, '/tmp/cookie.txt');
+		curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
 		$content = trim(curl_exec($ch));
 		curl_close($ch);
-		print $content;
-		
+		#print $content;
+
 		//delete cookie file at session end
-		unlink('/tmp/cookie.txt');
+		unlink($cookieFile);
 		
 	}
 
