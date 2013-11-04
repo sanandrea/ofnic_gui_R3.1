@@ -47,13 +47,17 @@ if (file_exists($path)) {
 		if (!hasDoneLogin()) {
 			$controller -> showLogin();
 		}else{
+
 		    $controller -> $action($format);
         }
         #echo $action;
         Logger::setController($class);
         Logger::setAction($action);
 	} else {
-		Logger::error('Wrong action "' . $action . '"!');
+        //probably is a ajax call.
+        $controller -> decodeWSCall($action);
+
+		//Logger::error('Wrong action "' . $action . '"!');
 	}
 } else {
 	Logger::error('Wrong controller "' . $class . '"!');

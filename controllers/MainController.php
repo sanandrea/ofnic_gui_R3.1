@@ -38,6 +38,12 @@ Class MainController Extends Controller {
 	protected $client;
 	protected $cookiePlugin;
 	protected $cookieName = 'TWISTED_SESSION_Nicira_Management_Interface';
+
+	public $navItemsArray = array(
+		    "synchronize" => "Synchronize",
+		    "statistics" => "Statistics",
+		    "routing" => "Routing"
+		);
 	/**
 	 * Constructor, we avoid external instantiation of this class
 	 *
@@ -55,6 +61,30 @@ Class MainController Extends Controller {
 		$this -> client -> addSubscriber($this -> cookiePlugin);
 	}
 
+	private function getNav($focus){
+		$result = array();
+		
+
+		foreach ($this->navItemsArray as $key => $value) {
+			if ($key == $focus){
+				$format = sprintf("<li %s><a href=\"./?a=%s\">%s</a></li>",'class="active"',$key, $value);
+				// sprintf($format,'class="active"',$key, $value);
+			}else{
+				// sprintf($format,'class=""',$key, $value);
+				$format = sprintf("<li %s><a href=\"./?a=%s\">%s</a></li>",'class=""',$key, $value);
+			}
+			$result[] = $format;
+		}
+		return $result;
+	}
+
+	private function getPage($pageName, $pageTitle = '', $pageContent = ''){
+		$view = new View($pageName, 'index.html');
+		$view -> assign('content', $pageContent);
+		$modules['navbar'] = self::getNav($pageName);
+		$view -> page(array('title' => $pageTitle, 'modules' => $modules));
+	}
+
 	/**
 	 * Main index, no action
 	 *
@@ -65,14 +95,17 @@ Class MainController Extends Controller {
 	 * @return void
 	 */
 	public function index() {
-		$view = new View('main', 'index.html');
-		$view -> assign('content', 'Main page');
-		
-		$modules['navbar'][] = '<li class="active"><a href="#">Synchronize</a></li>';
-		$modules['navbar'][] = '<li><a href="#">Statistics</a></li>';
-		$modules['navbar'][] = '<li><a href="#">Routing</a></li>';
-		
-		$view -> page(array('title' => 'Main', 'modules' => $modules));
+		self::getPage('synchronize','Synchronize');
+	}
+
+	public function synchronize(){
+		self::getPage(__FUNCTION__, ucfirst(__FUNCTION__));
+	}
+	public function statistics(){
+		self::getPage(__FUNCTION__, ucfirst(__FUNCTION__));
+	}
+	public function routing(){
+		self::getPage(__FUNCTION__, ucfirst(__FUNCTION__));
 	}
 
 	public function showLogin(){
@@ -102,46 +135,7 @@ Class MainController Extends Controller {
 			$this -> showLogin();
 		}
 
-		return;
-		
-		$data = array();
-		$data['username'] = $_POST['uid'];
-		$data['password'] = $_POST['pwd'];
-
-		$cookieFile = '/tmp/ofnic_' . $_POST['uid'] . '_cookie.txt';
-
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_POST, 1);
-		curl_setopt($curl, CURLOPT_HEADER, true);
-		//no certificate checking
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-		curl_setopt($curl, CURLOPT_URL, "https://130.206.82.172/netic.v1/login");
-		//write cookie to jar
-		curl_setopt($curl, CURLOPT_COOKIEJAR, $cookieFile);
-
-		ob_start();      // prevent any output
-		curl_exec ($curl); // execute the curl command
-		ob_end_clean();  // stop preventing output
-
-		//release memory and file handlers
-		curl_close($curl);
-
-		$ch = curl_init();
-		// Set query data here with the URL
-		curl_setopt($ch, CURLOPT_URL, 'https://130.206.82.172/netic.v1/doc');
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_TIMEOUT, '3');
-		curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
-		$content = trim(curl_exec($ch));
-		curl_close($ch);
-		#print $content;
-
-		//delete cookie file at session end
-		if (file_exists($cookieFile)){
-			unlink($cookieFile);
-		}
-		
+		return;		
 	}
 
 	private function parseCookie($cookieField){

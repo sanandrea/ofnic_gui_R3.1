@@ -268,6 +268,7 @@ Class view {
 		$modules = isset($settings['modules']) ? $settings['modules'] : $this -> modules;
 
         $content = $this -> render($this -> template);
+        $scripts = "pppppppp";
 		
         $path = __ROOT_PATH . '/views' . '/' . 'layout.php';
 

@@ -97,20 +97,32 @@
 
 		<div class="container">  
    			<!-- <h1><?=$title?></h1> 
-   			<?=$content ?>-->
+   			-->
+   			<?=$content ?>
 		
    			
 		</div>
+
+		<footer class="footer">
+			<div class="container">
+	        <p><strong>Designed by </strong><spam class="blue-dark">University of Rome, La Sapienza</spam> Copyright &copy 2013</p>
+	      	</div>
 		
-<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+		</footer> 
     
 <script src="webroot/assets/js/jquery.js"></script>
+<script src="webroot/assets/js/bootstrap.js"></script>
+
+
 <script src="webroot/assets/js/arbor.js"></script>
 <script src="webroot/assets/js/arbor-tween.js"></script>
 <script src="webroot/assets/js/graphics.js"></script>
 <script src="webroot/assets/js/jquery.flot.js"></script>
 <script src="webroot/assets/js/jstorage.js"></script>
+<script src="webroot/assets/js/bootstrap.js"></script>
+<script src="webroot/assets/js/bootstrap.min.js"></script>
 
+<?=$scripts ?>
 <!--
 <script src="js/template.js"></script>
 <script src="js/synchronization.js"></script>    
