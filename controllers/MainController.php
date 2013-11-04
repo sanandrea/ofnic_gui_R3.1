@@ -130,12 +130,18 @@ Class MainController Extends Controller {
 			$_SESSION['cookieValue'] = $cookieValue;
 			$_SESSION['uid'] = $_POST['uid'];
 
-			$this->index();
+			$this -> index();
 		}else{
 			$this -> showLogin();
 		}
 
 		return;		
+	}
+
+	public function logout(){
+		unset($_SESSION['cookieValue']);
+		unset($_SESSION['uid']);
+		$this -> showLogin();
 	}
 
 	private function parseCookie($cookieField){

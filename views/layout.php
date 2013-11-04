@@ -60,8 +60,8 @@
 						<li class="dropdown">
                 			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['uid']?> <b class="caret"></b></a>
                 			<ul class="dropdown-menu">
-                  				<li><a href="#">Action</a></li>
-                  				<li><a href="#">Another action</a></li>
+                  				<li><a href="?a=logout">Logout</a></li>
+                  				<li><a href="#">Say hello</a></li>
                 			</ul>
               			</li>
 					</ul>
