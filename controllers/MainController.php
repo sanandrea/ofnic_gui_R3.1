@@ -27,9 +27,16 @@ if (!defined('OFNIC'))
  * OFNIC Main Web Site Controller class file
  */
 
-
+use Guzzle\Http\Client;
+use Guzzle\Plugin\Cookie\CookiePlugin;
+use Guzzle\Plugin\Cookie\CookieJar\ArrayCookieJar;
+ 
 Class MainController Extends Controller {
-
+	
+	
+	protected $ofnicWSRoot = 'https://130.206.82.172/netic.v1/';
+	protected $client;
+	protected $cookiePlugin;
 	/**
 	 * Constructor, we avoid external instantiation of this class
 	 *
@@ -37,6 +44,12 @@ Class MainController Extends Controller {
 	 */
 	public function __construct() {
 		parent::__construct();
+		
+		$this -> $cookiePlugin = new CookiePlugin(new ArrayCookieJar());
+
+		$this -> $client = new Client($this->ofnicWSRoot);
+		
+		$this -> $client -> addSubscriber($this -> $cookiePlugin);
 	}
 
 	/**
@@ -65,8 +78,14 @@ Class MainController Extends Controller {
 		$modules['login'] = TRUE;
 		$view -> page(array('title' => 'Login', 'modules' => $modules));
 	}
+	
+	
 
 	public function login(){
+		
+		$this -> $client -> post('/login', null, );
+		return;
+		
 		$data = array();
 		$data['username'] = $_POST['uid'];
 		$data['password'] = $_POST['pwd'];

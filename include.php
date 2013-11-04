@@ -36,6 +36,10 @@
     // helper functions
     include __ROOT_PATH . '/helpers/base.php';
 
+	require 'composer/vendor/autoload.php';
+	
+	spl_autoload_register('my_autoload');
+
 /**
  * System function (available in PHP 5) which is called whenever the code tries 
  * to use a class that has not yet been defined.
@@ -43,7 +47,7 @@
  * @param string $classname name of the class to load
  * @return boolean
  */
-    function __autoload($classname) {
+    function my_autoload($classname) {
         $paths = array();
 
         if (endsWith($classname, 'model')) {
