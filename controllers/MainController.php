@@ -34,9 +34,10 @@ use Guzzle\Plugin\Cookie\CookieJar\ArrayCookieJar;
 Class MainController Extends Controller {
 	
 	
-	protected $ofnicWSRoot = 'https://130.206.82.172/netic.v1/';
+	protected $ofnicWSRoot = 'https://130.206.82.172/netic.v1';
 	protected $client;
 	protected $cookiePlugin;
+	protected $cookieName = 'TWISTED_SESSION_Nicira_Management_Interface';
 	/**
 	 * Constructor, we avoid external instantiation of this class
 	 *
@@ -45,11 +46,13 @@ Class MainController Extends Controller {
 	public function __construct() {
 		parent::__construct();
 		
-		$this -> $cookiePlugin = new CookiePlugin(new ArrayCookieJar());
+		$this -> cookiePlugin = new CookiePlugin(new ArrayCookieJar());
 
-		$this -> $client = new Client($this->ofnicWSRoot);
+		$this -> client = new Client($this->ofnicWSRoot);
+
+		$this -> client->setDefaultOption('verify', false);
 		
-		$this -> $client -> addSubscriber($this -> $cookiePlugin);
+		$this -> client -> addSubscriber($this -> cookiePlugin);
 	}
 
 	/**
@@ -65,10 +68,9 @@ Class MainController Extends Controller {
 		$view = new View('main', 'index.html');
 		$view -> assign('content', 'Main page');
 		
-		$modules['navbar'][] = '<a href="#" class="brand">OFNIC</a>';
-		$modules['navbar'][] = '<ul class="nav"><li class="active"><a href="./home.html">Synchronize</a></li></ul>';
-		$modules['navbar'][] = '<ul class="nav"><li class="active"><a href="./home.html">Statistics</a></li></ul>';
-		$modules['navbar'][] = '<ul class="nav"><li class="active"><a href="./home.html">Routing</a></li></ul>';
+		$modules['navbar'][] = '<li class="active"><a href="#">Synchronize</a></li>';
+		$modules['navbar'][] = '<li><a href="#">Statistics</a></li>';
+		$modules['navbar'][] = '<li><a href="#">Routing</a></li>';
 		
 		$view -> page(array('title' => 'Main', 'modules' => $modules));
 	}
@@ -83,7 +85,23 @@ Class MainController Extends Controller {
 
 	public function login(){
 		
-		$this -> $client -> post('/login', null, );
+		$request = $this -> client -> post($this -> ofnicWSRoot.'/login', null, array(
+    			'username' => $_POST['uid'],
+    			'password' => $_POST['pwd']
+				));
+		$response = $request->send();
+		$cookieField = $response->getSetCookie();
+
+		if ($cookieField != null){
+			$cookieValue = $this->parseCookie($cookieField);
+			$_SESSION['cookieValue'] = $cookieValue;
+			$_SESSION['uid'] = $_POST['uid'];
+
+			$this->index();
+		}else{
+			$this -> showLogin();
+		}
+
 		return;
 		
 		$data = array();
@@ -124,6 +142,13 @@ Class MainController Extends Controller {
 			unlink($cookieFile);
 		}
 		
+	}
+
+	private function parseCookie($cookieField){
+		$semiColonPos = strrpos ($cookieField, ';');
+		$cookieNameLength = strlen($this->cookieName) + 1;
+
+		return substr ( $cookieField, $cookieNameLength , $semiColonPos - $cookieNameLength );
 	}
 	
 }
