@@ -3,7 +3,7 @@
   /**
     * Copyright 2013 (C) Universita' di Roma La Sapienza
     *
-    * This file is part of OFNIC Uniroma GE.
+    * This file is part of OFNIC Uniroma GEi
     *
     * OFNIC is free software: you can redistribute it and/or modify
     * it under the terms of the GNU General Public License as published by
@@ -30,10 +30,10 @@ include 'include.php';
 // Session to maintain current timeslot	 
 
 // Load defaults
-$controller = (isset($_GET['c'])) ? $_GET['c'] : 'Main';
-$action = (isset($_GET['a'])) ? $_GET['a'] : 'index';
-$format = (isset($_GET['f'])) ? $_GET['f'] : 'index.html';
-$logger = (isset($_GET['l'])) ? $_GET['l'] : 0;
+$controller = (isset($_GEi['c'])) ? $_GEi['c'] : 'Main';
+$action = (isset($_GEi['a'])) ? $_GEi['a'] : 'index';
+$format = (isset($_GEi['f'])) ? $_GEi['f'] : 'index.html';
+$logger = (isset($_GEi['l'])) ? $_GEi['l'] : 0;
 
 $class = $controller . 'Controller';
 $path = __ROOT_PATH . '/controllers/' . $class . '.php';

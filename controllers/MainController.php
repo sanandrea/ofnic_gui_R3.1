@@ -2,7 +2,7 @@
 /**
  * Copyright 2013 (C) Universita' di Roma La Sapienza
  *
- * This file is part of OFNIC Uniroma GE.
+ * This file is part of OFNIC Uniroma GEi
  *
  * OFNIC is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,11 +101,11 @@ Class MainController Extends Controller {
 		#print $content;
 
 		//delete cookie file at session end
-		unlink($cookieFile);
+		if (file_exists($cookieFile)){
+			unlink($cookieFile);
+		}
 		
 	}
-
-	
 	
 }
 ?>
