@@ -34,7 +34,7 @@ $controller = (isset($_GET['c'])) ? $_GET['c'] : 'Main';
 $action = (isset($_GET['a'])) ? $_GET['a'] : 'index';
 $format = (isset($_GET['f'])) ? $_GET['f'] : 'index.html';
 $logger = (isset($_GET['l'])) ? $_GET['l'] : 0;
-$wscall = (isset($_REQUEST['wsvalue'])) ? $_REQUEST['wsvalue'] : '';
+$wscall = (isset($_REQUEST['wspath'])) ? $_REQUEST['wspath'] : '';
 
 $class = $controller . 'Controller';
 $path = __ROOT_PATH . '/controllers/' . $class . '.php';

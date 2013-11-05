@@ -8,7 +8,7 @@ function setContent(val){
    switch (val)
   {
 	  case 0:
-        $('#content').html("<div id='left' class='span5'> </div><div id='right' class='span7'> <div  class='span5' id='port_info' > </div><div id='graph_info'></div><canvas id='viewport1'></canvas></div>");
+        $('#content').html("<div id='left' class='md-col-5'> </div><div id='right' class='span7'> <div  class='md-col-5' id='port_info' > </div><div id='graph_info'></div><canvas id='viewport1'></canvas></div>");
 	
 	    //grafo secondario
         sys1 = arbor.ParticleSystem(1000); // creo un sistema di particelle
@@ -28,7 +28,7 @@ function setContent(val){
 		addVirtualPath = false;
 	    break;
 	  case 1:
-	    $('#content').html("<div class='span12' style='margin-bottom:25px;'><div class='btn-group' data-toggle='buttons-radio'><button id='portStat' class='btn btn-blue' onClick=activeGetPortStat()>Get Port Statistics</button><button id='pathStatDisplay' class='btn btn-blue' onClick=displayMonitorStat()>Get Monitor Statistic</button><button id='addPathMonitor' class='btn btn-blue' onClick=activeAddPathStat()>Add Monitor to a Path</button></div> </div><div id='statistics' class='span12'></div>");
+	    $('#content').html("<div class='md-col-12' style='margin-bottom:25px;'><div class='btn-group' data-toggle='buttons-radio'><button id='portStat' class='btn btn-blue' onClick=activeGetPortStat()>Get Port Statistics</button><button id='pathStatDisplay' class='btn btn-blue' onClick=displayMonitorStat()>Get Monitor Statistic</button><button id='addPathMonitor' class='btn btn-blue' onClick=activeAddPathStat()>Add Monitor to a Path</button></div> </div><div id='statistics' class='span12'></div>");
 
 	    if(nodesOfPath!=null)eraseVirtualPathLine(openedPath);
 	    nodeSelectBefore = null;

@@ -33,7 +33,7 @@ function getStat() {
         packetCount = packetCount.slice(1);
 	byteCount = byteCount.slice(1);
 
-	$.getJSON(serverPath+"/netic.v1/OFNIC/statistics/path/"+monitorID, function(data1) {   
+	$.getJSON("./?a=ws&wspath=statistics_path_"+monitorID, function(data1) {   
 	
 	packetCount.push(data1.result['Packet count']);
 	byteCount.push(data1.result['Byte count']);
