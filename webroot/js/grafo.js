@@ -1,17 +1,13 @@
 
 function generateGraph(){
 //SCRIPT PER LA GENERAZIONE DEL GRAFO DI RETE
-	console.log('llll');
     // vedo i nodi della rete	  
     $.getJSON("./?a=ws&wsvalue=synchronize_network", function(data) {
     console.log(data);
 	//grafo principale
 	sys = arbor.ParticleSystem(1000); // creo un sistema di particelle
-	console.log('asfda');
 	sys.parameters({gravity:true}); // includo la gravità
 	sys.renderer = Renderer("#viewport"); //inizio a disegnare nel viewport
-	
-
 	
     if (data.result.Nodes.length != 0){
 	 //aggiungo i nodi
@@ -19,7 +15,6 @@ function generateGraph(){
 	   sys.addNode(this,{color:'#b01700', shape:'dot', label:this});
 	});
 	
-    console.log('qua');
 	$.getJSON("./?a=ws&wsvalue=synchronize_network_all", function(data) {
 	$.each(data.result.pairs, function(i,nodes) {
              sys.addEdge(sys.getNode(nodes[0]),sys.getNode(nodes[1]),{lineWidth:1});

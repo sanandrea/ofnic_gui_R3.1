@@ -8,17 +8,12 @@ function setContent(val){
    switch (val)
   {
 	  case 0:
-	    console.log('setcontent 1');
         $('#content').html("<div id='left' class='span5'> </div><div id='right' class='span7'> <div  class='span5' id='port_info' > </div><div id='graph_info'></div><canvas id='viewport1'></canvas></div>");
 	
 	    //grafo secondario
         sys1 = arbor.ParticleSystem(1000); // creo un sistema di particelle
-        console.log('setcontent 2');
 	    sys1.parameters({gravity:true}); // includo la gravità
-	    console.log('setcontent 3');
-	    sys1.renderer = Renderer("#viewport1"); //inizio a disegnare nel viewport	
-	    console.log('setcontent 4');
-	    
+	    sys1.renderer = Renderer("#viewport1"); //inizio a disegnare nel viewport
 	
 	    if(nodesOfPath!=null)eraseVirtualPathLine(openedPath);
 	    nodeSelectBefore = null;

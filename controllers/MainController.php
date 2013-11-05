@@ -123,7 +123,6 @@ Class MainController Extends Controller {
 				));
 		$response = $request->send();
 		$cookieField = $response->getSetCookie();
-		echo $cookieField;
 
 		if ($cookieField != null){
 			$cookieValue = $this->parseCookie($cookieField);
@@ -135,7 +134,7 @@ Class MainController Extends Controller {
 			$this -> showLogin();
 		}
 
-		return;		
+		return;
 	}
 
 	public function logout(){

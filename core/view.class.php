@@ -234,7 +234,7 @@ Class view {
         //
         Logger::checkpoint('Total to execute queries');
 
-        Logger::addLog('Loading view ' . $this -> name . ' , format ' . $type);
+        Logger::addLog('Loading view ' . $view . ' , format ' . $tpl);
 
         if ($return) {
             return $html;
@@ -267,8 +267,8 @@ Class view {
         $keywords = isset($settings['keywords']) ? $settings['keywords'] : $this -> keywords;
 		$modules = isset($settings['modules']) ? $settings['modules'] : $this -> modules;
 
-        $content = $this -> render($this -> template);
-        $scripts = "pppppppp";
+        $content = $this -> render();
+        $scripts = View::do_render($this->name, 'index.js');
 		
         $path = __ROOT_PATH . '/views' . '/' . 'layout.php';
 
