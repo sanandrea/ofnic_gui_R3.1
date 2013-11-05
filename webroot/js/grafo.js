@@ -1,24 +1,26 @@
 
 function generateGraph(){
 //SCRIPT PER LA GENERAZIONE DEL GRAFO DI RETE
-
+	console.log('llll');
     // vedo i nodi della rete	  
-    $.getJSON(serverPath+"/netic.v1/OFNIC/synchronize/network", function(data) {
+    $.getJSON("./?a=ws&wsvalue=synchronize_network", function(data) {
+    console.log(data);
 	//grafo principale
 	sys = arbor.ParticleSystem(1000); // creo un sistema di particelle
+	console.log('asfda');
 	sys.parameters({gravity:true}); // includo la gravità
 	sys.renderer = Renderer("#viewport"); //inizio a disegnare nel viewport
 	
 
 	
-      if (data.result.Nodes.length != 0){
+    if (data.result.Nodes.length != 0){
 	 //aggiungo i nodi
 	$.each(data.result.Nodes, function() {
 	   sys.addNode(this,{color:'#b01700', shape:'dot', label:this});
 	});
 	
-        	
-	$.getJSON(serverPath+"/netic.v1/OFNIC/synchronize/network/all", function(data) {
+    console.log('qua');
+	$.getJSON("./?a=ws&wsvalue=synchronize_network_all", function(data) {
 	$.each(data.result.pairs, function(i,nodes) {
              sys.addEdge(sys.getNode(nodes[0]),sys.getNode(nodes[1]),{lineWidth:1});
 	  });
@@ -39,7 +41,7 @@ function findNode(nameNode){
 
    if (nameNode != nodeSelectBefore){
    //RESTITUISCE LE INTERFACCE DEL NODO
-   $.getJSON(serverPath+"/netic.v1/OFNIC/synchronize/network/node/"+nameNode, function(data) {   
+   $.getJSON("./?a=ws&wsvalue=synchronize_network_node_"+nameNode, function(data) {   
 	if (statOption == 1){   
 		setPortsStat(data.result,nameNode);
 	}else{
@@ -55,14 +57,14 @@ function generateGraphPort(nameInterface, selectedNode, index){
 				
 		
 		//vedo i link di ogni interfaccia
-	        $.getJSON(serverPath+"/netic.v1/OFNIC/synchronize/network/node/"+selectedNode+"/port/"+index, function(data1) {
+	        $.getJSON("./?a=ws&wsvalue=synchronize_network_node_"+selectedNode+"_port_"+index, function(data1) {
 		   if (data1.result.links != 'None'){
 			// genera tabella delle info della porta
 			displayPortInfo(data1.result, nameInterface);
 		     
 			 $.each(data1.result.links, function(link) {
 
-		         $.getJSON(serverPath+"/netic.v1/OFNIC/synchronize/network/node/"+selectedNode+"/port/"+index+"/link/"+link,function(data2){	
+		         $.getJSON("./?a=ws&wsvalue=synchronize_network_node_"+selectedNode+"_port_"+index+"_link_"+link,function(data2){	
 			    if (data2.result.node != null){
 			    	// su ogni link un solo nodo non bisogna fare $each
 			    	sys1.addNode(data2.result.node,{color:'#b01700', shape:'dot', label:data2.result.node});

@@ -122,19 +122,27 @@
 <script src="webroot/assets/js/bootstrap.js"></script>
 <script src="webroot/assets/js/bootstrap.min.js"></script>
 
+<script type="text/javascript"  language="javascript">
+
+	$(document).ready(function() {
+	setContent(0);
+	generateGraph();
+	});
+</script>
+
 <?=$scripts ?>
+
+<script src="webroot/js/template.js"></script>
+<script src="webroot/js/synchronization.js"></script>  
+<script src="webroot/js/grafo.js"></script>    
+<script src="webroot/js/renderer.js"></script>
+<script src="webroot/js/routing.js"></script>
+<script src="webroot/js/statistics.js"></script>
+<script src="webroot/js/grafoStatistics.js"></script>
+<script src="webroot/js/panel.js"></script>
+
+
 <!--
-<script src="js/template.js"></script>
-<script src="js/synchronization.js"></script>    
-<script src="js/grafo.js"></script>    
-<script src="js/renderer.js"></script>
-<script src="js/routing.js"></script>
-<script src="js/statistics.js"></script>
-<script src="js/grafoStatistics.js"></script>
-<script src="js/panel.js"></script>
-
-
-
 <script src="webroot/assets/js/google-code-prettify/prettify.js"></script>
 <script src="webroot/assets/js/bootstrap-transition.js"></script>
 <script src="webroot/assets/js/bootstrap-alert.js"></script>

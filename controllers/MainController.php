@@ -35,6 +35,7 @@ Class MainController Extends Controller {
 	
 	
 	protected $ofnicWSRoot = 'https://130.206.82.172/netic.v1';
+	protected $rootSuffix = '/OFNIC/';
 	protected $client;
 	protected $cookiePlugin;
 	protected $cookieName = 'TWISTED_SESSION_Nicira_Management_Interface';
@@ -57,8 +58,6 @@ Class MainController Extends Controller {
 		$this -> client = new Client($this->ofnicWSRoot);
 
 		$this -> client->setDefaultOption('verify', false);
-		
-		$this -> client -> addSubscriber($this -> cookiePlugin);
 	}
 
 	private function getNav($focus){
@@ -124,6 +123,7 @@ Class MainController Extends Controller {
 				));
 		$response = $request->send();
 		$cookieField = $response->getSetCookie();
+		echo $cookieField;
 
 		if ($cookieField != null){
 			$cookieValue = $this->parseCookie($cookieField);
@@ -143,6 +143,55 @@ Class MainController Extends Controller {
 		unset($_SESSION['uid']);
 		$this -> showLogin();
 	}
+
+	public function ws($wscall){
+		$convertCall = str_replace("_", "/", $wscall);
+		Logger::addLog('convertCall is: ' . $convertCall);
+		$url = $this->ofnicWSRoot . $this->rootSuffix . $convertCall; 
+
+
+		$method = $_SERVER['REQUEST_METHOD'];
+		$request = null;
+
+		switch ($method) {
+		  case 'PUT':
+		    
+		    break;
+		  case 'POST':
+		    
+		    break;
+		  case 'GET':
+		    $request = $this -> client -> get($url);
+		    break;
+		  case 'HEAD':
+		    
+		    break;
+		  case 'DELETE':
+		    
+		    break;
+		  case 'OPTIONS':
+		    
+		    break;
+		  default:
+		    rest_error($request);
+		    break;
+		}
+		$request->addCookie($this->cookieName, $_SESSION['cookieValue']);
+		
+		try {
+    		$response = $request -> send();
+		} catch (Guzzle\Http\Exception\BadResponseException $e) {
+		    echo 'Uh oh! ' . $e->getMessage();
+		    #echo 'HTTP request URL: ' . $e->getRequest()->getUrl() . "\n";
+		    #echo 'HTTP request: ' . $e->getRequest() . "\n";
+		    echo 'Sent cookie: ' . $e -> getRequest()->getCookie($this->cookieName) . "\n";
+		    echo 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n";
+		    echo 'HTTP response: ' . $e->getResponse() . "\n";
+		}
+
+		echo $response->getBody();
+	}
+
 
 	private function parseCookie($cookieField){
 		$semiColonPos = strrpos ($cookieField, ';');

@@ -34,6 +34,7 @@ $controller = (isset($_GET['c'])) ? $_GET['c'] : 'Main';
 $action = (isset($_GET['a'])) ? $_GET['a'] : 'index';
 $format = (isset($_GET['f'])) ? $_GET['f'] : 'index.html';
 $logger = (isset($_GET['l'])) ? $_GET['l'] : 0;
+$wscall = (isset($_REQUEST['wsvalue'])) ? $_REQUEST['wsvalue'] : '';
 
 $class = $controller . 'Controller';
 $path = __ROOT_PATH . '/controllers/' . $class . '.php';
@@ -43,21 +44,20 @@ if (file_exists($path)) {
 	$controller = new $class();
 
 	if (is_callable(array($controller, $action), false)) {
-
 		if (!hasDoneLogin()) {
 			$controller -> showLogin();
 		}else{
-
-		    $controller -> $action($format);
+            if ($wscall != ''){
+                $controller -> $action($wscall);
+            }else{
+                $controller -> $action($format);
+            }
         }
         #echo $action;
         Logger::setController($class);
         Logger::setAction($action);
 	} else {
-        //probably is a ajax call.
-        $controller -> decodeWSCall($action);
-
-		//Logger::error('Wrong action "' . $action . '"!');
+		Logger::error('Wrong action "' . $action . '"!');
 	}
 } else {
 	Logger::error('Wrong controller "' . $class . '"!');
