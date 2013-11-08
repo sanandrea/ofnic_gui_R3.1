@@ -1,4 +1,3 @@
-
 function generateGraph(){
 //SCRIPT PER LA GENERAZIONE DEL GRAFO DI RETE
     // vedo i nodi della rete	  
@@ -14,6 +13,9 @@ function generateGraph(){
 	 //aggiungo i nodi
 	$.each(data.result.Nodes, function() {
 	   sys.addNode(this,{color:'#b01700', shape:'dot', label:this});
+	   
+	   //add this node in the dropdown list of nodes
+	   addNodeToList(this);
 	});
 	
 	$.getJSON("./?a=ws&wspath=synchronize_network_all", function(data) {
@@ -32,6 +34,10 @@ function generateGraph(){
     });
 }
 
+function addNodeToList(aNode){
+	
+	$('#nodeDropDown').append("<li><a onclick=\"javascript:findNode("+aNode+")\" href=\"#\">"+aNode+"</a></li>");
+}
 
 function findNode(nameNode){
 

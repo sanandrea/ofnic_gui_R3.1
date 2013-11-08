@@ -9,33 +9,33 @@ function PortSelect(intName,index)
       portSelectBefore = intName;
       generateGraphPort(intName,nodeSelectBefore,index);
    }
-	
+
 }
 	
-	// abilita le interfacce presenti sul nodo selezionato e disabilita le altre
-	function setPorts(result,node)
-	{
-	    sys1.prune();  //CANCELLA IL GRAFO 
-	    //CANCELLA le info della porta
-    	$('#port_info').html("");
-	    $('#graph_info').text("");			
-	    nodeSelectBefore = node;	
-	    portSelectBefore = null;
-		 
-		$('#left').html( "<table><tr><td colspan='2'>Information about node "+node+"</td></tr><tr><td>Num Buffers: </td><td>"+result.Num_Buffers+"</td></tr><tr><td>Num Tables: </td><td>"+result.Num_Tables+"</td></tr><tr><td>Actions: </td><td>"+result.Actions+"</td></tr><tr height='25'></tr><tr><td colspan='2'>Ports of node "+node+"</td></tr><tr height='10'></tr></table><div id='portLeft' class='btn-group' data-toggle='buttons-radio'></div>");
+// abilita le interfacce presenti sul nodo selezionato e disabilita le altre
+function setPorts(result,node)
+{
+    sys1.prune();  //CANCELLA IL GRAFO 
+    //CANCELLA le info della porta
+	$('#port_info').html("");
+    $('#graph_info').text("");			
+    nodeSelectBefore = node;	
+    portSelectBefore = null;
+	 
+	$('#left').html( "<table><tr><td colspan='2'>Information about node "+node+"</td></tr><tr><td>Num Buffers: </td><td>"+result.Num_Buffers+"</td></tr><tr><td>Num Tables: </td><td>"+result.Num_Tables+"</td></tr><tr><td>Actions: </td><td>"+result.Actions+"</td></tr><tr height='25'></tr><tr><td colspan='2'>Ports of node "+node+"</td></tr><tr height='10'></tr></table><div id='portLeft' class='btn-group' data-toggle='buttons-radio'></div>");
 
-        $.each(result.Port_Names, function(i,port) {
-		$.getJSON("./?a=ws&wspath=synchronize_network_node_"+node+"_port_"+result.Port_Index[i], function(data1) {
-			$('#portLeft').append("<button id='"+port+"' class='btn btn-primary' onClick=PortSelect('"+port+"','"+result.Port_Index[i]+"');>"+port+"</button>");
+    $.each(result.Port_Names, function(i,port) {
+	$.getJSON("./?a=ws&wspath=synchronize_network_node_"+node+"_port_"+result.Port_Index[i], function(data1) {
+		$('#portLeft').append("<button id='"+port+"' class='btn btn-primary' onClick=PortSelect('"+port+"','"+result.Port_Index[i]+"');>"+port+"</button>");
 
-		if (data1.result.links == 'None'){
-			$("#"+port).attr('disabled','disabled');       
-		}	
-	      });});
-
-	
-           
+	if (data1.result.links == 'None'){
+		$("#"+port).attr('disabled','disabled');       
 	}	
+      });});
+
+
+       
+}	
 
 
 function displayPortInfo(result, port){

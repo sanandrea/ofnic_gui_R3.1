@@ -9,7 +9,7 @@ function setContent(val){
   {
 	  case 0:
         $('#content').html("<div id='left' class='col-md-5'> </div><div id='right' class='col-md-7'> <div  class='col-md-5' id='port_info' > </div><div id='graph_info'></div><canvas id='viewport1'></canvas></div>");
-	
+        
 	    //grafo secondario
         sys1 = arbor.ParticleSystem(1000); // creo un sistema di particelle
         sys1.parameters({gravity:false}); // escludo la gravità
