@@ -12,8 +12,8 @@ function setContent(val){
 	
 	    //grafo secondario
         sys1 = arbor.ParticleSystem(1000); // creo un sistema di particelle
-        sys.parameters({gravity:false}); // escludo la gravità
-    	sys.parameters({ friction: '1.0' });
+        sys1.parameters({gravity:false}); // escludo la gravità
+    	sys1.parameters({ friction: '1.0' });
 	    sys1.renderer = Renderer("#viewport1"); //inizio a disegnare nel viewport
 	
 	    if(nodesOfPath!=null)eraseVirtualPathLine(openedPath);
