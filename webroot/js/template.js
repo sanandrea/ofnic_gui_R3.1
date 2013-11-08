@@ -3,16 +3,17 @@ var selectedContent = null;
 
 function setContent(val){
     
-   $("#viewport").height(350); //put canvas height back to 350 if case 3 or 4 put it to 0 to show admin tools (check case 3 and 4)
+   //$("#viewport").height(350); //put canvas height back to 350 if case 3 or 4 put it to 0 to show admin tools (check case 3 and 4)
     
    switch (val)
   {
 	  case 0:
-        $('#content').html("<div id='left' class='md-col-5'> </div><div id='right' class='span7'> <div  class='md-col-5' id='port_info' > </div><div id='graph_info'></div><canvas id='viewport1'></canvas></div>");
+        $('#content').html("<div id='left' class='col-md-5'> </div><div id='right' class='col-md-7'> <div  class='col-md-5' id='port_info' > </div><div id='graph_info'></div><canvas id='viewport1'></canvas></div>");
 	
 	    //grafo secondario
         sys1 = arbor.ParticleSystem(1000); // creo un sistema di particelle
-	    sys1.parameters({gravity:true}); // includo la gravità
+        sys.parameters({gravity:false}); // escludo la gravità
+    	sys.parameters({ friction: '1.0' });
 	    sys1.renderer = Renderer("#viewport1"); //inizio a disegnare nel viewport
 	
 	    if(nodesOfPath!=null)eraseVirtualPathLine(openedPath);

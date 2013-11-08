@@ -6,7 +6,8 @@ function generateGraph(){
     console.log(data);
 	//grafo principale
 	sys = arbor.ParticleSystem(1000); // creo un sistema di particelle
-	sys.parameters({gravity:true}); // includo la gravità
+	sys.parameters({gravity:false}); // escludo la gravità
+	sys.parameters({ friction: '1.0' });
 	sys.renderer = Renderer("#viewport"); //inizio a disegnare nel viewport
 	
     if (data.result.Nodes.length != 0){

@@ -26,7 +26,7 @@ function PortSelect(intName,index)
 
         $.each(result.Port_Names, function(i,port) {
 		$.getJSON("./?a=ws&wspath=synchronize_network_node_"+node+"_port_"+result.Port_Index[i], function(data1) {
-			$('#portLeft').append("<button id='"+port+"' class='btn btn-blue' onClick=PortSelect('"+port+"','"+result.Port_Index[i]+"');>"+port+"</button>");
+			$('#portLeft').append("<button id='"+port+"' class='btn btn-primary' onClick=PortSelect('"+port+"','"+result.Port_Index[i]+"');>"+port+"</button>");
 
 		if (data1.result.links == 'None'){
 			$("#"+port).attr('disabled','disabled');       

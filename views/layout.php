@@ -35,7 +35,8 @@
     	<link href="webroot/assets/css/ofnic.css" rel="stylesheet">	     
 	</head>
 		
-	<body>
+	<body style>
+		<div id="wrap">
 		<!-- Le navbar -->
 		<?php
 		if (isset($modules['navbar'])) {
@@ -103,13 +104,15 @@
    			
 		</div>
 
-		<footer class="footer">
-			<div class="container">
-	        <p><strong>Designed by </strong><spam class="blue-dark">University of Rome, La Sapienza</spam> Copyright &copy 2013</p>
-	      	</div>
-		
-		</footer> 
-    
+
+	<!-- wrapper -->	
+    </div>
+
+    <div id="footer">
+      	<div class="container">
+        	<p class="text-muted credit"><strong>Designed by </strong><spam class="blue-dark">University of Rome, La Sapienza</spam> Copyright &copy 2013</p>
+    	</div>
+    </div>
 
 <?=$scripts ?>
 
