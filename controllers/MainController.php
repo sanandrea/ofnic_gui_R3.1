@@ -128,8 +128,11 @@ Class MainController Extends Controller {
 			$cookieValue = $this->parseCookie($cookieField);
 			$_SESSION['cookieValue'] = $cookieValue;
 			$_SESSION['uid'] = $_POST['uid'];
+			
+			//don't send index, instead redirect to home page
+			header("Location: .");
 
-			$this -> index();
+			//$this -> index();
 		}else{
 			$this -> showLogin();
 		}

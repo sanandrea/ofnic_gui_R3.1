@@ -30,10 +30,10 @@ include 'include.php';
 // Session to maintain current timeslot	 
 
 // Load defaults
-$controller = (isset($_GET['c'])) ? $_GET['c'] : 'Main';
-$action = (isset($_GET['a'])) ? $_GET['a'] : 'index';
-$format = (isset($_GET['f'])) ? $_GET['f'] : 'index.html';
-$logger = (isset($_GET['l'])) ? $_GET['l'] : 0;
+$controller = (isset($_REQUEST['c'])) ? $_REQUEST['c'] : 'Main';
+$action = (isset($_REQUEST['a'])) ? $_REQUEST['a'] : 'index';
+$format = (isset($_REQUEST['f'])) ? $_REQUEST['f'] : 'index.html';
+$logger = (isset($_REQUEST['l'])) ? $_REQUEST['l'] : 0;
 $wscall = (isset($_REQUEST['wspath'])) ? $_REQUEST['wspath'] : '';
 
 $class = $controller . 'Controller';
