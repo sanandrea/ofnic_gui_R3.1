@@ -46,7 +46,7 @@ function displayPortPanel(){
 
 function resetPortTable(){
   $('#portInfoTable').html("");
-  $('#portDropDown').html("");
+  
 }
 // abilita le interfacce presenti sul nodo selezionato e disabilita le altre
 function setPorts(result,node)
@@ -62,6 +62,7 @@ function setPorts(result,node)
   //$('#left').html( "<table><tr><td colspan='2'>Information about node "+node+"</td></tr><tr><td>Num Buffers: </td><td>"+result.Num_Buffers+"</td></tr><tr><td>Num Tables: </td><td>"+result.Num_Tables+"</td></tr><tr><td>Actions: </td><td>"+result.Actions+"</td></tr><tr height='25'></tr><tr><td colspan='2'>Ports of node "+node+"</td></tr><tr height='10'></tr></table><div id='portLeft' class='btn-group' data-toggle='buttons-radio'></div>");
   $('#nodeInfoTable').html("<tr><td>"+node+"</td><td>"+result.Num_Buffers+"</td><td>"+result.Actions+"</td><td>"+result.Num_Tables+"</td></tr>");
 
+  $('#portDropDown').html("");
     $.each(result.Port_Names, function(i,port) {
 	    $.getJSON("./?a=ws&wspath=synchronize_network_node_"+node+"_port_"+result.Port_Index[i], function(data1) {
         //old implementation see line below
