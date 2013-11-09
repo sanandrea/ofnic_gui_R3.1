@@ -31,7 +31,7 @@ function setContent(val){
 		addVirtualPath = false;
 	    break;
 	  case 1:
-	    $('#content').html("<div class='md-col-12' style='margin-bottom:25px;'><div class='btn-group' data-toggle='buttons-radio'><button id='portStat' class='btn btn-blue' onClick=activeGetPortStat()>Get Port Statistics</button><button id='pathStatDisplay' class='btn btn-blue' onClick=displayMonitorStat()>Get Monitor Statistic</button><button id='addPathMonitor' class='btn btn-blue' onClick=activeAddPathStat()>Add Monitor to a Path</button></div> </div><div id='statistics' class='span12'></div>");
+	    $('#content').html("<div class='col-md-12' style='margin-bottom:25px;'><div class='btn-group' data-toggle='buttons-radio'><button id='portStat' class='btn btn-blue' onClick=activeGetPortStat()>Get Port Statistics</button><button id='pathStatDisplay' class='btn btn-blue' onClick=displayMonitorStat()>Get Monitor Statistic</button><button id='addPathMonitor' class='btn btn-blue' onClick=activeAddPathStat()>Add Monitor to a Path</button></div> </div><div id='statistics' class='span12'></div>");
 
 	    if(nodesOfPath!=null)eraseVirtualPathLine(openedPath);
 	    nodeSelectBefore = null;
@@ -48,9 +48,9 @@ function setContent(val){
 		addVirtualPath = false;
 	    break;
 	  case 2:
-	    $('#content').html("<div class='span12' style='margin-bottom:25px;'><button id = 'addPath' value='addPath' class='btn btn-blue' onClick='activeMenuPath();'>Add new Virtual Path</button> </div><div id='virtualPath' class='span12'></div>");
+	    $('#content').html("<div class='col-md-5'><button id = 'addPath' value='addPath' class='btn btn-primary' onClick='activeMenuPath();'>Add new Virtual Path</button></div><div id='virtualPath' class='col-md-5'></div>");
 	    
-            displayVirtualPath();
+        displayVirtualPath();
 	    if(nodesOfPath!=null)eraseVirtualPathLine(openedPath);
 	    selectedContent = 2;
 	    nodeSelectBefore = null;

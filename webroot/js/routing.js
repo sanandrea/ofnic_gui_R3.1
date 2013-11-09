@@ -17,7 +17,7 @@ function activeMenuPath()
 {
 	$('#addPath').attr('disabled','disabled');
 	addVirtualPath = true;
- 	$('#virtualPath').html("<div id='leftPath' class='span6'>Select Source</div><div id='rightPath' class='span6'>Select Destination</div>");
+ 	$('#virtualPath').html("<div id='leftPath' class='col-md-5'>Select Source</div><div id='rightPath' class='col-md-5'>Select Destination</div>");
 	nodePathSource =null;
 	nodePathDest =null;
 	portPathSource =null;
@@ -34,6 +34,8 @@ function showMenuPath(xPos,yPos,node){
 	if ((nodePathSource == node)||(nodePathDest == node)){
 		alertMessage("Select another Node");
 	}else{
+		console.log('we are here');
+		$('.dropdown-toggle').dropdown();
 		$('#menuPath').hide();
 		$('#menuPath').show(300);  
 		$('#menuPath').offset({ top: yPos, left: xPos });
@@ -58,25 +60,25 @@ function selectNodeTwo(){
 //visualizza le porte attive sul nodo selezionato, target mi identifica se source (left) o dest (right)
 function displayPortPath(target){
 
-	$.getJSON(serverPath+"/netic.v1/OFNIC/synchronize/network/node/"+nodePathSel, function(data) {   
+	$.getJSON("./?a=ws&wspath=synchronize_network_node_"+nodePathSel, function(data) {   
 
           $("#"+target).html("Ports Active of node "+nodePathSel+"<div id ='"+target+"Port' class='btn-group' data-toggle='buttons-radio'></div>");
 		
 	      $.each(data.result.Port_Names, function(i,port) {
 
 		//vedo i link di ogni interfaccia
-	        $.getJSON(serverPath+"/netic.v1/OFNIC/synchronize/network/node/"+nodePathSel+"/port/"+data.result.Port_Index[i], function(data1) {
+	        $.getJSON("./?a=ws&wspath=synchronize_network_node_"+nodePathSel+"_port_"+data.result.Port_Index[i], function(data1) {
 
 		 if (data1.result.links != 'None'){
 			
 			 $.each(data1.result.links, function(link) {
 
-		         $.getJSON(serverPath+"/netic.v1/OFNIC/synchronize/network/node/"+nodePathSel+"/port/"+data.result.Port_Index[i]+"/link/"+link,function(data2){	
+		         $.getJSON("./?a=ws&wspath=synchronize_network_node_"+nodePathSel+"_port_"+data.result.Port_Index[i]+"_link_"+link,function(data2){	
 			    if (data2.result.node != null){
 			    	// su ogni link un solo nodo non bisogna fare $each
-			    	$("#"+target+"Port").append("<button id='button"+target+data.result.Port_Index[i]+"' class='btn btn-blue' onClick=portPathSelect("+data.result.Port_Index[i]+",'"+target+"','');>"+port+" --> node"+data2.result.node+"</button>");
+			    	$("#"+target+"Port").append("<button id='button"+target+data.result.Port_Index[i]+"' class='btn btn-primary' onClick=portPathSelect("+data.result.Port_Index[i]+",'"+target+"','');>"+port+" --> node"+data2.result.node+"</button>");
 			    }else{
-				$("#"+target+"Port").append("<button id='button"+target+data.result.Port_Index[i]+"' class='btn btn-blue' onClick=portPathSelect("+data.result.Port_Index[i]+",'"+target+"','"+data2.result['IP Addr']+"');>"+port+" --> "+data2.result.Name+"</button>");
+				$("#"+target+"Port").append("<button id='button"+target+data.result.Port_Index[i]+"' class='btn btn-primary' onClick=portPathSelect("+data.result.Port_Index[i]+",'"+target+"','"+data2.result['IP Addr']+"');>"+port+" --> "+data2.result.Name+"</button>");
 				}
 			 });	
 		      });
@@ -156,7 +158,7 @@ function displayVirtualPath(){
 
 $('#virtualPath').html("<div id='displayPath' class='accordion'></div>");
 
-$.getJSON(serverPath+"/netic.v1/OFNIC/virtualpath", function(data) {
+$.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 	
 	pathExisting = data.result.Paths;
 
@@ -198,7 +200,7 @@ $.ajax({
 //visualizza le info del virtual path selezionaton e aumenta la larghezza degli archi interessati
 function getInfoVirtualPath(path){
 	
-	 $.getJSON(serverPath+"/netic.v1/OFNIC/virtualpath/"+path, function(data) {   
+	 $.getJSON("./?a=ws&wspath=virtualpath_"+path, function(data) {   
 	
 	$("#inner-"+path).html( "<table><tr><td>Destination Ip: </td><td>"+data.result['Dest IP']+"</td></tr><tr><td>Time Remaining: </td><td>"+data.result['Time Remaining']+"</td></tr><tr><td>Nodes: </td><td>"+data.result.Nodes+"</td></tr><tr><td>Source Ip: </td><td>"+data.result['Source IP']+"</td></tr><tr><td>Bandwidth: </td><td>"+data.result.Bandwidth+"</td></tr><tr height='25'></tr></table>");
        
@@ -232,7 +234,7 @@ function eraseVirtualPathLine(path){
 //elimina la visualizzazione dei path scaduti o eliminati
 function timerVirtualPath(){
 
-$.getJSON(serverPath+"/netic.v1/OFNIC/virtualpath", function(data) {
+$.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 	var tempPathExisting = pathExisting;	
 	if ((tempPathExisting.length > data.result.Paths.length)||((tempPathExisting!="")&&(data.result.Paths==""))){
 			

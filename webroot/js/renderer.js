@@ -193,6 +193,9 @@ Renderer = function(canvas){
 		      //vedo se ho cliccato sul nodo o vicino al nodo			
 		      if (selected.distance < 14 && selected.node.data.shape=='dot'){
 		        if ((addVirtualPath == true)&&(selectedContent==2)){
+              console.log('routing is active node selected');
+              console.log(e.pageX+' this is x');
+              console.log(e.pageY+' this is y');
 			        showMenuPath(e.pageX, e.pageY, selected.node.name);
 		        }else{                 	
 			        if ((selectedContent == 0)||((statOption != 0)&&(selectedContent==1))){
