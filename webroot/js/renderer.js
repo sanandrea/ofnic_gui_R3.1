@@ -35,7 +35,7 @@ Renderer = function(canvas){
   	}
   	
   	
-    var that = {
+    var that = { 
       //
       // the particle system will call the init function once, right before the
       // first frame is to be drawn. it's a good place to set up the canvas and
@@ -49,11 +49,7 @@ Renderer = function(canvas){
         // if the canvas is ever resized, screenSize should be called again with
         // the new dimensions
         particleSystem.screenSize(canvas.width, canvas.height) 
-        /*particleSystem.screenPadding(40) // leave an extra 20px of whitespace per side
-particleSystem.eachEdge(function(edge, pt1, pt2){
-$(edge).mousedown(function () {
-	alert(edge);})
-      })*/
+
         that.initMouseHandling()
       },
       
@@ -127,126 +123,119 @@ $(edge).mousedown(function () {
           // pt1:  {x:#, y:#}  source position in screen coords
           // pt2:  {x:#, y:#}  target position in screen coords
 		
-	  ctx.lineWidth = edge.data.lineWidth
-          var weight = edge.data.weight
-          var color = edge.data.color
+	      ctx.lineWidth = edge.data.lineWidth
+        var weight = edge.data.weight
+        var color = edge.data.color
           
-          // trace(color)
-          if (!color || (""+color).match(/^[ \t]*$/)) color = null
+        // trace(color)
+        if (!color || (""+color).match(/^[ \t]*$/)) color = null
 
-          // find the start point
-          var tail = intersect_line_box(pt1, pt2, nodeBoxes[edge.source.name])
-          var head = intersect_line_box(tail, pt2, nodeBoxes[edge.target.name])
+        // find the start point
+        var tail = intersect_line_box(pt1, pt2, nodeBoxes[edge.source.name])
+        var head = intersect_line_box(tail, pt2, nodeBoxes[edge.target.name])
 
-          ctx.save() 
-            ctx.beginPath()
+        ctx.save() 
+        ctx.beginPath()
 
-            if (!isNaN(weight)) ctx.lineWidth = weight
-            if (color) ctx.strokeStyle = color
-            // if (color) trace(color)
-            ctx.fillStyle = null
+        if (!isNaN(weight)) ctx.lineWidth = weight
+        if (color) ctx.strokeStyle = color
+        // if (color) trace(color)
+        ctx.fillStyle = null
           
-            ctx.moveTo(tail.x, tail.y)
-            ctx.lineTo(head.x, head.y)
-            ctx.stroke()
+        ctx.moveTo(tail.x, tail.y)
+        ctx.lineTo(head.x, head.y)
+        ctx.stroke()
+        ctx.restore()
+          
+        // draw an arrowhead if this is a -> style edge
+        if (edge.data.directed){
+          ctx.save()
+          // move to the head position of the edge we just drew
+          var wt = !isNaN(weight) ? parseFloat(weight) : ctx.lineWidth
+          var arrowLength = 6 + wt
+          var arrowWidth = 2 + wt
+          ctx.fillStyle = (color) ? color : ctx.strokeStyle
+          ctx.translate(head.x, head.y);
+          ctx.rotate(Math.atan2(head.y - tail.y, head.x - tail.x));
+
+          // delete some of the edge that's already there (so the point isn't hidden)
+          ctx.clearRect(-arrowLength/2,-wt/2, arrowLength/2,wt)
+
+          // draw the chevron
+          ctx.beginPath();
+          ctx.moveTo(-arrowLength, arrowWidth);
+          ctx.lineTo(0, 0);
+          ctx.lineTo(-arrowLength, -arrowWidth);
+          ctx.lineTo(-arrowLength * 0.8, -0);
+          ctx.closePath();
+          ctx.fill();
           ctx.restore()
-          
-          // draw an arrowhead if this is a -> style edge
-          if (edge.data.directed){
-            ctx.save()
-              // move to the head position of the edge we just drew
-              var wt = !isNaN(weight) ? parseFloat(weight) : ctx.lineWidth
-              var arrowLength = 6 + wt
-              var arrowWidth = 2 + wt
-              ctx.fillStyle = (color) ? color : ctx.strokeStyle
-              ctx.translate(head.x, head.y);
-              ctx.rotate(Math.atan2(head.y - tail.y, head.x - tail.x));
-
-              // delete some of the edge that's already there (so the point isn't hidden)
-              ctx.clearRect(-arrowLength/2,-wt/2, arrowLength/2,wt)
-
-              // draw the chevron
-              ctx.beginPath();
-              ctx.moveTo(-arrowLength, arrowWidth);
-              ctx.lineTo(0, 0);
-              ctx.lineTo(-arrowLength, -arrowWidth);
-              ctx.lineTo(-arrowLength * 0.8, -0);
-              ctx.closePath();
-              ctx.fill();
-            ctx.restore()
-          }
-
-
-       
-
-
-	})
-
-
-
-      },
-      initMouseHandling:function(){
-        // no-nonsense drag and drop (thanks springy.js)
-      	selected = null;
-      	nearest = null;
-      	var dragged = null;
-        var oldmass = 1
-
-	//IL VERTICE CHE SI MUOVE
-        var handler = {
-          clicked:function(e){//PREMUTO
-        		var pos = $(canvas).offset(); //OTTENGO LA POSIZIONE DEL CANVAS
-        		_mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top) //E LA POSIZIONE RELATIVA AL PUNTO PREMUTO S
-        		selected  = particleSystem.nearest(_mouseP); //DETERMINA IL VERTICA PIU' VICINO
-			//vedo se ho cliccato sul nodo o vicino al nodo			
-			if (selected.distance < 14 && selected.node.data.shape=='dot'){
-			if ((addVirtualPath == true)&&(selectedContent==2)){
-				showMenuPath(e.pageX, e.pageY, selected.node.name);
-			}else{                 	
-				if ((selectedContent == 0)||((statOption != 0)&&(selectedContent==1))){
-				findNode(selected.node.name);  //CHIAMA LA FUNZIONE PER OTTENERE LE INTERFACCE DEL NODO SELEZIONATO
-				}
-			}}else{if ((addVirtualPath == true)&&(selectedContent==2)){
-				$('#menuPath').hide();
-			}}
-        		return false
-          },
-          dragged:function(e){ //RITORNO AL TOP
-            var old_nearest = nearest && nearest.node._id
-        		var pos = $(canvas).offset();
-        		var s = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
-
-            if (!nearest) return
-        		if (dragged !== null && dragged.node !== null){
-              var p = particleSystem.fromScreen(s)
-     	       dragged.node.p = {x:p.x, y:p.y} //PUNTARE LA PARTE BASSA DEL MOUSE
-//        			dragged.tempMass = 100000
-
-
-        		}
-
-            return false
-        	},
-
-          dropped:function(e){ //RELASCIO
-            if (dragged===null || dragged.node===undefined) return //SE NON SI MUOVE, NULL
-            if (dragged.node !== null) dragged.node.fixed = false  //SE SI MUOVE, INIZIA
-            dragged.node.tempMass = 1000
-            dragged = null;  //PULISCO TUTTO
-            selected = null;
-            $(canvas).unbind('mousemove', handler.dragged)  //FERMO TUTTO GLI EVENTI
-            $(window).unbind('mouseup', handler.dropped)
-            _mouseP = null
-            return false
-          }
-
-          
         }
-        // ASCOLTO GLI EVENTI DEL MOUSE
-        $(canvas).mousedown(handler.clicked);
-      	
-      },
+	    }) //redraw
+
+
+
+    },
+      
+    initMouseHandling:function(){
+      // no-nonsense drag and drop (thanks springy.js)
+    	selected = null;
+    	nearest = null;
+    	var dragged = null;
+      var oldmass = 1
+
+	    //IL VERTICE CHE SI MUOVE
+      var handler = {
+        clicked:function(e){//PREMUTO
+      		var pos = $(canvas).offset(); //OTTENGO LA POSIZIONE DEL CANVAS
+      		_mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top) //E LA POSIZIONE RELATIVA AL PUNTO PREMUTO S
+      		selected  = particleSystem.nearest(_mouseP); //DETERMINA IL VERTICA PIU' VICINO
+		      //vedo se ho cliccato sul nodo o vicino al nodo			
+		      if (selected.distance < 14 && selected.node.data.shape=='dot'){
+		        if ((addVirtualPath == true)&&(selectedContent==2)){
+			        showMenuPath(e.pageX, e.pageY, selected.node.name);
+		        }else{                 	
+			        if ((selectedContent == 0)||((statOption != 0)&&(selectedContent==1))){
+			          selectNode(selected.node.name.toString());  //CHIAMA LA FUNZIONE PER OTTENERE LE INTERFACCE DEL NODO SELEZIONATO
+			        }
+		      }}else{if ((addVirtualPath == true)&&(selectedContent==2)){
+			      $('#menuPath').hide();
+		      }}
+      		return false
+        },
+        dragged:function(e){ //RITORNO AL TOP
+          var old_nearest = nearest && nearest.node._id
+      		var pos = $(canvas).offset();
+      		var s = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
+
+          if (!nearest) return
+      		if (dragged !== null && dragged.node !== null){
+            var p = particleSystem.fromScreen(s)
+   	        dragged.node.p = {x:p.x, y:p.y} //PUNTARE LA PARTE BASSA DEL MOUSE
+        	}
+
+            return false
+        },
+
+        dropped:function(e){ //RELASCIO
+          if (dragged===null || dragged.node===undefined) return //SE NON SI MUOVE, NULL
+          if (dragged.node !== null) dragged.node.fixed = false  //SE SI MUOVE, INIZIA
+          dragged.node.tempMass = 1000
+          dragged = null;  //PULISCO TUTTO
+          selected = null;
+          $(canvas).unbind('mousemove', handler.dragged)  //FERMO TUTTO GLI EVENTI
+          $(window).unbind('mouseup', handler.dropped)
+          _mouseP = null
+          return false
+        }
+
+          
+      }//handler
+      
+      // ASCOLTO GLI EVENTI DEL MOUSE
+      $(canvas).mousedown(handler.clicked);
+    },
     	
     }
     return that
-  }    
+}
