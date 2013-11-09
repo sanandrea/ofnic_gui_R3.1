@@ -143,7 +143,8 @@ Class MainController Extends Controller {
 	public function logout(){
 		unset($_SESSION['cookieValue']);
 		unset($_SESSION['uid']);
-		$this -> showLogin();
+		header("Location: .");
+		//$this -> showLogin();
 	}
 
 	public function ws($wscall){

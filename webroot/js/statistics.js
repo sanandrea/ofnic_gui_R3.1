@@ -6,7 +6,7 @@ function activeGetPortStat(){
 	nodeSelectBefore = null;	
         portSelectBefore = null;
         clearInterval(timerStat);
-	$('#statistics').html("<div id='left' class='span5'>Select a node </div><div id='right' class='span7'>");
+	$('#statistics').html("<div id='left'q class='span5'>Select a node </div><div id='right' class='span7'>");
 
 }
 
