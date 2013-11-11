@@ -48,7 +48,7 @@ function setContent(val){
 		addVirtualPath = false;
 	    break;
 	  case 2:
-	    $('#content').html("<div class='col-md-5'><button id = 'addPath' value='addPath' class='btn btn-primary' onClick='activeMenuPath();'>Add new Virtual Path</button></div><div id='virtualPath' class='col-md-5'></div>");
+	    //$('#content').html("<div class='col-md-5'><button id = 'addPath' value='addPath' class='btn btn-primary' onClick='activeMenuPath();'>Add new Virtual Path</button></div><div id='virtualPath' class='col-md-5'></div>");
 	    
         displayVirtualPath();
 	    if(nodesOfPath!=null)eraseVirtualPathLine(openedPath);

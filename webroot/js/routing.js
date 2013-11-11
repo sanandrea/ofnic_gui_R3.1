@@ -45,20 +45,31 @@ function addNodeInDropDown(target,aNode){
 	//remove li item in target dropdown
 	$('#'+target+ ' li:contains('+aNode+')').removeClass("disabled");
 }
-
+function isEmpty( el ){
+      return !$.trim(el.html())
+  }
 function displaySelectedNode(target, aNode){
 	classToBeAdded = "";
 	closeCb = 'deselectSrcNode';
 	if (target == 'displayDstNode'){
 		classToBeAdded = "pull-right";
 		closeCb = 'deselectDstNode';
+		if (isEmpty($('#displaySrcNode'))) {
+			$('#displayDstNode').addClass('col-md-offset-6')
+		}else{
+			$('#displayDstNode').removeClass('col-md-offset-6')
+		}
+	}else{
+		if (!isEmpty($('#displayDstNode'))) {
+			$('#displayDstNode').removeClass('col-md-offset-6')
+		}
 	}
-	$('#'+target).html('<h3 class='+classToBeAdded+'>'+
+	$('#'+target).html('<h4 class='+classToBeAdded+'>'+
 						   '<span class="label label-default">Node '+aNode+'</span>'+' '+
 						   '<button type="button" class="close" aria-hidden="true"'+
 						   ' onclick="javascript:'+closeCb+'('+aNode+')">'+
 						   '&times;</button>'+
-					   '</h3>');
+					   '</h4>');
 }
 
 function displaySelectedPort(target, text){
@@ -68,7 +79,7 @@ function displaySelectedPort(target, text){
 	if (target == 'displayOutNode'){
 		classToBeAdded = "pull-right";
 	}
-	$('#'+target).html('<h4 class='+classToBeAdded+' centered>'+
+	$('#'+target).html('<h4 class='+classToBeAdded+'>'+
 						   '<span class="label label-default">'+text+'</span>'+
 					   '</h4>');
 }
@@ -130,6 +141,11 @@ function deselectSrcNode(aNode){
 	$('#incBtnGroup').attr('disabled','disabled');
 	$('#incPortDropDown').empty();
 	$('#displayIncPort').empty();
+
+	//Andi's trick 
+	if (!isEmpty($('#displayDstNode'))) {
+		$('#displayDstNode').addClass('col-md-offset-6')
+	}
 }
 function deselectDstNode(aNode){
 	console.log(aNode);
@@ -180,7 +196,9 @@ function portPathSelect(idPort,target,hostIp){
 		portPathDest = idPort;
 		hostIpDest = hostIp;
 	}
-	console.log("uala");
+}
+
+function launchVirtualModal(){
 	if ((portPathSource != null)&&(portPathDest != null)){
 		$('#dp_src').val(nodePathSource);
 		$('#dp_dst').val(nodePathDest);
@@ -195,9 +213,9 @@ function portPathSelect(idPort,target,hostIp){
 
 //resetta le porte al click su close della finestra dei parametri
 function closeModal(){
+	deselectSrcNode(nodePathSource);
+	deselectDstNode(nodePathDest);
 
-	$("#buttonleftPath"+portPathSource).removeClass("active");
-	$("#buttonrightPath"+portPathDest).removeClass("active");
 	portPathSource = null;
 	portPathDest = null;
 	hostIpSource = null;

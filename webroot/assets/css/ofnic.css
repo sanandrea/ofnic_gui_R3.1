@@ -33,10 +33,15 @@ body {
   padding-right: 15px;
 }
 
-.panel-body > .row {
-	min-height: 56px;
+.row.botSpace {
+	min-height: 48px;
 }
 
 .close{
 	float: none;
+}
+
+hr {
+margin-top: 10px;
+margin-bottom: 10px;
 }
