@@ -129,7 +129,6 @@ function selectDestinNode(aNode){
 }
 
 function deselectSrcNode(aNode){
-	console.log(aNode);
 	$('#displaySrcNode').empty();
 	addNodeInDropDown('dstNodeDropDown',aNode);
 	nodePathSource = null;
@@ -148,7 +147,6 @@ function deselectSrcNode(aNode){
 	}
 }
 function deselectDstNode(aNode){
-	console.log(aNode);
 	$('#displayDstNode').empty();
 	addNodeInDropDown('srcNodeDropDown',aNode);
 	nodePathDest = null;
@@ -236,7 +234,8 @@ function submitModal(){
       error: function() {
         alertMessage("Creation failed. Try again.");
       },
-      success: function() {
+      success: function(data) {
+      	console.log(data);
         alertMessage("Creation Successfull!!!");      
       },
       complete: function() {

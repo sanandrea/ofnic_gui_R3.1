@@ -56,7 +56,6 @@ function findNode(nameNode){
 }
 
 function changeNodeColour(node, colour){
-	console.log(node);
 	arborNode = sys.getNode(node);
     arborNode.data.color = colour;
 }

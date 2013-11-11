@@ -161,7 +161,10 @@ Class MainController Extends Controller {
 		    
 		    break;
 		  case 'POST':
-		    
+		  	$ar = array();
+		  	//foreach ($_POST as $key => $value)
+		      //echo "Field ".htmlspecialchars($key)." is ".htmlspecialchars($value)."<br>";
+		  	$request = $this -> client -> post($url, null, $_POST);
 		    break;
 		  case 'GET':
 		    $request = $this -> client -> get($url);
