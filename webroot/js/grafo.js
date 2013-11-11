@@ -1,6 +1,6 @@
-function generateGraph(){
+function generateGraph(cbFun){
 //SCRIPT PER LA GENERAZIONE DEL GRAFO DI RETE
-    // vedo i nodi della rete	  
+    // vedo i nodi della rete
     $.getJSON("./?a=ws&wspath=synchronize_network", function(data) {
     console.log(data);
 	//grafo principale
@@ -10,6 +10,9 @@ function generateGraph(){
 	sys.renderer = Renderer("#viewport"); //inizio a disegnare nel viewport
 	
     if (data.result.Nodes.length != 0){
+    	if (typeof cbFun === "function"){
+    		cbFun(data.result.Nodes);
+    	}
 	 //aggiungo i nodi
 	$.each(data.result.Nodes, function() {
 	   sys.addNode(this,{color:colorRed, fixed:true, shape:'dot', label:this});

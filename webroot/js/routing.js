@@ -28,6 +28,109 @@ function activeMenuPath()
 	
 }
 
+//populate source and destination node dropdowns
+function populateNodesDropDowns(nodes){
+	console.log(nodes);
+	$.each(nodes, function() {
+		$('#srcNodeDropDown').append("<li><a onclick=\"javascript:selectSourceNode("+this+")\">"+this+"</a></li>");
+		$('#dstNodeDropDown').append("<li><a onclick=\"javascript:selectDestinNode("+this+")\">"+this+"</a></li>");
+	});
+}
+
+function removeNodeFromDropDown(target,aNode){
+	//remove li item in target dropdown
+	$('#'+target+ ' li:contains('+aNode+')').addClass("disabled");
+}
+function addNodeInDropDown(target,aNode){
+	//remove li item in target dropdown
+	$('#'+target+ ' li:contains('+aNode+')').removeClass("disabled");
+}
+
+function displaySelectedNode(target, aNode){
+	classToBeAdded = "";
+	closeCb = 'deselectSrcNode';
+	if (target == 'displayDstNode'){
+		classToBeAdded = "pull-right";
+		closeCb = 'deselectDstNode';
+	}
+	$('#'+target).html('<h3 class='+classToBeAdded+'>'+
+						   '<span class="label label-default">Node '+aNode+'</span>'+' '+
+						   '<button type="button" class="close" aria-hidden="true"'+
+						   ' onclick="javascript:'+closeCb+'('+aNode+')">'+
+						   '&times;</button>'+
+					   '</h3>');
+}
+//gestione del click sul menu
+function selectSourceNode(aNode){
+	if (nodePathDest == aNode){
+		return;
+	}
+	//$('#menuPath').hide();
+	//displayPortPath("leftPath", aNode);
+	//nodePathSource = nodePathSel;
+
+	nodePathSource = aNode;
+	
+	removeNodeFromDropDown('dstNodeDropDown',aNode);
+	//disable the dropdown
+	$('#srcBtnGroup').attr('disabled','disabled');
+	
+	//display the label of the node
+	displaySelectedNode("displaySrcNode", aNode);
+	
+	
+	/**** Port management ****/
+	//enable incoming port selection
+	$('#incBtnGroup').removeAttr('disabled');
+	populatePortsInfo('incPortDropDown', aNode);
+
+}
+
+//gestione del click sul menu
+function selectDestinNode(aNode){
+	if (nodePathSource == aNode){
+		return;
+	}
+	$('#menuPath').hide();
+	console.log('destination was selected' + aNode);
+	displayPortPath("rightPath", aNode);
+	nodePathDest = aNode;
+	//nodePathDest = nodePathSel;
+	removeNodeFromDropDown('srcNodeDropDown',aNode);
+	$('#dstBtnGroup').attr('disabled','disabled');
+	
+	//display the label of the node
+	displaySelectedNode("displayDstNode", aNode);
+	
+	/**** Port management ****/
+	//enable incoming port selection
+	$('#outBtnGroup').removeAttr('disabled');
+	populatePortsInfo('outPortDropDown', aNode);
+}
+
+function deselectSrcNode(aNode){
+	console.log(aNode);
+	$('#displaySrcNode').empty();
+	addNodeInDropDown('dstNodeDropDown',aNode);
+	nodePathSource = null;
+	$('#srcBtnGroup').removeAttr('disabled');
+	
+	/**** Port management ****/
+	$('#incBtnGroup').attr('disabled','disabled');
+	$('#incPortDropDown').empty();
+}
+function deselectDstNode(aNode){
+	console.log(aNode);
+	$('#displayDstNode').empty();
+	addNodeInDropDown('srcNodeDropDown',aNode);
+	nodePathDest = null;
+	$('#dstBtnGroup').removeAttr('disabled');
+	
+	/**** Port management ****/
+	$('#outBtnGroup').attr('disabled','disabled');
+	$('#outPortDropDown').empty();
+}
+
 //visualizza il menu sul click del nodo salvandone il nome
 function showMenuPath(xPos,yPos,node){
 	
@@ -43,37 +146,44 @@ function showMenuPath(xPos,yPos,node){
 	}
 }
 
-//gestione del click sul menu
-function selectNodeOne(){
-	$('#menuPath').hide();
-	displayPortPath("leftPath");
-	nodePathSource = nodePathSel;
-}
-
-//gestione del click sul menu
-function selectNodeTwo(){
-	$('#menuPath').hide();
-	displayPortPath("rightPath");
-	nodePathDest = nodePathSel;
+function populatePortsInfo(target, aNode){
+	$.getJSON("./?a=ws&wspath=synchronize_network_node_"+aNode, function(data) {
+		$.each(data.result.Port_Names, function(i,port) {
+			$.getJSON("./?a=ws&wspath=synchronize_network_node_"+aNode+"_port_"+data.result.Port_Index[i], function(data1) {
+				if (data1.result.links != 'None'){
+					$.each(data1.result.links, function(link) {
+						$.getJSON("./?a=ws&wspath=synchronize_network_node_"+aNode+"_port_"+data.result.Port_Index[i]+"_link_"+link,function(data2){	
+						    if (data2.result.node != null){
+						    	// su ogni link un solo nodo non bisogna fare $each
+						    	$("#"+target).append("<li><a onClick=portPathSelect("+data.result.Port_Index[i]+",'"+target+"','');>"+port+" --> node"+data2.result.node+"</a></li>");
+						    }else{
+						    	$("#"+target).append("<li><a onClick=portPathSelect("+data.result.Port_Index[i]+",'"+target+"','"+data2.result['IP Addr']+"');>"+port+" --> "+data2.result.Name+"</a></li>");
+							}
+						 });
+					});
+				}
+			});
+		});
+	});
 }
 
 //visualizza le porte attive sul nodo selezionato, target mi identifica se source (left) o dest (right)
-function displayPortPath(target){
+function displayPortPath(target, aNode){
 
-	$.getJSON("./?a=ws&wspath=synchronize_network_node_"+nodePathSel, function(data) {   
+	$.getJSON("./?a=ws&wspath=synchronize_network_node_"+aNode, function(data) {   
 
-          $("#"+target).html("Ports Active of node "+nodePathSel+"<div id ='"+target+"Port' class='btn-group' data-toggle='buttons-radio'></div>");
+          $("#"+target).html("Ports Active of node "+aNode+"<div id ='"+target+"Port' class='btn-group' data-toggle='buttons-radio'></div>");
 		
 	      $.each(data.result.Port_Names, function(i,port) {
 
 		//vedo i link di ogni interfaccia
-	        $.getJSON("./?a=ws&wspath=synchronize_network_node_"+nodePathSel+"_port_"+data.result.Port_Index[i], function(data1) {
+	        $.getJSON("./?a=ws&wspath=synchronize_network_node_"+aNode+"_port_"+data.result.Port_Index[i], function(data1) {
 
 		 if (data1.result.links != 'None'){
 			
 			 $.each(data1.result.links, function(link) {
 
-		         $.getJSON("./?a=ws&wspath=synchronize_network_node_"+nodePathSel+"_port_"+data.result.Port_Index[i]+"_link_"+link,function(data2){	
+		         $.getJSON("./?a=ws&wspath=synchronize_network_node_"+aNode+"_port_"+data.result.Port_Index[i]+"_link_"+link,function(data2){	
 			    if (data2.result.node != null){
 			    	// su ogni link un solo nodo non bisogna fare $each
 			    	$("#"+target+"Port").append("<button id='button"+target+data.result.Port_Index[i]+"' class='btn btn-primary' onClick=portPathSelect("+data.result.Port_Index[i]+",'"+target+"','');>"+port+" --> node"+data2.result.node+"</button>");
@@ -93,14 +203,14 @@ function displayPortPath(target){
 // setta la porta sorgente e di destinazione e visualizza la finestra dei parametri quando entrambe le porta sono settate
 function portPathSelect(idPort,target,hostIp){
 
-	if (target === "leftPath"){
+	if (target === "incPortDropDown"){
 		portPathSource = idPort;
 		hostIpSource = hostIp;
 	}else{
 		portPathDest = idPort;
 		hostIpDest = hostIp;
 	}
-
+	console.log("uala");
 	if ((portPathSource != null)&&(portPathDest != null)){
 		$('#dp_src').val(nodePathSource);
 		$('#dp_dst').val(nodePathDest);

@@ -32,3 +32,11 @@ body {
   padding-left: 15px;
   padding-right: 15px;
 }
+
+.panel-body > .row {
+	min-height: 70px;
+}
+
+.close{
+	float: none;
+}

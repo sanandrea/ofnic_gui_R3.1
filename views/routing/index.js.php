@@ -13,7 +13,7 @@
 <script type="text/javascript"  language="javascript">
 	$(document).ready(function() {
 	setContent(2);
-	generateGraph();
+	generateGraph(populateNodesDropDowns);
 	});
 </script>
 
