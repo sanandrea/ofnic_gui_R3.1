@@ -1,9 +1,6 @@
 var portSelectBefore = null;
 var nodeSelectBefore = null;
 var edgeHighlighted = null;
-var colorRed = '#b01700';
-var colorGreen = '#009900'
-var colorBlue = '#0000cd';
 
 function addNodeToList(aNode){
   $('#nodeDropDown').append("<li><a onclick=\"javascript:selectNode("+aNode+")\">"+aNode+"</a></li>");
@@ -31,6 +28,7 @@ function selectNode(node){
       edge.data.lineWidth = 1;
     }
     findNode(node);
+    changeNodeColour(node, colorGreen);
     arborNode = sys.getNode(node);
     arborNode.data.color = colorGreen;
     if (nodeSelectBefore != null){

@@ -15,6 +15,12 @@
 	setContent(2);
 	generateGraph(populateNodesDropDowns);
 	});
+	
+	function alertMessage(mess){
+		$('#messageBox').html(mess);	
+		$('#messageBox').fadeIn();
+		setTimeout(function () { $("#messageBox").fadeOut(); }, 3000);
+	}
 </script>
 
 

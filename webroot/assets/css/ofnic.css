@@ -34,7 +34,7 @@ body {
 }
 
 .panel-body > .row {
-	min-height: 70px;
+	min-height: 56px;
 }
 
 .close{

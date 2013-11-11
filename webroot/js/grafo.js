@@ -1,3 +1,7 @@
+var colorRed = '#b01700';
+var colorGreen = '#009900'
+var colorBlue = '#0000cd';
+
 function generateGraph(cbFun){
 //SCRIPT PER LA GENERAZIONE DEL GRAFO DI RETE
     // vedo i nodi della rete
@@ -51,6 +55,11 @@ function findNode(nameNode){
    }
 }
 
+function changeNodeColour(node, colour){
+	console.log(node);
+	arborNode = sys.getNode(node);
+    arborNode.data.color = colour;
+}
 
 function generateGraphPort(nameInterface, selectedNode, index){
   	//vedo i link di ogni interfaccia
