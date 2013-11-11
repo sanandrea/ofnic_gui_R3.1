@@ -5,6 +5,27 @@
 	</div>
 	<div class="col-md-5">
 		<div id="content" class="row"></div>
+		<div class="panel panel-default" id="portPanel">
+	    <!-- Create a Routing panel -->
+	        <div class="panel-heading">Create Virtual Path</div>
+	        <div class="panel-body" id="portPanelBody">
+	        	<p>Select Source and Destination Node from the menus below</p>
+	        	<div class="btn-group">
+	  				<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+	    				Source<span class="caret"></span>
+	  				</button>
+	  				<ul id="srcNodeDropDown" class="dropdown-menu" role="menu">
+	  				</ul>
+				</div>
+				<div class="btn-group  pull-right">
+	  				<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+	    				Destination<span class="caret"></span>
+	  				</button>
+	  				<ul id="dstNodeDropDown" class="dropdown-menu" role="menu">
+	  				</ul>
+				</div>
+	        </div>
+	    </div>
 	</div>
 
 	<!--menu nascosto virtual path -->
