@@ -80,8 +80,17 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
-					<h2>Welcome to OFNIC GEi Web Gui</h2>
-					<h4>Provided by Uniroma1</h4>
+					<h1>Welcome to OFNIC GEi Web Gui</h1>
+					<h4>
+						This web page is the graphical user interface of a reference instance of the Network Information&Control (NetIC) Generic Enabler. 
+						More info on NetIC GE can be found  
+						<a href="http://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/FIWARE.ArchitectureDescription.I2ND.NetIC" target="_blank">here</a>
+						<br /><br /><br />
+						NetIC is the task dealing with interfaces toward programmable networks inside the I2ND chapter of <a href="http://www.fi-ware.eu/" target="_blank">FI-WARE</a> project.
+					</h4>
+					<h4>OpenFlow Network Information and Control (OFNIC) is provided by Uniroma1 Partner of FI-WARE Consortium</h4>
+					<img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="300x300" src="webroot/assets/img/fi_ware_logo.png">
+					
 				</div>
 				<div class="col-md-4">
 					<?php 
