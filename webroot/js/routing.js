@@ -252,21 +252,33 @@ function submitModal(){
 
 //visualizza i virtual path esistenti
 function displayVirtualPath(){
-
-$('#virtualPath').html("<div id='displayPath' class='accordion'></div>");
+//$('#virtualPath').html("<div id='displayPath' class='accordion'></div>");
+console.log("display ongoing paths");
 
 $.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 	
 	pathExisting = data.result.Paths;
 
 	$.each(data.result.Paths, function(i,path) {
-		if (path != ""){            
-		$('#displayPath').append("<div id='accordion-group"+path+"'class='accordion-group'><div class='accordion-heading'><a  class='accordion-toggle' data-toggle='collapse' data-parent='#displayPath' href='#collapse"+i+"'>Virtual Path " + path + "</a></div><div style='float:right;'><a class='btn btn-danger' href=javascript:removeVirtualPath('"+path+"'); ><i class='icon-trash icon-white'></i></a></div> <div id='collapse"+i+"' class='accordion-body collapse' style='clear:both;'><div id='inner-"+path+"' class='accordion-inner'></div></div></div>");
+		if (path != ""){
+			$('#virtualPathList').append('<div class="panel panel-default" id="portPanel">'+
+			        						'<div class="panel-heading">'+
+			            						'<div class="panel-title">'+
+			            							'<a data-toggle="collapse" data-parent="#virtualPathList" href="#collapse1">'+
+			            								'Path ID '+ path +
+			            							'</a>'+
+			            							'<a class="btn btn-danger btn-xs pull-right"><i class="glyphicon glyphicon-trash"></i></a>'+
+			            					'</div></div>'+
+			            					'<div id="collapse1" class="panel-collapse collapse">'+
+			            						'<div class="panel-body">'+
+			            							'Text'+
+			            				'</div></div></div>');
+		//$('#displayPath').append("<div id='accordion-group"+path+"'class='accordion-group'><div class='accordion-heading'><a  class='accordion-toggle' data-toggle='collapse' data-parent='#displayPath' href='#collapse"+i+"'>Virtual Path " + path + "</a></div><div style='float:right;'><a class='btn btn-danger' href=javascript:removeVirtualPath('"+path+"'); ><i class='icon-trash icon-white'></i></a></div> <div id='collapse"+i+"' class='accordion-body collapse' style='clear:both;'><div id='inner-"+path+"' class='accordion-inner'></div></div></div>");
 				    
-		$('#collapse'+i).on('shown', function () {
+		$('#collapse'+i).on('shown.bs.collapse', function () {
 		getInfoVirtualPath(path);}); 
 
-		$('#collapse'+i).on('hidden', function () {
+		$('#collapse'+i).on('hidden.bs.collapse', function () {
 		eraseVirtualPathLine(path);});
 }
 
@@ -296,7 +308,7 @@ $.ajax({
 
 //visualizza le info del virtual path selezionaton e aumenta la larghezza degli archi interessati
 function getInfoVirtualPath(path){
-	
+	console.log("get info");
 	 $.getJSON("./?a=ws&wspath=virtualpath_"+path, function(data) {   
 	
 	$("#inner-"+path).html( "<table><tr><td>Destination Ip: </td><td>"+data.result['Dest IP']+"</td></tr><tr><td>Time Remaining: </td><td>"+data.result['Time Remaining']+"</td></tr><tr><td>Nodes: </td><td>"+data.result.Nodes+"</td></tr><tr><td>Source Ip: </td><td>"+data.result['Source IP']+"</td></tr><tr><td>Bandwidth: </td><td>"+data.result.Bandwidth+"</td></tr><tr height='25'></tr></table>");

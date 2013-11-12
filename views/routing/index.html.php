@@ -10,11 +10,9 @@
 	        <div class="panel-body" id="portPanelBody">
 	        	
 	        </div>
-	        <div class="list-group">
-		        	<a href="#" class="list-group-item">Link</a>
-			        <a href="#" class="list-group-item">Link</a>
-			        <a href="#" class="list-group-item">Link</a>
-      			</div>
+	        <div class="panel-group" id="virtualPathList">
+		        
+	        </div>
 	    </div>
     </div>
 	<div class="col-md-3 sidebar-offcanvas" id="sidebar" role="navigation">
