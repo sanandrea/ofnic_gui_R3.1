@@ -310,7 +310,7 @@ $.ajax({
 //visualizza le info del virtual path selezionaton e aumenta la larghezza degli archi interessati
 function getInfoVirtualPath(path){
 	$.getJSON("./?a=ws&wspath=virtualpath_"+path, function(data) {   
-	$('#pathInfo'+path).html( "<table><tr><td>Destination Ip: </td><td>"+data.result['Dest IP']+"</td></tr><tr><td>Time Remaining: </td><td>"+data.result['Time Remaining']+"</td></tr><tr><td>Nodes: </td><td>"+data.result.Nodes+"</td></tr><tr><td>Source Ip: </td><td>"+data.result['Source IP']+"</td></tr><tr><td>Bandwidth: </td><td>"+data.result.Bandwidth+"</td></tr><tr height='25'></tr></table>");
+	$('#pathInfo'+path).html( "<table><tr><td>Destination IP: </td><td>"+data.result['Dest IP']+"</td></tr><tr><td>Time Remaining: </td><td>"+data.result['Time Remaining']+"</td></tr><tr><td>Nodes: </td><td>"+data.result.Nodes+"</td></tr><tr><td>Source IP: </td><td>"+data.result['Source IP']+"</td></tr><tr><td>Bandwidth: </td><td>"+data.result.Bandwidth+"</td></tr><tr height='25'></tr></table>");
        
 	nodesOfPath = data.result.Nodes; 
 	openedPath = path;

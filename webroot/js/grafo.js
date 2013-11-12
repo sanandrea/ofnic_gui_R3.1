@@ -1,6 +1,9 @@
 var colorRed = '#b01700';
 var colorGreen = '#009900'
 var colorBlue = '#0000cd';
+var portSelectBefore = null;
+var nodeSelectBefore = null;
+var edgeHighlighted = null;
 
 function generateGraph(cbFun){
 //SCRIPT PER LA GENERAZIONE DEL GRAFO DI RETE
@@ -49,7 +52,7 @@ function findNode(nameNode){
 	if (statOption == 1){   
 		setPortsStat(data.result,nameNode);
 	}else{
-		setPorts(data.result,nameNode);
+		populatePortList(data.result,nameNode);
 	}	
    });
    }

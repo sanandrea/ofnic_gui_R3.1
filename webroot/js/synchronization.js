@@ -1,7 +1,3 @@
-var portSelectBefore = null;
-var nodeSelectBefore = null;
-var edgeHighlighted = null;
-
 function addNodeToList(aNode){
   $('#nodeDropDown').append("<li><a onclick=\"javascript:selectNode("+aNode+")\">"+aNode+"</a></li>");
 }

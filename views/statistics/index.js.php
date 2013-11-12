@@ -19,7 +19,6 @@
 
 
 <script src="webroot/js/template.js"></script>
-<script src="webroot/js/synchronization.js"></script>  
 <script src="webroot/js/grafo.js"></script>    
 <script src="webroot/js/renderer.js"></script>
 <script src="webroot/js/routing.js"></script>

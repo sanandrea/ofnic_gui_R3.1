@@ -49,7 +49,7 @@
               			<span class="icon-bar"></span>
               			<span class="icon-bar"></span>
             		</button>
-            		<a class="navbar-brand" >OFNIC</a>
+            		<img class="navbar-brand" src="webroot/assets/img/fi_ware_logo_sm.png"></img>
           		</div>
           		<div class="collapse navbar-collapse">
             		<ul class="nav navbar-nav">
@@ -64,6 +64,7 @@
                   				<li><a href="?a=logout">Logout</a></li>
                 			</ul>
               			</li>
+              			<!-- <a class="navbar-brand" >OFNIC</a> -->
 					</ul>
 				</div>
 			</div>
@@ -118,7 +119,7 @@
 
     <div id="footer">
       	<div class="container">
-        	<p class="text-muted credit"><strong>Designed by </strong><spam class="blue-dark">University of Rome, La Sapienza</spam> Copyright &copy 2013</p>
+        	<p class="text-muted credit">OFNIC GEi <strong>Designed by </strong><spam class="blue-dark">University of Rome, La Sapienza</spam> Copyright &copy 2013</p>
     	</div>
     </div>
 

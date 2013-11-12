@@ -44,6 +44,10 @@ body {
 .close{
 	float: none;
 }
+img.navbar-brand{
+  padding: 0px;
+  padding-right: 10px;
+}
 
 hr {
 margin-top: 10px;
