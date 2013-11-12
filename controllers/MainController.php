@@ -174,7 +174,7 @@ Class MainController Extends Controller {
 		    
 		    break;
 		  case 'DELETE':
-		    
+		    $request = $this -> client -> delete($url);
 		    break;
 		  case 'OPTIONS':
 		    

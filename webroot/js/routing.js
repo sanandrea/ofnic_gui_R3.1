@@ -261,13 +261,14 @@ $.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 	
 	$.each(data.result.Paths, function(i,path) {
 		if (path != ""){
-			$('#virtualPathList').append('<div class="panel panel-default" id="portPanel">'+
+			$('#virtualPathList').append('<div class="panel panel-default" id="pathPanelEntry'+path+'">'+
 			        						'<div class="panel-heading">'+
 			            						'<div class="panel-title">'+
 			            							'<a data-toggle="collapse" data-parent="#virtualPathList" href="#collapse'+i+'">'+
 			            								'Path ID '+ path +
 			            							'</a>'+
-			            							'<a class="btn btn-danger btn-xs pull-right"><i class="glyphicon glyphicon-trash"></i></a>'+
+			            							'<a class="btn btn-danger btn-xs pull-right" href=javascript:removeVirtualPath("'+path+
+			            							'");><i class="glyphicon glyphicon-trash"></i></a>'+
 			            					'</div></div>'+
 			            					'<div id="collapse'+i+'" class="panel-collapse collapse">'+
 			            						'<div class="panel-body" id="pathInfo'+path+'">'+
@@ -291,7 +292,7 @@ function removeVirtualPath(path){
 $.ajax({
 
       type: "DELETE",
-      url: serverPath+"/netic.v1/OFNIC/virtualpath/"+path,
+      url: "./?a=ws&wspath=virtualpath_"+path,
       
       error: function() {
         alertMessage("Remotion failed. Try again.");
@@ -348,7 +349,7 @@ $.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 		for (var i=0;i<tempPathExisting.length;i++)
 		{
 			 if ($.inArray(tempPathExisting[i],data.result.Paths)==-1){
-					$('#accordion-group'+tempPathExisting[i]).remove();
+					$('#pathPanelEntry'+tempPathExisting[i]).remove();
 					if(openedPath==tempPathExisting[i])eraseVirtualPathLine(openedPath);	
 				}
 			
