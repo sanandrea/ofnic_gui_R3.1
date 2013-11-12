@@ -35,6 +35,7 @@ Class MainController Extends Controller {
 	
 	
 	protected $ofnicWSRoot = 'https://130.206.82.172/netic.v1';
+	//protected $ofnicWSRoot = 'https://localhost/netic.v1';
 	protected $rootSuffix = '/OFNIC/';
 	protected $client;
 	protected $cookiePlugin;
