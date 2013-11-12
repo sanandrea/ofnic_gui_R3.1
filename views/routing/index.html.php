@@ -72,11 +72,9 @@
 					</div>
 				</div>
 				<hr>
-		        <div class="row">
-		        	<div class="col-md-2 col-md-offset-4">
-		        		<button type="button" class="btn btn-success" onclick="javascript:launchVirtualModal();">Create</button>
-		        	</div>        	
-		        </div>
+	        	<ul class="pager">
+  					<li><button class="btn btn-success" onclick="javascript:launchVirtualModal();">Add</button></li>
+				</ul>	
 	        </div>
 	    </div>
 	</div>

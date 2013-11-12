@@ -29,9 +29,9 @@ function setPortsStat(result,node)
 		$('#left').html( "<table><tr><td colspan='2'>Information about node "+node+"</td></tr><tr><td>Num Buffers: </td><td>"+result.Num_Buffers+"</td></tr><tr><td>Num Tables: </td><td>"+result.Num_Tables+"</td></tr><tr><td>Actions: </td><td>"+result.Actions+"</td></tr><tr height='25'></tr><tr><td colspan='2'>Ports of node "+node+"</td></tr><tr height='10'></tr></table><div id='portLeft' class='btn-group' data-toggle='buttons-radio'></div>");
 		
 	      $.each(result.Port_Names, function(i,port) {
-		$.getJSON(serverPath+"/netic.v1/OFNIC/synchronize/network/node/"+node+"/port/"+result.Port_Index[i], function(data1) {
+		$.getJSON("./?a=ws&wspath=synchronize_network_node_"+node+"_port_"+result.Port_Index[i], function(data1) {
 
-		 $('#portLeft').append("<button class='btn btn-blue' onClick=PortSelectStat('"+port+"','"+result.Port_Index[i]+"');>"+port+"</button>");
+		 $('#portLeft').append("<button class='btn btn-primary' onClick=PortSelectStat('"+port+"','"+result.Port_Index[i]+"');>"+port+"</button>");
 
 	      });});
        
@@ -43,7 +43,7 @@ function PortSelectStat(intName,index)
    	if (intName != portSelectBefore) {
       		portSelectBefore = intName;
       	// get port stat
-      	  	$.getJSON(serverPath+"/netic.v1/OFNIC/statistics/node/"+nodeSelectBefore+"/port/"+index, function(data) {
+      	  	$.getJSON("./?a=ws&wspath=statistics_node_"+nodeSelectBefore+"_port_"+index, function(data) {
 			displayPortStat(data.result,intName);	        
 		});   
 	}
@@ -64,7 +64,7 @@ function displayVirtualPathStat(){
 
 $('#statistics').html("<div id='displayPathStat' class='accordion'></div>");
 
-$.getJSON(serverPath+"/netic.v1/OFNIC/virtualpath", function(data) {
+$.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 	
 	pathExisting = data.result.Paths;
 
@@ -72,7 +72,7 @@ $.getJSON(serverPath+"/netic.v1/OFNIC/virtualpath", function(data) {
 		if (path != ""){            
 		$('#displayPathStat').append("<div id='accordion-group"+path+"'class='accordion-group'><div class='accordion-heading'><a  class='accordion-toggle' data-toggle='collapse' data-parent='#displayPathStat' href='#collapse"+i+"'>Virtual Path " + path + "</a></div><div id='buttonPathStat"+path+"' class='btn-group' data-toggle='buttons-radio' style='float:right;'></div> <div id='collapse"+i+"' class='accordion-body collapse' style='clear:both;'><div id='inner-"+path+"' class='accordion-inner'></div></div></div>");
 		
-		$.getJSON(serverPath+"/netic.v1/OFNIC/virtualpath/"+path, function(data) {   
+		$.getJSON("./?a=ws&wspath=virtualpath_"+path, function(data) {   
 	
 	for (var j=0;j<data.result.Nodes.length;j++)
 	{
@@ -116,7 +116,7 @@ function submitModalStat(){
 
 	$.ajax({
       type: "POST",
-      url: serverPath+"/netic.v1/OFNIC/statistics/path/create",
+      url: "./?a=ws&wspath=statistics_task_create",
       data: $("#pathStatParameters").serialize(),
       error: function() {
         alertMessage("Creation failed. Try again.");
@@ -140,7 +140,7 @@ function displayMonitorStat(){
 clearInterval(timerStat);
 $('#statistics').html("<div id='displayMonitor' class='accordion'></div>");
 
-$.getJSON(serverPath+"/netic.v1/OFNIC/statistics/path", function(data) {
+$.getJSON("./?a=ws&wspath=statistics_task", function(data) {
 	
 	
 	$.each(data.result['MonitorIDs'], function(i,monitor) {
@@ -176,7 +176,7 @@ function removeMonitorPath(monitor){
 $.ajax({
 
       type: "DELETE",
-      url: serverPath+"/netic.v1/OFNIC/statistics/path/"+monitor,
+      url: "./?a=ws&wspath=statistics_task_"+monitor,
       
       error: function() {
         alertMessage("Remotion failed. Try again.");
