@@ -49,10 +49,10 @@
 	        </table>
 	    </div>
 	</div>
-	<div class="col-md-3" sidebar-offcanvas" id="sidebar" role="navigation>
+	<div class="col-md-3 sidebar-offcanvas" id="sidebar" role="navigation">
 		<div class="panel panel-default" id="portPanel">
 	    <!-- Create a Routing panel -->
-	        <div class="panel-heading">Active Virtual Paths</div>
+	        <div class="panel-heading">Flow Monitoring Tasks</div>
 	        <div class="panel-body" id="portPanelBody">
 	        	
 	        </div>
@@ -61,4 +61,31 @@
 	        </div>
 	    </div>
     </div>
+
+
+    <div class="modal fade" id="myModal" aria-hidden="true">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	 			<div class="modal-header">
+	   				<a href="javascript:closeModalStat();" class="close" >×</a>
+	   				<h3>Monitoring Task Parameters</h3>
+	 			</div>
+	 			<div class="modal-body">
+	 				<form id="pathStatParameters">
+	   					<table><tbody>
+							<tr><td colspan="2" style="border-bottom:1px solid black;">Mandatory Parameters</td></tr>
+							<tr> <td>Path ID:</td><td><input type="text" id="PathID" name="PathID" readonly/></td></tr>
+							<tr> <td>Node ID:</td><td><input type="text"  id="dpid"  name="dpid" readonly/></td></tr>
+							<tr> <td>Duration (s):</td><td><input type="text" name="duration" /></td></tr>
+							<tr> <td>Frequency :</td><td><input type="text" name="frequency" /></td></tr>
+	    				</tbody></table>
+	  				</form>
+				</div>
+				<div class="modal-footer">
+  					<a href="javascript:closeModal();" class="btn btn-default" >Cancel</a>
+  					<a href="javascript:submitModal();" class="btn btn-primary">Create</a>
+				</div>
+	  		</div><!-- /.modal-content -->
+	  	</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 </div>

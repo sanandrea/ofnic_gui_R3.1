@@ -59,7 +59,7 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
-                			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['uid']?> <b class="caret"></b></a>
+                			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><?php echo "  ".$_SESSION['uid']?> <b class="caret"></b></a>
                 			<ul class="dropdown-menu">
                   				<li><a href="?a=logout">Logout</a></li>
                 			</ul>
