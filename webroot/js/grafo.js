@@ -49,7 +49,7 @@ function findNode(nameNode){
    if (nameNode != nodeSelectBefore){
    //RESTITUISCE LE INTERFACCE DEL NODO
    $.getJSON("./?a=ws&wspath=synchronize_network_node_"+nameNode, function(data) {   
-	if (statOption == 1){   
+	if (statOption == 1){ 
 		//setPortsStat(data.result,nameNode);
 		populatePortList(data.result,nameNode);
 	}else{

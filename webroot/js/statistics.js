@@ -1,4 +1,4 @@
-var statOption = 1;
+var statOption;
 
 //setta le variabili e il template per ottenere le statistiche sulla porta
 function activeGetPortStat(){
@@ -30,6 +30,9 @@ function selectNode(aNode){
 //is called in grafo.js
 function populatePortList(result, aNode){
 	$('#portDropDown').empty();
+	$('#displayPort').empty();
+	$('#portStatInfoTable').empty();
+	
 	console.log(result);
 	$.each(result.Port_Names, function(i,port) {
 		$.getJSON("./?a=ws&wspath=synchronize_network_node_"+aNode+"_port_"+result.Port_Index[i], function(data1) {
@@ -80,7 +83,8 @@ function PortSelectStat(intName,index)
 
 //visualizza le statistuche della porta
 function displayPortStat(result, port){
-
+	$('#displayPort').empty();
+	$('#displayPort').append('<h4><span class="label label-default pull-right">'+port+'</span></h4>');
 	//$('#right').html( "<table><tr><td colspan='2' width='400'>Statistics about port "+port+"</td></tr><tr><td>Tx_bytes: </td><td>"+result.Tx_bytes+"</td></tr><tr><td>Tx_errors: </td><td>"+result.Tx_errors+"</td></tr><tr><td>Rx_bytes: </td><td>"+result.Rx_bytes+"</td></tr><tr><td>Rx_errors: </td><td>"+result.Rx_errors+"</td></tr><tr height='25'></tr></table>");
 	$('#portStatInfoTable').empty();
 	$('#portStatInfoTable').append("<tr><td>"+result.Tx_bytes+"</td><td>"+result.Rx_bytes+"</td><td>"+result.Tx_errors+"</td><td>"+result.Rx_errors+"</td></tr>")

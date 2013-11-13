@@ -43,8 +43,8 @@ Class MainController Extends Controller {
 
 	public $navItemsArray = array(
 		    "synchronize" => "Synchronize",
-		    "statistics" => "Statistics",
-		    "routing" => "Routing"
+		    "routing" => "Routing",
+		    "statistics" => "Statistics"
 		);
 	/**
 	 * Constructor, we avoid external instantiation of this class
@@ -63,7 +63,6 @@ Class MainController Extends Controller {
 
 	private function getNav($focus){
 		$result = array();
-		
 
 		foreach ($this->navItemsArray as $key => $value) {
 			if ($key == $focus){

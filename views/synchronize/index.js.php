@@ -7,8 +7,6 @@
 <script src="webroot/assets/js/graphics.js"></script>
 <script src="webroot/assets/js/jquery.flot.js"></script>
 <script src="webroot/assets/js/jstorage.js"></script>
-<script src="webroot/assets/js/bootstrap.js"></script>
-<script src="webroot/assets/js/bootstrap.min.js"></script>
 
 <script type="text/javascript"  language="javascript">
 	$(document).ready(function() {

@@ -29,7 +29,7 @@
 					<div id="displayNode" class="col-md-6">
 						
 					</div>
-					<div id="displayPort" class="col-md-2 pull-right">
+					<div id="displayPort" class="col-md-6">
 						
 					</div>
 				</div>

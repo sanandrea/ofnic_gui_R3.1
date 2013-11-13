@@ -25,8 +25,6 @@ function setContent(val){
 	    addVirtualPath = false;
 	    clearInterval(pathTimer);
 	    clearInterval(timerStat);
-	    $("li").removeClass("active");
-	    $("li::eq(0)").addClass("active");
 	    $('#menuPath').hide();
 		addVirtualPath = false;
 	    break;
@@ -38,10 +36,8 @@ function setContent(val){
 	    clearInterval(pathTimer);
 	    clearInterval(timerStat);
     	    selectedContent = 1;
-	    statOption = 0;
+	    statOption = 1;
 	    addVirtualPath = false;
-	    $("li").removeClass("active");
-	    $("li::eq(1)").addClass("active");
 	    displayMonitorStat();
 	    $('#pathStatDisplay').addClass('active');
 	    $('#menuPath').hide();
@@ -57,8 +53,6 @@ function setContent(val){
 	    statOption = 0;
 	    pathTimer = setInterval(timerVirtualPath,10000);
 	    clearInterval(timerStat);
-	    $("li").removeClass("active");
-	    $("li::eq(2)").addClass("active");
    	    $('#menuPath').hide();
 		addVirtualPath = false;
 	    break;
