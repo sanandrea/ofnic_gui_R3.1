@@ -94,6 +94,19 @@ function displayPortStat(result, port){
 
 //visualizza i virtual path esistenti per aggiungere un monitor
 function displayVirtualPathStat(){
+	$.getJSON("./?a=ws&wspath=virtualpath", function(data) {
+		pathExisting = data.result.Paths;
+		$.each(data.result.Paths, function(i,path) {
+			if (path != ""){
+				$('#flowDropDown').append("<li><a onclick=\"javascript:selectFlow('"+path+"')\">"+path+"</a></li>");
+			}
+		});
+	});
+	return;
+	
+	
+	
+	
 
 $('#statistics').html("<div id='displayPathStat' class='accordion'></div>");
 
@@ -122,6 +135,25 @@ $.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 });
 }
 
+function selectFlow(path){
+	console.log("path is: "+ path);
+	if (path != openedPath){
+		//call this CB when data available
+		getInfoVirtualPath(path, flowInfoReady);
+		openedPath = path;
+	}
+	return;
+}
+
+function flowInfoReady(path){
+	console.log("cb called");
+	$('#nodePathDropDown').empty();
+	for (var j=0;j<nodesOfPath.length;j++)
+	{
+		$("#nodePathDropDown").append("<li><a onClick=portPathStatSelect('"+nodesOfPath[j]+"','"+path+"');>"+nodesOfPath[j]+"</a></li>");
+	}
+	$('#nodesBtnGroup').removeAttr('disabled');
+}
 
 // click per aggiungere il monitor sulla porta selezionata
 function portPathStatSelect(node,path){
@@ -137,8 +169,7 @@ function portPathStatSelect(node,path){
 //resetta le porte al click su close della finestra dei parametri
 function closeModalStat(){
 
-	$("#btn"+$('#PathID').val()+"node"+$('#dpid').val()).removeClass('active');
-	$('#pathParameters')[0].reset();	
+	$('#pathStatParameters')[0].reset();	
 	$('#myModalStat').modal('hide');
 	
 	
@@ -155,7 +186,7 @@ function submitModalStat(){
         alertMessage("Creation failed. Try again.");
       },
       success: function() {
-        alertMessage("Creation Successfull!!!");      
+        alertMessage("Creation Successfull!!!");   
       },
       complete: function() {
         

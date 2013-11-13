@@ -29,7 +29,8 @@ function setContent(val){
 		addVirtualPath = false;
 	    break;
 	  case 1:
-	    $('#content').html("<div class='col-md-12' style='margin-bottom:25px;'><div class='btn-group' data-toggle='buttons-radio'><button id='portStat' class='btn btn-blue' onClick=activeGetPortStat()>Get Port Statistics</button><button id='pathStatDisplay' class='btn btn-blue' onClick=displayMonitorStat()>Get Monitor Statistic</button><button id='addPathMonitor' class='btn btn-blue' onClick=activeAddPathStat()>Add Monitor to a Path</button></div> </div><div id='statistics' class='span12'></div>");
+	    //$('#content').html("<div class='col-md-12' style='margin-bottom:25px;'><div class='btn-group' data-toggle='buttons-radio'><button id='portStat' class='btn btn-blue' onClick=activeGetPortStat()>Get Port Statistics</button><button id='pathStatDisplay' class='btn btn-blue' onClick=displayMonitorStat()>Get Monitor Statistic</button><button id='addPathMonitor' class='btn btn-blue' onClick=activeAddPathStat()>Add Monitor to a Path</button></div> </div><div id='statistics' class='span12'></div>");
+		displayVirtualPathStat();
 
 	    if(nodesOfPath!=null)eraseVirtualPathLine(openedPath);
 	    nodeSelectBefore = null;

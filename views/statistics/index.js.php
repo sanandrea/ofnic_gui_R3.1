@@ -15,6 +15,11 @@
 	setContent(1);
 	generateGraph();
 	});
+	function alertMessage(mess){
+		$('#messageBox').html(mess);	
+		$('#messageBox').fadeIn();
+		setTimeout(function () { $("#messageBox").fadeOut(); }, 3000);
+	}
 </script>
 
 

@@ -50,20 +50,38 @@
 	    </div>
 	</div>
 	<div class="col-md-3 sidebar-offcanvas" id="sidebar" role="navigation">
-		<div class="panel panel-default" id="portPanel">
-	    <!-- Create a Routing panel -->
-	        <div class="panel-heading">Flow Monitoring Tasks</div>
-	        <div class="panel-body" id="portPanelBody">
-	        	
-	        </div>
-	        <div class="panel-group" id="virtualPathList">
-		        
-	        </div>
-	    </div>
+		<div class="panel-group" id="virtualPathList">
+    		<div class="panel panel-default panelOverFlow" id="pathPanelEntry3783">
+        		<div class="panel-heading">
+            		<div class="panel-title">
+                		Flow Monitoring Tasks
+                		<a data-toggle="collapse" data-parent="virtualPathList" href="#addTaskCollapse" class="btn btn-success btn-xs pull-right" ><i class="glyphicon glyphicon-plus"></i></a>
+            		</div>
+        		</div>
+        		<div id="addTaskCollapse" class="panel-collapse collapse">
+            		<div class="panel-body" id="addTaskPanel">
+            			Select the Flow and then the Node on which to perform the monitoring.
+            			<div class="btn-group">
+		  				<button type="button" id="pathsBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
+		    				Flow<span class="caret"></span>
+		  				</button>
+		  				<ul id="flowDropDown" class="dropdown-menu" role="menu">
+		  				</ul>
+					</div>
+					<div class="btn-group  pull-right">
+		  				<button type="button" id="nodesBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" disabled="disabled">
+		    				Node<span class="caret"></span>
+		  				</button>
+		  				<ul id="nodePathDropDown" class="dropdown-menu" role="menu">
+		  				</ul>
+					</div>
+            		</div>
+        		</div>
+    		</div>
+		</div>
     </div>
 
-
-    <div class="modal fade" id="myModal" aria-hidden="true">
+    <div class="modal fade" id="myModalStat" aria-hidden="true">
 		<div class="modal-dialog">
 	    	<div class="modal-content">
 	 			<div class="modal-header">
@@ -82,8 +100,8 @@
 	  				</form>
 				</div>
 				<div class="modal-footer">
-  					<a href="javascript:closeModal();" class="btn btn-default" >Cancel</a>
-  					<a href="javascript:submitModal();" class="btn btn-primary">Create</a>
+  					<a href="javascript:closeModalStat();" class="btn btn-default" >Cancel</a>
+  					<a href="javascript:submitModalStat();" class="btn btn-primary">Create</a>
 				</div>
 	  		</div><!-- /.modal-content -->
 	  	</div><!-- /.modal-dialog -->

@@ -33,14 +33,19 @@ body {
   padding-right: 15px;
 }
 
+.panelOverFlow{
+  overflow: visible !important;
+}
+
 .row.botSpace {
 	min-height: 48px;
 }
-
 .btn-danger.btn-xs{
 	vertical-align: middle;
 }
-
+.btn-success.btn-sm{
+	vertical-align: middle;
+}
 .close{
 	float: none;
 }
