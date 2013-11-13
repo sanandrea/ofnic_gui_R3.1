@@ -65,7 +65,7 @@
 				</div>
 				<div class="row botSpace">
 					<div id="displayIncPort" class="col-md-3">
-						
+						<span class="label label-default">Flow</span>
 					</div>
 					<div id="displayOutPort" class="col-md-3 col-md-offset-6">
 						

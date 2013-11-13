@@ -138,6 +138,7 @@ $.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 function selectFlow(path){
 	console.log("path is: "+ path);
 	if (path != openedPath){
+		$('#displayFlow').html('<h4><span class="label label-default">'+path+'</span></h4>');
 		//call this CB when data available
 		getInfoVirtualPath(path, flowInfoReady);
 		openedPath = path;

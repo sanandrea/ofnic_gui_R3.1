@@ -62,19 +62,27 @@
             		<div class="panel-body" id="addTaskPanel">
             			Select the Flow and then the Node on which to perform the monitoring.
             			<div class="btn-group">
-		  				<button type="button" id="pathsBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
-		    				Flow<span class="caret"></span>
-		  				</button>
-		  				<ul id="flowDropDown" class="dropdown-menu" role="menu">
-		  				</ul>
-					</div>
-					<div class="btn-group  pull-right">
-		  				<button type="button" id="nodesBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" disabled="disabled">
-		    				Node<span class="caret"></span>
-		  				</button>
-		  				<ul id="nodePathDropDown" class="dropdown-menu" role="menu">
-		  				</ul>
-					</div>
+			  				<button type="button" id="pathsBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
+			    				Flow<span class="caret"></span>
+			  				</button>
+			  				<ul id="flowDropDown" class="dropdown-menu" role="menu">
+			  				</ul>
+						</div>
+						<div class="btn-group  pull-right">
+			  				<button type="button" id="nodesBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" disabled="disabled">
+			    				Node<span class="caret"></span>
+			  				</button>
+			  				<ul id="nodePathDropDown" class="dropdown-menu" role="menu">
+			  				</ul>
+						</div>
+						<div class="row botSpace">
+							<div id="displayFlow" class="col-md-6">
+								
+							</div>
+							<div id="displayFlowNode" class="col-md-6">
+								
+							</div>
+						</div>
             		</div>
         		</div>
     		</div>
