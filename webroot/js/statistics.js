@@ -1,4 +1,4 @@
-var statOption = 0;
+var statOption = 1;
 
 //setta le variabili e il template per ottenere le statistiche sulla porta
 function activeGetPortStat(){

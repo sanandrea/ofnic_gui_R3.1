@@ -49,7 +49,7 @@
               			<span class="icon-bar"></span>
               			<span class="icon-bar"></span>
             		</button>
-            		<img class="navbar-brand" src="webroot/assets/img/fi_ware_logo_sm.png"></img>
+            		<img class="navbar-brand" src="webroot/assets/img/fi_ware_logo_sm.png"/>
           		</div>
           		<div class="collapse navbar-collapse">
             		<ul class="nav navbar-nav">
@@ -90,7 +90,7 @@
 						NetIC is the task dealing with interfaces toward programmable networks inside the I2ND chapter of <a href="http://www.fi-ware.eu/" target="_blank">FI-WARE</a> project.
 					</h4>
 					<h4>OpenFlow Network Information and Control (OFNIC) is provided by Uniroma1 Partner of FI-WARE Consortium</h4>
-					<img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="300x300" src="webroot/assets/img/fi_ware_logo.png">
+					<img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="300x300" src="webroot/assets/img/fi_ware_logo.png"/>
 					
 				</div>
 				<div class="col-md-4">

@@ -50,9 +50,10 @@ function findNode(nameNode){
    //RESTITUISCE LE INTERFACCE DEL NODO
    $.getJSON("./?a=ws&wspath=synchronize_network_node_"+nameNode, function(data) {   
 	if (statOption == 1){   
-		setPortsStat(data.result,nameNode);
-	}else{
+		//setPortsStat(data.result,nameNode);
 		populatePortList(data.result,nameNode);
+	}else{
+		setPorts(data.result,nameNode);
 	}	
    });
    }
