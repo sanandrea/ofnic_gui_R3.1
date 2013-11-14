@@ -30,7 +30,6 @@ function activeMenuPath()
 
 //populate source and destination node dropdowns
 function populateNodesDropDowns(nodes){
-	console.log(nodes);
 	$.each(nodes, function() {
 		$('#srcNodeDropDown').append("<li><a onclick=\"javascript:selectSourceNode("+this+")\">"+this+"</a></li>");
 		$('#dstNodeDropDown').append("<li><a onclick=\"javascript:selectDestinNode("+this+")\">"+this+"</a></li>");
@@ -182,7 +181,7 @@ function populatePortsInfo(target, aNode){
 
 // setta la porta sorgente e di destinazione e visualizza la finestra dei parametri quando entrambe le porta sono settate
 function portPathSelect(idPort,target,hostIp){
-
+	console.log("called");
 	if (target === "incPortDropDown"){
 		displaySelectedPort("displayIncPort",idPort);
 		
@@ -252,9 +251,6 @@ function submitModal(){
 
 //visualizza i virtual path esistenti
 function displayVirtualPath(){
-//$('#virtualPath').html("<div id='displayPath' class='accordion'></div>");
-console.log("display ongoing paths");
-
 $.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 	$('#virtualPathList').empty();
 	pathExisting = data.result.Paths;

@@ -86,7 +86,7 @@
 							</div>
 						</div>
 						<ul class="pager">
-							<a class="btn btn-success"><i class="glyphicon glyphicon-ok" onclick="displayNewTaskModal()"></i></a>
+							<li><button class="btn btn-success" onclick="displayNewTaskModal();">Add</button></li>
 						</ul>
             		</div>
         		</div><!-- Add Task Collapse-->

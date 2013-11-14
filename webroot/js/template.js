@@ -53,7 +53,7 @@ function setContent(val){
 	    nodeSelectBefore = null;
 	    statOption = 0;
 	    pathTimer = setInterval(timerVirtualPath,10000);
-	    clearInterval(timerStat);
+	    //clearInterval(timerStat);
    	    $('#menuPath').hide();
 		addVirtualPath = false;
 	    break;

@@ -29,8 +29,6 @@
 <script src="webroot/js/grafo.js"></script>    
 <script src="webroot/js/renderer.js"></script>
 <script src="webroot/js/routing.js"></script>
-<script src="webroot/js/statistics.js"></script>
-<script src="webroot/js/grafoStatistics.js"></script>
 <script src="webroot/js/panel.js"></script>
 <!--
 <script src="webroot/assets/js/google-code-prettify/prettify.js"></script>
