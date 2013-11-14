@@ -12,6 +12,27 @@ var pathTimer=null;
 var pathExisting = null;
 var openedPath = null;
 
+function setupNewVPCollapse(){
+	$('#addVPCollapse').on('show.bs.collapse', function () {
+		$('#expandVPButton').html("<i class=\"glyphicon glyphicon-minus\"></i>");
+		
+	});
+	
+	$('#addVPCollapse').on('hidden.bs.collapse', function () {
+		$('#expandVPButton').html("<i class=\"glyphicon glyphicon-plus\"></i>");
+		
+		if(nodePathSource != null)
+			deselectSrcNode(nodePathSource);
+		if(nodePathDest != null)
+			deselectDstNode(nodePathDest);
+		
+		if (openedPath != null){
+			eraseVirtualPathLine(openedPath);
+			openedPath = null;
+		}
+	});
+}
+
 //init per l'aggiunta del virtual path
 function activeMenuPath()
 {
@@ -219,7 +240,7 @@ function closeModal(){
 	hostIpDest = null;
 	$('#pathParameters')[0].reset();	
 	$('#myModal').modal('hide');
-	
+	$('#addVPCollapse').collapse('hide');
 	
 }		
 

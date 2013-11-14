@@ -14,6 +14,7 @@
 	$(document).ready(function() {
 	setContent(2);
 	generateGraph(populateNodesDropDowns);
+	setupNewVPCollapse();
 	});
 	
 	function alertMessage(mess,success){
