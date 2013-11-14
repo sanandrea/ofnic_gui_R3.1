@@ -1,5 +1,24 @@
 var statOption;
 
+function setupNewTaskCollapse(){
+	
+	$('#addTaskCollapse').on('show.bs.collapse', function () {
+		$('#expandTaskButton').html("<i class=\"glyphicon glyphicon-minus\"></i>");
+		
+	});
+	
+	$('#addTaskCollapse').on('hidden.bs.collapse', function () {
+		$('#expandTaskButton').html("<i class=\"glyphicon glyphicon-plus\"></i>");
+		$('#displayFlow').empty();
+		$('#displayFlowNode').empty();
+		$('#nodesBtnGroup').attr('disabled','disabled');
+		eraseVirtualPathLine(openedPath);
+		openedPath = null;
+		
+	});
+	
+}
+
 //setta le variabili e il template per ottenere le statistiche sulla porta
 function activeGetPortStat(){
 	statOption = 1;
@@ -41,34 +60,6 @@ function populatePortList(result, aNode){
 	});
 }
 
-//setta le variabili e il template per ottenere le statistiche sulla porta
-function activeAddPathStat(){
-	statOption = 2;
-	nodeSelectBefore = null;	
-        portSelectBefore = null;
-	clearInterval(timerStat);
-	displayVirtualPathStat();
-}
-
-//visualizza le porte del nodo selezionato
-function setPortsStat(result,node)
-{
-	      $('#right').html("");
-    	      nodeSelectBefore = node;	
-	      portSelectBefore = null;
-		 
-		$('#left').html( "<table><tr><td colspan='2'>Information about node "+node+"</td></tr><tr><td>Num Buffers: </td><td>"+result.Num_Buffers+"</td></tr><tr><td>Num Tables: </td><td>"+result.Num_Tables+"</td></tr><tr><td>Actions: </td><td>"+result.Actions+"</td></tr><tr height='25'></tr><tr><td colspan='2'>Ports of node "+node+"</td></tr><tr height='10'></tr></table><div id='portLeft' class='btn-group' data-toggle='buttons-radio'></div>");
-		
-	      $.each(result.Port_Names, function(i,port) {
-		$.getJSON("./?a=ws&wspath=synchronize_network_node_"+node+"_port_"+result.Port_Index[i], function(data1) {
-
-		 $('#portLeft').append("<button class='btn btn-primary' onClick=PortSelectStat('"+port+"','"+result.Port_Index[i]+"');>"+port+"</button>");
-
-	      });});
-       
-}
-
-// gestione dei tasti delle interfacce
 function PortSelectStat(intName,index)
 {
    	if (intName != portSelectBefore) {
@@ -92,7 +83,7 @@ function displayPortStat(result, port){
 }
 
 
-//visualizza i virtual path esistenti per aggiungere un monitor
+//visualizza la lista dei path esistenti per aggiungere un monitoring task
 function displayVirtualPathStat(){
 	$.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 		pathExisting = data.result.Paths;
@@ -103,36 +94,6 @@ function displayVirtualPathStat(){
 		});
 	});
 	return;
-	
-	
-	
-	
-
-$('#statistics').html("<div id='displayPathStat' class='accordion'></div>");
-
-$.getJSON("./?a=ws&wspath=virtualpath", function(data) {
-	
-	pathExisting = data.result.Paths;
-
-	$.each(data.result.Paths, function(i,path) {
-		if (path != ""){            
-		$('#displayPathStat').append("<div id='accordion-group"+path+"'class='accordion-group'><div class='accordion-heading'><a  class='accordion-toggle' data-toggle='collapse' data-parent='#displayPathStat' href='#collapse"+i+"'>Virtual Path " + path + "</a></div><div id='buttonPathStat"+path+"' class='btn-group' data-toggle='buttons-radio' style='float:right;'></div> <div id='collapse"+i+"' class='accordion-body collapse' style='clear:both;'><div id='inner-"+path+"' class='accordion-inner'></div></div></div>");
-		
-		$.getJSON("./?a=ws&wspath=virtualpath_"+path, function(data) {   
-	
-	for (var j=0;j<data.result.Nodes.length;j++)
-	{
-		$("#buttonPathStat"+path).append("<button id='btn"+path+"node"+data.result.Nodes[j]+"'class='btn btn-blue' onClick=portPathStatSelect('"+data.result.Nodes[j]+"','"+path+"')>"+data.result.Nodes[j]+"</button>");	
-	}		    
-		$('#collapse'+i).on('shown', function () {
-		getInfoVirtualPath(path);}); 
-
-		$('#collapse'+i).on('hidden', function () {
-		eraseVirtualPathLine(path);});
-	  });	
-	} 
-      });
-});
 }
 
 function selectFlow(path){
@@ -160,20 +121,20 @@ function flowInfoReady(path){
 function portPathStatSelect(node,path){
 	$('#dpid').val(node);
 	$('#PathID').val(path);
+	$('#displayFlowNode').html('<h4><span class="label label-default pull-right">Node ID:'+node+'</span></h4>');
 }
 
 function displayNewTaskModal(){
 	$('#myModalStat').modal({backdrop:"static"});
 	$('#myModalStat').modal('show');
+	
+	$('#addTaskCollapse').collapse('hide');
 }
 
 //resetta le porte al click su close della finestra dei parametri
 function closeModalStat(){
-
 	$('#pathStatParameters')[0].reset();	
 	$('#myModalStat').modal('hide');
-	
-	
 }		
 
 //invia i dati

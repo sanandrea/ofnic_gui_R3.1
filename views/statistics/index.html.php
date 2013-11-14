@@ -50,12 +50,14 @@
 	    </div>
 	</div>
 	<div class="col-md-3 sidebar-offcanvas" id="sidebar" role="navigation">
-		<div class="panel-group" id="virtualPathList">
-    		<div class="panel panel-default panelOverFlow" id="pathPanelEntry3783">
+		<div class="panel-group">
+    		<div class="panel panel-default panelOverFlow">
         		<div class="panel-heading">
             		<div class="panel-title">
                 		Flow Monitoring Tasks
-                		<a data-toggle="collapse" data-parent="virtualPathList" href="#addTaskCollapse" class="btn btn-success btn-xs pull-right" ><i class="glyphicon glyphicon-plus"></i></a>
+                		<a data-toggle="collapse" id="expandTaskButton" data-parent="virtualPathList" href="#addTaskCollapse" class="btn btn-success btn-xs pull-right" >
+                			<i class="glyphicon glyphicon-plus"></i>
+                		</a>
             		</div>
         		</div>
         		<div id="addTaskCollapse" class="panel-collapse collapse">

@@ -14,6 +14,7 @@
 	$(document).ready(function() {
 	setContent(1);
 	generateGraph();
+	setupNewTaskCollapse();
 	});
 	function alertMessage(mess){
 		$('#messageBox').html(mess);	
