@@ -145,10 +145,10 @@ function submitModalStat(){
       url: "./?a=ws&wspath=statistics_task_create",
       data: $("#pathStatParameters").serialize(),
       error: function() {
-        alertMessage("Creation failed. Try again.");
+        alertMessage("Creation failed. Try again.",false);
       },
       success: function() {
-        alertMessage("Creation Successfull!!!");   
+        alertMessage("Creation Successfull!!!",true);   
       },
       complete: function() {
         
@@ -199,10 +199,10 @@ function removeMonitoringTask(monitor){
 	      url: "./?a=ws&wspath=statistics_task_"+monitor,
 	      
 	      error: function() {
-	        alertMessage("Remotion failed. Try again.");
+	        alertMessage("Remotion failed. Try again.",false);
 	      },
 	      success: function() {
-	        alertMessage("Remotion Successfull!!!");      
+	        alertMessage("Remotion Successfull!!!",true);
 	      },
 	      complete: function() {
 	      displayMonitorStat();

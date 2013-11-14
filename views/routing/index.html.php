@@ -1,82 +1,83 @@
-<div class="row" id="messageBox" style="background-color:#FFFF33;font-size: medium;" align="center"></div>
-<div class="row row-offcanvas row-offcanvas-right">
-	<div id="graph" class="col-md-6" align="left">
+<div class="row" id="messageBox" align="center"></div>
+<div class="row">
+	<div id="graph" class="col-md-7" align="left">
 	      <canvas id="viewport" width="550" height="450"></canvas>
 	</div>
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<div class="panel panel-default" id="portPanel">
 	    <!-- Create a Routing panel -->
-	        <div class="panel-heading">Active Virtual Paths</div>
-	        <div class="panel-body" id="portPanelBody">
-	        	
+	        <div class="panel-heading">
+	        	<div class="panel-title">
+            		Virtual Paths
+            		<a data-toggle="collapse" id="expandVPButton" href="#addVPCollapse" class="btn btn-success btn-xs pull-right" >
+            			<i class="glyphicon glyphicon-plus"></i>
+            		</a>
+            	</div>
 	        </div>
-	        <div class="panel-group" id="virtualPathList">
-		        
-	        </div>
+	        <div id="addVPCollapse" class="panel-collapse collapse">
+		        <div class="panel-body" id="portPanelBody">
+		        	<p>Select Source and Destination Node from the menus below</p>
+		        	<div>
+			        	<div class="btn-group">
+			  				<button type="button" id="srcBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
+			    				Source<span class="caret"></span>
+			  				</button>
+			  				<ul id="srcNodeDropDown" class="dropdown-menu" role="menu">
+			  				</ul>
+						</div>
+						<div class="btn-group  pull-right">
+			  				<button type="button" id="dstBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
+			    				Destination<span class="caret"></span>
+			  				</button>
+			  				<ul id="dstNodeDropDown" class="dropdown-menu" role="menu">
+			  				</ul>
+						</div>
+					</div>
+					<div class="row botSpace">
+						<div id="displaySrcNode" class="col-md-6">
+							
+						</div>
+						<div id="displayDstNode" class="col-md-6">
+							
+						</div>
+					</div>
+					<hr>
+					<p>Select incoming and outgoing Port from the menus below</p>
+					<div>
+			        	<div class="btn-group">
+			  				<button type="button" id="incBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" disabled="disabled">
+			    				Incoming<span class="caret"></span>
+			  				</button>
+			  				<ul id="incPortDropDown" class="dropdown-menu" role="menu">
+			  				</ul>
+						</div>
+						<div class="btn-group  pull-right">
+			  				<button type="button" id="outBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" disabled="disabled">
+			    				Outgoing<span class="caret"></span>
+			  				</button>
+			  				<ul id="outPortDropDown" class="dropdown-menu" role="menu">
+			  				</ul>
+						</div>
+					</div>
+					<div class="row botSpace">
+						<div id="displayIncPort" class="col-md-3">
+						</div>
+						<div id="displayOutPort" class="col-md-3 col-md-offset-6">
+							
+						</div>
+					</div>
+					<hr>
+		        	<ul class="pager">
+	  					<li><button class="btn btn-success" onclick="javascript:launchVirtualModal();">Add</button></li>
+					</ul>	
+		        </div>
+		    </div>
+		<div class="panel-body">
+		    <div class="panel-group" id="virtualPathList">
+			</div>
+		</div>
 	    </div>
     </div>
-	<div class="col-md-3 sidebar-offcanvas" id="sidebar" role="navigation">
-		<div class="panel panel-default" id="portPanel">
-	    <!-- Create a Routing panel -->
-	        <div class="panel-heading">Create Virtual Path</div>
-	        <div class="panel-body" id="portPanelBody">
-	        	<p>Select Source and Destination Node from the menus below</p>
-	        	<div>
-		        	<div class="btn-group">
-		  				<button type="button" id="srcBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
-		    				Source<span class="caret"></span>
-		  				</button>
-		  				<ul id="srcNodeDropDown" class="dropdown-menu" role="menu">
-		  				</ul>
-					</div>
-					<div class="btn-group  pull-right">
-		  				<button type="button" id="dstBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
-		    				Destination<span class="caret"></span>
-		  				</button>
-		  				<ul id="dstNodeDropDown" class="dropdown-menu" role="menu">
-		  				</ul>
-					</div>
-				</div>
-				<div class="row botSpace">
-					<div id="displaySrcNode" class="col-md-6">
-						
-					</div>
-					<div id="displayDstNode" class="col-md-6">
-						
-					</div>
-				</div>
-				<hr>
-				<p>Select incoming and outgoing Port from the menus below</p>
-				<div>
-		        	<div class="btn-group">
-		  				<button type="button" id="incBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" disabled="disabled">
-		    				Incoming<span class="caret"></span>
-		  				</button>
-		  				<ul id="incPortDropDown" class="dropdown-menu" role="menu">
-		  				</ul>
-					</div>
-					<div class="btn-group  pull-right">
-		  				<button type="button" id="outBtnGroup" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" disabled="disabled">
-		    				Outgoing<span class="caret"></span>
-		  				</button>
-		  				<ul id="outPortDropDown" class="dropdown-menu" role="menu">
-		  				</ul>
-					</div>
-				</div>
-				<div class="row botSpace">
-					<div id="displayIncPort" class="col-md-3">
-					</div>
-					<div id="displayOutPort" class="col-md-3 col-md-offset-6">
-						
-					</div>
-				</div>
-				<hr>
-	        	<ul class="pager">
-  					<li><button class="btn btn-success" onclick="javascript:launchVirtualModal();">Add</button></li>
-				</ul>	
-	        </div>
-	    </div>
-	</div>
 
 	<!--menu nascosto virtual path -->
 	<ul id = "menuPath" class="dropdown-menu hide">

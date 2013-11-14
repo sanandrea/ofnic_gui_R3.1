@@ -231,11 +231,11 @@ function submitModal(){
       url: "./?a=ws&wspath=virtualpath_create",
       data: $("#pathParameters").serialize(),
       error: function() {
-        alertMessage("Creation failed. Try again.");
+        alertMessage("Creation failed. Try again.",false);
       },
       success: function(data) {
       	console.log(data);
-        alertMessage("Creation Successfull!!!");      
+        alertMessage("Creation Successfull!!!",true);      
       },
       complete: function() {
         addVirtualPath = false;
@@ -258,7 +258,7 @@ $.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 	$.each(data.result.Paths, function(i,path) {
 		if (path != ""){
 			$('#virtualPathList').append('<div class="panel panel-default" id="pathPanelEntry'+path+'">'+
-			        						'<div class="panel-heading">'+
+			        						'<div class="panel-heading nestedHeading">'+
 			            						'<div class="panel-title">'+
 			            							'<a data-toggle="collapse" data-parent="#virtualPathList" href="#collapse'+i+'">'+
 			            								'Path ID '+ path +
@@ -291,10 +291,10 @@ $.ajax({
       url: "./?a=ws&wspath=virtualpath_"+path,
       
       error: function() {
-        alertMessage("Remotion failed. Try again.");
+        alertMessage("Remotion failed. Try again.",false);
       },
       success: function() {
-        alertMessage("Remotion Successfull!!!");      
+        alertMessage("Remotion Successfull!!!",true);
       },
       complete: function() {
 	if(openedPath==path)eraseVirtualPathLine(path);

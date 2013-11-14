@@ -16,8 +16,13 @@
 	generateGraph(populateNodesDropDowns);
 	});
 	
-	function alertMessage(mess){
-		$('#messageBox').html(mess);	
+	function alertMessage(mess,success){
+		$('#messageBox').html(mess);
+		if (success){
+			$('#messageBox').attr('style',"background-color:#5cb85c;font-size: medium;")
+		}else{
+			$('#messageBox').attr('style',"background-color:#ed9c28;font-size: medium;")
+		}	
 		$('#messageBox').fadeIn();
 		setTimeout(function () { $("#messageBox").fadeOut(); }, 3000);
 	}
