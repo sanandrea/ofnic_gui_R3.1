@@ -6,10 +6,17 @@ var options = null;
 var timerStat = null;
 
 function getStatMonitor(monitor) {
-
+	console.log("qua");
+	$.getJSON("./?a=ws&wspath=statistics_task_"+monitor, function(data) {   
+	console.log(data);
+    $("#monitorTaskInfo"+monitor).html( "Packet count: "+data.result['Packet_per_s']+" Byte count: "+data.result['Byte_per_s']);
+	});
+	return;
+	
+	//old Orlando Code
     monitorID = monitor;
-$("#inner-"+monitor).html("<div id='graficoStatistiche"+monitor+"' style='width:100%;height:300px;'></div>");
-   packetCount = [];
+    $("#inner-"+monitor).html("<div id='graficoStatistiche"+monitor+"' style='width:100%;height:300px;'></div>");
+    packetCount = [];
     byteCount = [];
      while (packetCount.length < totalPoints) {
             packetCount.push(0);

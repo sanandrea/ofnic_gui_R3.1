@@ -158,14 +158,14 @@ function flowInfoReady(path){
 
 // click per aggiungere il monitor sulla porta selezionata
 function portPathStatSelect(node,path){
-
 	$('#dpid').val(node);
 	$('#PathID').val(path);
-	$('#myModalStat').modal({backdrop:"static"});
-	$('#myModalStat').modal('show');
-	
 }
 
+function displayNewTaskModal(){
+	$('#myModalStat').modal({backdrop:"static"});
+	$('#myModalStat').modal('show');
+}
 
 //resetta le porte al click su close della finestra dei parametri
 function closeModalStat(){
@@ -202,57 +202,49 @@ function submitModalStat(){
 
 //visualizza i monitor attivi
 function displayMonitorStat(){
-clearInterval(timerStat);
-$('#statistics').html("<div id='displayMonitor' class='accordion'></div>");
-
-$.getJSON("./?a=ws&wspath=statistics_task", function(data) {
+	clearInterval(timerStat);
+	$.getJSON("./?a=ws&wspath=statistics_task", function(data) {
+		$('#monitoringTaskList').empty();
 	
+		$.each(data.result['MonitorIDs'], function(i,monitor) {
+			if (monitor != ""){            
+				$('#monitoringTaskList').append('<div class="panel panel-default" id="monitorPanelEntry'+monitor+'">'+
+												'<div class="panel-heading">'+
+													'<div class="panel-title">'+
+														'<a data-toggle="collapse" data-parent="#monitoringTaskList" href="#collapse'+i+'">'+
+															'Monitor ID '+ monitor +
+														'</a>'+
+														'<a class="btn btn-danger btn-xs pull-right" href=javascript:removeMonitoringTask("'+monitor+
+														'");><i class="glyphicon glyphicon-trash"></i></a>'+
+												'</div></div>'+
+												'<div id="collapse'+i+'" class="panel-collapse collapse">'+
+													'<div class="panel-body" id="monitorTaskInfo'+monitor+'">'+
+											'</div></div></div>');    
+				$('#collapse'+i).on('shown.bs.collapse', function () {
+				getStatMonitor(monitor);});
+				$('#collapse'+i).on('hidden.bs.collapse', function () {
+				clearInterval(timerStat);});
+				i++;
+			}
 	
-	$.each(data.result['MonitorIDs'], function(i,monitor) {
-
-		if (monitor != ""){            
-		$('#displayMonitor').append("<div id='accordion-group"+monitor+"'class='accordion-group'><div class='accordion-heading'><a  class='accordion-toggle' data-toggle='collapse' data-parent='#displayMonitor' href='#collapse"+i+"'>Monitor " + monitor + "</a></div><div style='float:right;'><a class='btn btn-danger' href=javascript:removeMonitorPath('"+monitor+"'); ><i class='icon-trash icon-white'></i></a></div> <div id='collapse"+i+"' class='accordion-body collapse' style='clear:both;'><div id='inner-"+monitor+"' class='accordion-inner'></div></div></div>");
-				    
-		$('#collapse'+i).on('shown', function () {
-		getStatMonitor(monitor);}); 
-
-		$('#collapse'+i).on('hidden', function () {
-		clearInterval(timerStat);}); 
+		});	
+    });
 }
-
-	  });	
-       });
-
-}
-/*
-//visualizza le statistiche del monitor
-function getStatMonitor(monitor){
-	
-	 $.getJSON(serverPath+"/netic.v1/OFNIC/statistics/path/"+monitor, function(data) {   
-	
-	$("#inner-"+monitor).html( "<table><tr><td>Packet count: </td><td>"+data.result['Packet_per_s']+"</td></tr><tr><td>Byte count: </td><td>"+data.result['Byte_per_s']+"</td></tr><tr height='25'></tr></table>");
-});
-}*/
-
 
 //rimuove il monitor
-function removeMonitorPath(monitor){
-
-$.ajax({
-
-      type: "DELETE",
-      url: "./?a=ws&wspath=statistics_task_"+monitor,
-      
-      error: function() {
-        alertMessage("Remotion failed. Try again.");
-      },
-      success: function() {
-        alertMessage("Remotion Successfull!!!");      
-      },
-      complete: function() {
-	$('#accordion-group'+monitor).remove();
-      }
-    });	
-
-
+function removeMonitoringTask(monitor){
+	$.ajax({
+	      type: "DELETE",
+	      url: "./?a=ws&wspath=statistics_task_"+monitor,
+	      
+	      error: function() {
+	        alertMessage("Remotion failed. Try again.");
+	      },
+	      success: function() {
+	        alertMessage("Remotion Successfull!!!");      
+	      },
+	      complete: function() {
+	      displayMonitorStat();
+	      }
+	});	
 }

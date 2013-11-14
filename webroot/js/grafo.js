@@ -9,7 +9,6 @@ function generateGraph(cbFun){
 //SCRIPT PER LA GENERAZIONE DEL GRAFO DI RETE
     // vedo i nodi della rete
     $.getJSON("./?a=ws&wspath=synchronize_network", function(data) {
-    console.log(data);
 	//grafo principale
 	sys = arbor.ParticleSystem(1000); // creo un sistema di particelle
 	sys.parameters({gravity:false}); // escludo la gravità

@@ -83,8 +83,15 @@
 								
 							</div>
 						</div>
+						<ul class="pager">
+							<a class="btn btn-success"><i class="glyphicon glyphicon-ok" onclick="displayNewTaskModal()"></i></a>
+						</ul>
             		</div>
-        		</div>
+        		</div><!-- Add Task Collapse-->
+        		
+        		<div class="panel-group" id="monitoringTaskList">
+		        
+	        	</div>
     		</div>
 		</div>
     </div>
