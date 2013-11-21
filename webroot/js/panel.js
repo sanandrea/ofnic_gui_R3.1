@@ -1,71 +1,38 @@
-function log(){
-
-u=$("#username").val();
-p=$("#pw").val();
-$.ajax({
-
-      type: "POST",
-      url: serverPath+"/netic.v1/login",
-      data: $('#userdata').serialize(),
-      error: function() {
-        alert("ERROR! Login failed. Try again!");
-      },
-      success: function() {
-        isSuperuser(u);
-        setContent(0);      
-      }
-    });	
-
-}
-
-function isSuperuser(username){
-    $('#button4').html("");
-
-    $.getJSON( serverPath+ "/netic.v1/OFNIC/controlpanel/user/"+username+"/roles",  function( data ) {  
-
-        roles=data.result.roles;
-        for (var r in roles)
-            if (roles[r]["Role"] == "Superuser"){
-                 $('#button4').html("<a href='javascript:setContent(4)'>Control Panel</a>");
-                 }
-           
-    });
-}
-
-function reg(){
-
-u=$("#newusername").val();
-p=$("#newpw").val();
-$.ajax({
-
-      type: "POST",
-      url: serverPath+"/netic.v1/register",
-      data: $('#newuserdata').serialize(),
-      error: function() {
-        alert("ERROR! Registration failed. Try again!");
-      },
-      success: function(data) {
-        alert(data.result);
-        $("#newusername").val("");
-        $("#newpw").val("");       
-      }
-    });	
-
-}
-
-
 /*
  *  For EditUsers
  */
 
 function getUsers(){
+//	$('#panel').html("<h1>Edit Users</h1><h3>Edit all the Users adding new roles or removing current ones</h3>"+
+//	"Delete user: <SELECT id='del_user'></SELECT><input type='button' value='Delete' onclick='deleteUser();'/>"+
+//	"<TABLE id='table'><tr align=center><td><b>USER</b></td><td><b>CURRENT ROLES</b></td><td><b>OTHER ROLES</b></td></tr></TABLE>");
 
-$('#panel').html("<h1>Edit Users</h1><h3>Edit all the Users adding new roles or removing current ones</h3>"+
-"Delete user: <SELECT id='del_user'></SELECT><input type='button' value='Delete' onclick='deleteUser();'/>"+
-"<TABLE id='table'><tr align=center><td><b>USER</b></td><td><b>CURRENT ROLES</b></td><td><b>OTHER ROLES</b></td></tr></TABLE>");
+	var roles;
+	$.getJSON("./?a=ws&wspath=controlpanel_role", function (data){
+		roles = data.result.roles;
+		$('#panel').html('<table class="table"><thead><tr id="roleHead"></tr></thead><tbody id="roleBody"></tbody></table>');
+		$('#roleHead').append('<th>#</th>');
+		$.each(data.result.roles, function (i,role){
+			$('#roleHead').append('<th>'+role.Name+'</th>');
+		});
+	});
 
-$.getJSON( serverPath+ "/netic.v1/OFNIC/controlpanel/user",  function( data ) {  
-
+	$.getJSON("./?a=ws&wspath=controlpanel_userroles",  function( data ) {
+		$.each(data.result.user_roles, function(i,user){
+			$('#roleBody').append('<tr id="'+user.User+'"><th>'+user.User+'</th></tr>');
+			console.log(user.Roles);
+			$.each(roles,function(i,r){
+//				console.log(r);
+//				console.log($.inArray(r.Name, user.Roles));
+				if ($.inArray(r.Name, user.Roles) > -1){
+					$('#'+user.User).append('<th class="success">ok</th>');
+				}else{
+					$('#'+user.User).append('<th class="danger">no</th>');
+				}
+			});
+			
+		});
+		return;
         var i=1;
         var j=2;
         users=data.result.users;
@@ -89,7 +56,7 @@ user=$("#del_user").val();
 $.ajax({
 
       type: "DELETE",
-      url: serverPath+"/netic.v1/OFNIC/controlpanel/user/"+user,
+      url: "./?a=ws&wspath=controlpanel_user_"+user,
       error: function() {
         alert("ERROR! User couldn't be deleted. Try again!");
       },
@@ -107,7 +74,7 @@ u=$("#user"+i).html();
 $.ajax({
 
       type: "POST",
-      url: serverPath+"/netic.v1/OFNIC/controlpanel/user/"+u+"/roles/"+r,
+      url: "./?a=ws&wspath=controlpanel_user_"+u+"_roles_"+r,
       data: {user: u, newrole: r},
       error: function() {
         alert("ERROR! Role couldn't be added. Try again!");
@@ -124,7 +91,7 @@ r=$("#"+i).val();
 $.ajax({
 
       type: "DELETE",
-      url: serverPath+"/netic.v1/OFNIC/controlpanel/user/"+u+"/roles/"+r,
+      url: "./?a=ws&wspath=controlpanel_user_"+u+"_roles_"+r,
       data: {user: u, role: r},
       error: function() {
         alert("ERROR! Role couldn't be removed! Try again.");
@@ -136,7 +103,7 @@ $.ajax({
 }
 
 function appendRoles(u,i){
-$.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/user/"+u+"/roles", function( data ) {
+$.getJSON( "./?a=ws&wspath=controlpanel_user_"+u+"_roles", function( data ) {
         roles=data.result.roles;
         for (var r in roles)
             $("#"+i).append("<OPTION value='"+roles[r]["Role"]+"'>"+roles[r]["Role"]);
@@ -144,7 +111,7 @@ $.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/user/"+u+"/roles", function(
 }
 
 function appendNoRoles(u,j){
-$.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/user/"+u+"/noroles", function( data ) {
+$.getJSON( "./?a=ws&wspath=controlpanel_user_"+u+"_noroles", function( data ) {
         roles=data.result.roles;
         for (var r in roles)
             $("#"+j).append("<OPTION value='"+roles[r]["Name"]+"'>"+roles[r]["Name"]);
@@ -161,8 +128,8 @@ function getRes(){
 $('#panel').html("<h1>Edit Resources</h1><h3>Edit resources adding new required capabilities or removing current ones</h3>"+
 "<TABLE id='table'><tr align=center><td><b>RESOURCE</b></td><td><b>CURRENT CAPABILITIES</b></td><td><b>OTHER CAPABILITIES</b></td></tr></TABLE>");
 
-$.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/res",  function( data ) {
-
+$.getJSON( "./?a=ws&wspath=controlpanel_res",  function( data ) {
+		console.log(data);
         var i=1;
         var j=2;
         res=data.result.res;
@@ -189,7 +156,7 @@ r=replacePath(r);
 $.ajax({
 
       type: "POST",
-      url: serverPath+"/netic.v1/OFNIC/controlpanel/res/"+r+"/caps/"+c,
+      url: "./?a=ws&wspath=controlpanel_res_"+r+"_caps_"+c,
       error: function() {
         alert("ERROR! Capability couldn't be added. Try again!");
       },
@@ -206,7 +173,7 @@ r=replacePath(r);
 $.ajax({
 
       type: "DELETE",
-      url: serverPath+"/netic.v1/OFNIC/controlpanel/res/"+r+"/caps/"+c,
+      url: "./?a=ws&wspath=controlpanel_res_"+r+"_caps_"+c,
       error: function() {
         alert("ERROR! Capability couldn't be removed. Try again!");
       },
@@ -218,7 +185,7 @@ $.ajax({
 
 function appendResCaps(r,i){
 r=replacePath(r);
-$.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/res/"+r+"/caps", function( data ) {
+$.getJSON( "./?a=ws&wspath=controlpanel_res_"+r+"_caps", function( data ) {
         caps=data.result.caps;
         for (var cap in caps)
             $("#"+i).append("<OPTION value='"+caps[cap]["Cap"]+"'>"+caps[cap]["Cap"]);
@@ -227,7 +194,7 @@ $.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/res/"+r+"/caps", function( d
 
 function appendResNoCaps(r,j){
 r=replacePath(r);
-$.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/res/"+r+"/nocaps", function( data ) {       
+$.getJSON( "./?a=ws&wspath=controlpanel_res_"+r+"_nocaps", function( data ) {       
         caps=data.result.caps;
         for (var cap in caps)
             $("#"+j).append("<OPTION value='"+caps[cap]["Name"]+"'>"+caps[cap]["Name"]);
@@ -253,7 +220,7 @@ $('#panel').html("<h1>Edit Roles</h1><h3>Edit all the Editable Roles adding new 
 "Delete role:<SELECT id='del_role'></SELECT><input type='button' value='Delete Role' onclick='deleteRole();' />"+
 "<TABLE id='table'><tr align=center><td ><b>ROLE</b></td><td><b>CURRENT CAPABILITIES</b></td><td><b>OTHER CAPABILITIES</b></td></tr></TABLE>");
 
-$.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/role/editables",  function( data ) {
+$.getJSON( "./?a=ws&wspath=controlpanel_role_editables",  function( data ) {
               
         var i=1;
         var j=2;
@@ -279,7 +246,7 @@ role=$('#new').val();
 $.ajax({
 
       type: "POST",
-      url: serverPath+"/netic.v1/OFNIC/controlpanel/role/create/"+role,
+      url: "./?a=ws&wspath=controlpanel_role_create_"+role,
       error: function() {
         alert("ERROR! Capability couldn't be added. Try again!");
       },
@@ -295,7 +262,7 @@ role=$('#del_role').val();
 $.ajax({
 
       type: "DELETE",
-      url: serverPath+"/netic.v1/OFNIC/controlpanel/role/"+role,
+      url: "./?a=ws&wspath=controlpanel_role_"+role,
       error: function() {
         alert("ERROR! Role couldn't be deleted. Try again!");
       },
@@ -313,7 +280,7 @@ r=$("#role"+i).html();
 $.ajax({
 
       type: "POST",
-      url: serverPath+"/netic.v1/OFNIC/controlpanel/role/"+r+"/caps/"+c,
+      url: "./?a=ws&wspath=controlpanel_role_"+r+"_caps_"+c,
       data: {role: r, newcap: c},
       error: function() {
         alert("ERROR! Capability couldn't be added. Try again!");
@@ -330,7 +297,7 @@ c=$("#"+1).val();
 $.ajax({
 
       type: "DELETE",
-      url: serverPath+"/netic.v1/OFNIC/controlpanel/role/"+r+"/caps/"+c,
+      url: "./?a=ws&wspath=controlpanel_role_"+r+"_caps_"+c,
       data: {cap: c, role: r},
       error: function() {
         alert("ERROR! Capability couldn't be removed! Try again.");
@@ -342,7 +309,7 @@ $.ajax({
 }  
 
 function appendRoleCaps(r,i){
-$.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/role/"+r+"/caps",function( data ) {
+$.getJSON( "./?a=ws&wspath=controlpanel_role_"+r+"_caps",function( data ) {
         caps=data.result.caps;
         for (var cap in caps)
              $("#"+i).append("<OPTION value='"+caps[cap]["Cap"]+"'>"+caps[cap]["Cap"]);         
@@ -350,7 +317,7 @@ $.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/role/"+r+"/caps",function( d
 }
 
 function appendRoleNoCaps(r,j){
-$.getJSON( serverPath+"/netic.v1/OFNIC/controlpanel/role/"+r+"/nocaps",function( data ) {
+$.getJSON( "./?a=ws&wspath=controlpanel_role_"+r+"_nocaps",function( data ) {
         caps=data.result.caps;
         for (var cap in caps)
             $("#"+j).append("<OPTION value='"+caps[cap]["Name"]+"'>"+caps[cap]["Name"]);     

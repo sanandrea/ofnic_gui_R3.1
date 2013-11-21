@@ -34,8 +34,8 @@ use Guzzle\Plugin\Cookie\CookieJar\ArrayCookieJar;
 Class MainController Extends Controller {
 	
 	
-	protected $ofnicWSRoot = 'https://130.206.82.172/netic.v1';
-	//protected $ofnicWSRoot = 'https://localhost/netic.v1';
+	//protected $ofnicWSRoot = 'https://130.206.82.172/netic.v1';
+	protected $ofnicWSRoot = 'https://localhost/netic.v1';
 	protected $rootSuffix = '/OFNIC/';
 	protected $client;
 	protected $cookiePlugin;
@@ -44,7 +44,8 @@ Class MainController Extends Controller {
 	public $navItemsArray = array(
 		    "synchronize" => "Synchronize",
 		    "routing" => "Routing",
-		    "statistics" => "Statistics"
+		    "statistics" => "Statistics",
+		    "acl" => "Access Control"
 		);
 	/**
 	 * Constructor, we avoid external instantiation of this class
@@ -106,7 +107,10 @@ Class MainController Extends Controller {
 	public function routing(){
 		self::getPage(__FUNCTION__, ucfirst(__FUNCTION__));
 	}
-
+	public function acl(){
+		self::getPage(__FUNCTION__, ucfirst(__FUNCTION__));
+	}
+	
 	public function showLogin(){
 		$view = new View('login','login.html');
 		$modules['login'] = TRUE;

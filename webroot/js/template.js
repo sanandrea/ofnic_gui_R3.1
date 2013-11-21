@@ -57,29 +57,12 @@ function setContent(val){
    	    $('#menuPath').hide();
 		addVirtualPath = false;
 	    break;
-	 case 3:
-	    $("#viewport").height(0);
-	    $("li").removeClass("active");
-	    $("li::eq(3)").addClass("active");
-	    $('#content').html("<form id='userdata' name='login' action='"+serverPath+"/netic.v1/login' method='post'>"+
-                            "Username: <input type='text' name='username' id='username'/><br>"+
-                            "Password: <input type='password' name='password' id='pw'/></br>"+
-                            "<input type='button' value='Login' onclick=log(); /></form></br>"+
-                            "<h3>Register to the webservice:</h3>"+
-                            "<form id='newuserdata' name='register' action='"+serverPath+"/netic.v1/register' method='post'>"+
-                            "Username: <input type='text' name='username' id='newusername'/></br>"+
-                            "Password: <input type='password' name='password' id='newpw'/></br>"+
-                            "<input type='button' value='Register' onclick=reg(); /></form></br>");                         
-        break;
 	 case 4:
-	    $("#viewport").height(0);
-	    $("li").removeClass("active");
-	    $("li::eq(4)").addClass("active");
-	    $('#content').html("<div class='span12' style='margin-bottom:25px;'><div class='btn-group' data-toggle='buttons-radio'>"+
-	                        "<button class='btn btn-blue' onClick=getUsers()    id='userButton' >Edit User Roles</button>"+
-	                        "<button class='btn btn-blue' onClick=getRes()      id='resButton'  >Edit Resources</button>"+
-	                        "<button class='btn btn-blue' onClick=getRoles()    id='rolesButton'>Edit Editable-Roles</button>"+
-	                        "</div> </div><div id='panel' class='span12'></div>");
+	    $('#content').html("<div class='col-md-12'><div class='btn-group'>"+
+	                        "<button class='btn btn-primary' onClick=getUsers()    id='userButton' >Edit User Roles</button>"+
+	                        "<button class='btn btn-primary' onClick=getRes()      id='resButton'  >Edit Resources</button>"+
+	                        "<button class='btn btn-primary' onClick=getRoles()    id='rolesButton'>Edit Editable-Roles</button>"+
+	                        "</div> </div><div id='panel' class='col-md-12'></div>");
 	    break;
         
   }
