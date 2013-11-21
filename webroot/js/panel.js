@@ -11,7 +11,7 @@ function getUsers(){
 	$.getJSON("./?a=ws&wspath=controlpanel_role", function (data){
 		roles = data.result.roles;
 		$('#panel').html('<table class="table"><thead><tr id="roleHead"></tr></thead><tbody id="roleBody"></tbody></table>');
-		$('#roleHead').append('<th>#</th>');
+		$('#roleHead').append('<th>Alias</th>');
 		$.each(data.result.roles, function (i,role){
 			$('#roleHead').append('<th>'+role.Name+'</th>');
 		});
@@ -25,13 +25,14 @@ function getUsers(){
 //				console.log(r);
 //				console.log($.inArray(r.Name, user.Roles));
 				if ($.inArray(r.Name, user.Roles) > -1){
-					$('#'+user.User).append('<th class="success">ok</th>');
+					$('#'+user.User).append('<th ><div class="make-switch" data-on="success" data-off="warning"><input type="checkbox" checked></div></th>');
 				}else{
-					$('#'+user.User).append('<th class="danger">no</th>');
+					$('#'+user.User).append('<th ><div class="make-switch" data-on="success" data-off="warning"><input type="checkbox" unchecked></th>');
 				}
 			});
 			
 		});
+    $('.make-switch')['bootstrapSwitch']();
 		return;
         var i=1;
         var j=2;
@@ -50,7 +51,7 @@ function getUsers(){
            
     });
 }
-    
+
 function deleteUser(){
 user=$("#del_user").val();
 $.ajax({

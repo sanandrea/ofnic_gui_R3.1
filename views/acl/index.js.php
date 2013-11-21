@@ -1,12 +1,13 @@
-<script src="webroot/assets/js/jquery.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="webroot/assets/js/bootstrap.js"></script>
-
-
 <script src="webroot/assets/js/arbor.js"></script>
 <script src="webroot/assets/js/arbor-tween.js"></script>
 <script src="webroot/assets/js/graphics.js"></script>
 <script src="webroot/assets/js/jquery.flot.js"></script>
 <script src="webroot/assets/js/jstorage.js"></script>
+
+<!-- Bootstrap switch -->
+<script src="webroot/assets/js/bootstrap-switch.js"></script>
 
 <script type="text/javascript"  language="javascript">
 	$(document).ready(function() {

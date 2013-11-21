@@ -31,6 +31,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Le styles -->
     	<link href="webroot/assets/css/bootstrap.css" rel="stylesheet">
+    	<link href="webroot/assets/css/bootstrap-switch.css" rel="stylesheet">
     	<link href="webroot/assets/css/signin.css" rel="stylesheet">
     	<link href="webroot/assets/css/ofnic.css" rel="stylesheet">	     
 	</head>
