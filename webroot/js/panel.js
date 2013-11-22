@@ -3,18 +3,18 @@
  */
 function getUsers(){
 	var roles;
-	$.getJSON("./?a=ws&wspath=controlpanel_role", function (data){
-		roles = data.result.roles;
+	$.getJSON("./?a=ws&wspath=controlpanel_role", function (data1){
+		roles = data1.result.roles;
 		$('#panel').html('<table class="table"><thead><tr id="roleHead"></tr></thead><tbody id="roleBody"></tbody></table>');
 		$('#roleHead').append('<th>Alias</th>');
-		$.each(data.result.roles, function (i,role){
+		$.each(data1.result.roles, function (i,role){
 			$('#roleHead').append('<th>'+role.Name+'</th>');
 		});
 	});
 
 	var switchNumber=0;
-	$.getJSON("./?a=ws&wspath=controlpanel_userroles",  function( data ) {
-		$.each(data.result.user_roles, function(j,user){
+	$.getJSON("./?a=ws&wspath=controlpanel_userroles",  function( data2 ) {
+		$.each(data2.result.user_roles, function(j,user){
 			$('#roleBody').append('<tr id="'+user.User+'"><th>'+user.User+'</th></tr>');
 			$.each(roles,function(i,r){
 				switchNumber++;
@@ -96,57 +96,61 @@ $.ajax({
 }
 
 
-function appendRoles(u,i){
-$.getJSON( "./?a=ws&wspath=controlpanel_user_"+u+"_roles", function( data ) {
-        roles=data.result.roles;
-        for (var r in roles)
-            $("#"+i).append("<OPTION value='"+roles[r]["Role"]+"'>"+roles[r]["Role"]);
-    });
-}
-
-function appendNoRoles(u,j){
-$.getJSON( "./?a=ws&wspath=controlpanel_user_"+u+"_noroles", function( data ) {
-        roles=data.result.roles;
-        for (var r in roles)
-            $("#"+j).append("<OPTION value='"+roles[r]["Name"]+"'>"+roles[r]["Name"]);
-           
-    });
-}
-
 /*
  *  For EditResources
  */
  
 function getRes(){
- 
-$('#panel').html("<h1>Edit Resources</h1><h3>Edit resources adding new required capabilities or removing current ones</h3>"+
-"<TABLE id='table'><tr align=center><td><b>RESOURCE</b></td><td><b>CURRENT CAPABILITIES</b></td><td><b>OTHER CAPABILITIES</b></td></tr></TABLE>");
-
-$.getJSON( "./?a=ws&wspath=controlpanel_res",  function( data ) {
-		console.log(data);
-        var i=1;
-        var j=2;
-        res=data.result.res;
-        for (var r in res){
-            actual=res[r]["Path"];
-            $("#table").append("<tr><td id='res"+i+"'>"+actual+"</td><td>"+
-            "<SELECT id='"+i+"' NAME='delcap'></SELECT><input type='button' onclick='deleteResCap("+i+");' value='Delete cap'></td>"+
-            "<td><SELECT id='"+j+"' NAME='newcap'></SELECT><input type='button' onclick='addResCap("+j+");' value='Add cap'></td></tr>");
-            appendResCaps(actual,i);
-            i=i+2;
-            appendResNoCaps(actual,j);
-            j=j+2;
-            }
-           
-    });
+	var caps;
+	$.getJSON("./?a=ws&wspath=controlpanel_caps", function (data){
+		caps = data.result.caps;
+		$('#panel').html('<table class="table"><thead><tr id="capHead"></tr></thead><tbody id="capBody"></tbody></table>');
+		$('#capHead').append('<th>Alias</th>');
+		$.each(data.result.caps, function (i,cap){
+			$('#capHead').append('<th>'+cap.Name+'</th>');
+		});
+		
+		var switchNumber=0;
+		$.getJSON( "./?a=ws&wspath=controlpanel_res",  function( data ) {
+			console.log(data);
+			$.each(data.result.res, function(j,resource){
+				$('#capBody').append('<tr id="path'+j+'"><th>'+resource.Path+'</th></tr>');
+				$.each(caps,function(i,cap){
+					switchNumber++;
+					
+					// very tricky here ids are the list of ids that matches 
+					// with the list of Caps.
+					index = $.inArray(cap.Name, resource.Caps);
+					
+					if ($.inArray(cap.Name, resource.Caps) > -1){
+						tableKey = resource.IDs[index];
+						$('#path'+j).append('<th class="success"> <div class="make-switch has-switch deactivate" data-on="success" data-off="warning">'+
+			                    '<div id="swtch'+switchNumber+'" '+
+			                    ' "class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
+			                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+			                    '</div></th>');
+					}else{
+						$('#path'+j).append('<th class="warning"> <div class="make-switch has-switch deactivate" data-on="success" data-off="warning">'+
+			                    '<div id="swtch'+switchNumber+'" '+
+			                    'class="switch-off switch-animate"><input type="checkbox" unchecked=""><span class="switch-left switch-success">ON</span>'+
+			                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+			                    '</div></th>');
+					}
+				});
+				
+			});			
+		});
+		
+		
+		
+	});
+	return;
     
 }
-
-function addResCap(j){
-c=$("#"+j).val();
-i=j-1;
-r=$("#res"+i).html();
-r=replacePath(r);
+/**
+ * Unused for the moment
+ */
+function addResCap(r,c,n){
 $.ajax({
 
       type: "POST",
@@ -159,11 +163,10 @@ $.ajax({
       }
     });	
 }
-
-function deleteResCap(i){
-c=$("#"+i).val();
-r=$("#res"+i).html();
-r=replacePath(r);
+/**
+ * Unused for the moment
+ */
+function deleteResCap(r,c,n){
 $.ajax({
 
       type: "DELETE",
@@ -176,26 +179,9 @@ $.ajax({
       }
     });	
 }
-
-function appendResCaps(r,i){
-r=replacePath(r);
-$.getJSON( "./?a=ws&wspath=controlpanel_res_"+r+"_caps", function( data ) {
-        caps=data.result.caps;
-        for (var cap in caps)
-            $("#"+i).append("<OPTION value='"+caps[cap]["Cap"]+"'>"+caps[cap]["Cap"]);
-    });
-}
-
-function appendResNoCaps(r,j){
-r=replacePath(r);
-$.getJSON( "./?a=ws&wspath=controlpanel_res_"+r+"_nocaps", function( data ) {       
-        caps=data.result.caps;
-        for (var cap in caps)
-            $("#"+j).append("<OPTION value='"+caps[cap]["Name"]+"'>"+caps[cap]["Name"]);
-           
-    });
-}
-
+/**
+ * Unused for the moment
+ */
 function replacePath(path){
     var find = '/';
     var re = new RegExp(find, 'g');
@@ -209,30 +195,49 @@ function replacePath(path){
  
 function getRoles(){
 
-$('#panel').html("<h1>Edit Roles</h1><h3>Edit all the Editable Roles adding new capabilities or removing current ones</h3>"+
-"Add new role:<input type='text' id='new'><input type='button' value='Add Role' onclick='addRole();' /></br>"+
-"Delete role:<SELECT id='del_role'></SELECT><input type='button' value='Delete Role' onclick='deleteRole();' />"+
-"<TABLE id='table'><tr align=center><td ><b>ROLE</b></td><td><b>CURRENT CAPABILITIES</b></td><td><b>OTHER CAPABILITIES</b></td></tr></TABLE>");
+//$('#panel').html("<h1>Edit Roles</h1><h3>Edit all the Editable Roles adding new capabilities or removing current ones</h3>"+
+//"Add new role:<input type='text' id='new'><input type='button' value='Add Role' onclick='addRole();' /></br>"+
+//"Delete role:<SELECT id='del_role'></SELECT><input type='button' value='Delete Role' onclick='deleteRole();' />"+
+//"<TABLE id='table'><tr align=center><td ><b>ROLE</b></td><td><b>CURRENT CAPABILITIES</b></td><td><b>OTHER CAPABILITIES</b></td></tr></TABLE>");
 
-$.getJSON( "./?a=ws&wspath=controlpanel_role_editables",  function( data ) {
-              
-        var i=1;
-        var j=2;
-        roles=data.result.roles;
-        for (var role in roles){
-            actual=roles[role]["Role"];
-            $("#del_role").append("<OPTION value='"+actual+"'>"+actual);
-            $("#table").append("<tr><td id='role"+i+"'>"+actual+"</td><td>"+
-            "<SELECT id='"+i+"' NAME='delcap'></SELECT><input type='button' onclick='deleteRoleCap("+i+")'; value='Delete cap'></td>"+
-            "<td><SELECT id='"+j+"' NAME='newcap'></SELECT><input type='button' onclick='addRoleCap("+j+");' value='Add cap'></td></tr>");
-            appendRoleCaps(actual,i);
-            i=i+2;
-            appendRoleNoCaps(actual,j);
-            j=j+2;
-            }
-         
-           
-    });
+	
+	var caps;
+	$.getJSON("./?a=ws&wspath=controlpanel_caps", function (data){
+		caps = data.result.caps;
+		$('#panel').html('<table class="table"><thead><tr id="capHead"></tr></thead><tbody id="capBody"></tbody></table>');
+		$('#capHead').append('<th>Alias</th>');
+		$.each(data.result.caps, function (i,cap){
+			$('#capHead').append('<th>'+cap.Name+'</th>');
+		});
+		
+		var switchNumber=0;
+		$.getJSON( "./?a=ws&wspath=controlpanel_editableroles_caps",  function( data ) {
+			console.log(data);
+			$.each(data.result.roles, function(j,role){
+				$('#capBody').append('<tr id="role'+role.Role+'"><th>'+role.Role+'</th></tr>');
+				$.each(caps,function(i,cap){
+					switchNumber++;					
+					if ($.inArray(cap.Name, role.Caps) > -1){
+						$('#role'+role.Role).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+			                    '<div id="swtch'+switchNumber+'" '+
+			                    'onclick="javascript:deleteRoleCap(\''+role.Role+'\',\''+cap.Name+'\',\''+switchNumber+'\')"'+
+			                    ' "class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
+			                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+			                    '</div></th>');
+					}else{
+						$('#role'+role.Role).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+			                    '<div id="swtch'+switchNumber+'" '+
+			                    'onclick="javascript:addRoleCap(\''+role.Role+'\',\''+cap.Name+'\',\''+switchNumber+'\')"'+
+			                    'class="switch-off switch-animate"><input type="checkbox" unchecked=""><span class="switch-left switch-success">ON</span>'+
+			                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+			                    '</div></th>');
+					}
+				});
+				
+			});			
+		});
+		
+	});
 }
 
 function addRole(){
@@ -267,10 +272,7 @@ $.ajax({
 
 }
 
-function addRoleCap(j){
-c=$("#"+j).val();
-i=j-1;
-r=$("#role"+i).html();
+function addRoleCap(r,c,n){
 $.ajax({
 
       type: "POST",
@@ -280,14 +282,14 @@ $.ajax({
         alert("ERROR! Capability couldn't be added. Try again!");
       },
       success: function() {
-        getRoles();      
+    	$('#swtch'+n).removeClass('switch-off');
+		$('#swtch'+n).addClass('switch-on');	
+		$('#swtch'+n).attr('onclick','javascript:deleteRoleCap(\''+r+'\',\''+c+'\',\''+n+'\')');
       }
     });	
 }
 
-function deleteRoleCap(i){
-r=$("#role"+i).html();
-c=$("#"+1).val();
+function deleteRoleCap(r,c,n){
 $.ajax({
 
       type: "DELETE",
@@ -297,24 +299,9 @@ $.ajax({
         alert("ERROR! Capability couldn't be removed! Try again.");
       },
       success: function() {
-        getRoles();      
+    	$('#swtch'+n).removeClass('switch-on');
+  		$('#swtch'+n).addClass('switch-off');	
+  		$('#swtch'+n).attr('onclick','javascript:addRoleCap(\''+r+'\',\''+c+'\',\''+n+'\')');
      }
     });	
-}  
-
-function appendRoleCaps(r,i){
-$.getJSON( "./?a=ws&wspath=controlpanel_role_"+r+"_caps",function( data ) {
-        caps=data.result.caps;
-        for (var cap in caps)
-             $("#"+i).append("<OPTION value='"+caps[cap]["Cap"]+"'>"+caps[cap]["Cap"]);         
-    });
-}
-
-function appendRoleNoCaps(r,j){
-$.getJSON( "./?a=ws&wspath=controlpanel_role_"+r+"_nocaps",function( data ) {
-        caps=data.result.caps;
-        for (var cap in caps)
-            $("#"+j).append("<OPTION value='"+caps[cap]["Name"]+"'>"+caps[cap]["Name"]);     
-        
-    });
 }

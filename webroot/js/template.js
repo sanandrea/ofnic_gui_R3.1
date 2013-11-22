@@ -60,7 +60,7 @@ function setContent(val){
 	 case 4:
 	    $('#content').html("<div class='col-md-12'><div class='btn-group'>"+
 	                        "<button class='btn btn-primary' onClick=getUsers()    id='userButton' >Edit User Roles</button>"+
-	                        "<button class='btn btn-primary' onClick=getRes()      id='resButton'  >Edit Resources</button>"+
+	                        "<button class='btn btn-primary' onClick=getRes()      id='resButton'  >Browse Resources</button>"+
 	                        "<button class='btn btn-primary' onClick=getRoles()    id='rolesButton'>Edit Editable-Roles</button>"+
 	                        "</div> </div><div id='panel' class='col-md-12'></div>");
 	    break;
