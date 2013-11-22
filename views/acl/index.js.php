@@ -6,9 +6,9 @@
 <script src="webroot/assets/js/jquery.flot.js"></script>
 <script src="webroot/assets/js/jstorage.js"></script>
 
-<!-- Bootstrap switch -->
+<!-- Bootstrap switch 
 <script src="webroot/assets/js/bootstrap-switch.js"></script>
-
+-->
 <script type="text/javascript"  language="javascript">
 	$(document).ready(function() {
 	setContent(4);

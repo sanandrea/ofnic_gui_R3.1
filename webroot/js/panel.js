@@ -1,12 +1,7 @@
 /*
  *  For EditUsers
  */
-
 function getUsers(){
-//	$('#panel').html("<h1>Edit Users</h1><h3>Edit all the Users adding new roles or removing current ones</h3>"+
-//	"Delete user: <SELECT id='del_user'></SELECT><input type='button' value='Delete' onclick='deleteUser();'/>"+
-//	"<TABLE id='table'><tr align=center><td><b>USER</b></td><td><b>CURRENT ROLES</b></td><td><b>OTHER ROLES</b></td></tr></TABLE>");
-
 	var roles;
 	$.getJSON("./?a=ws&wspath=controlpanel_role", function (data){
 		roles = data.result.roles;
@@ -17,39 +12,71 @@ function getUsers(){
 		});
 	});
 
+	var switchNumber=0;
 	$.getJSON("./?a=ws&wspath=controlpanel_userroles",  function( data ) {
-		$.each(data.result.user_roles, function(i,user){
+		$.each(data.result.user_roles, function(j,user){
 			$('#roleBody').append('<tr id="'+user.User+'"><th>'+user.User+'</th></tr>');
-			console.log(user.Roles);
 			$.each(roles,function(i,r){
-//				console.log(r);
-//				console.log($.inArray(r.Name, user.Roles));
+				switchNumber++;
 				if ($.inArray(r.Name, user.Roles) > -1){
-					$('#'+user.User).append('<th ><div class="make-switch" data-on="success" data-off="warning"><input type="checkbox" checked></div></th>');
+					$('#'+user.User).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+		                    '<div id="swtch'+switchNumber+'" '+
+		                    'onclick="javascript:deleteRoleUser(\''+user.User+'\',\''+r.Name+'\',\''+switchNumber+'\')"'+
+		                    ' "class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
+		                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+		                    '</div></th>');
 				}else{
-					$('#'+user.User).append('<th ><div class="make-switch" data-on="success" data-off="warning"><input type="checkbox" unchecked></th>');
+					$('#'+user.User).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+		                    '<div id="swtch'+switchNumber+'" '+
+		                    'onclick="javascript:addRoleUser(\''+user.User+'\',\''+r.Name+'\',\''+switchNumber+'\')"'+
+		                    'class="switch-off switch-animate"><input type="checkbox" unchecked=""><span class="switch-left switch-success">ON</span>'+
+		                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+		                    '</div></th>');
 				}
 			});
 			
 		});
-    $('.make-switch')['bootstrapSwitch']();
-		return;
-        var i=1;
-        var j=2;
-        users=data.result.users;
-        for (var u in users){
-            actual=users[u]["username"];
-            $("#del_user").append("<OPTION value='"+actual+"'>"+actual);
-            $("#table").append("<tr><td id='user"+i+"'>"+actual+"</td><td>"+
-            "<SELECT id='"+i+"' NAME='delrole'></SELECT><input type='button' onclick='deleteRoleUser("+i+")'; value='Delete role'></td>"+
-            "<td><SELECT id='"+j+"' NAME='newrole'></SELECT><input type='button' onclick='addRoleUser("+j+");' value='Add Role'></td></tr>");
-            appendRoles(actual,i);
-            i=i+2;
-            appendNoRoles(actual,j);
-            j=j+2;
-            }
-           
     });
+}
+
+function addRoleUser(u,r,n){
+	console.log("switch number is: "+ n);
+	$.ajax({
+		
+		type: "POST",
+		url: "./?a=ws&wspath=controlpanel_userroles_"+u+"_roles_"+r,
+		data: {user: u, newrole: r},
+		error: function() {
+			alert("ERROR! Role couldn't be added. Try again!");
+			return false;
+		},
+		success: function() {
+			$('#swtch'+n).removeClass('switch-off');
+			$('#swtch'+n).addClass('switch-on');	
+			$('#swtch'+n).attr('onclick','javascript:deleteRoleUser(\''+u+'\',\''+r+'\',\''+n+'\')');
+		}
+	});	
+}
+
+function deleteRoleUser(u,r,n){
+	console.log("switch number is: "+ n);
+	$.ajax({
+		
+		type: "DELETE",
+		url: "./?a=ws&wspath=controlpanel_userroles_"+u+"_roles_"+r,
+		data: {user: u, role: r},
+		error: function() {
+			alert("ERROR! Role couldn't be removed! Try again.");
+			return false;
+		},
+		success: function() {
+			waitingForResponse = false;
+			$('#swtch'+n).removeClass('switch-on');
+			$('#swtch'+n).addClass('switch-off');
+			$('#swtch'+n).attr('onclick','javascript:addRoleUser(\''+u+'\',\''+r+'\',\''+n+'\')');
+			waitingForResponse = true;  
+		}
+	});	
 }
 
 function deleteUser(){
@@ -68,40 +95,6 @@ $.ajax({
     });
 }
 
-function addRoleUser(j){
-r=$("#"+j).val();
-i=j-1;
-u=$("#user"+i).html();
-$.ajax({
-
-      type: "POST",
-      url: "./?a=ws&wspath=controlpanel_user_"+u+"_roles_"+r,
-      data: {user: u, newrole: r},
-      error: function() {
-        alert("ERROR! Role couldn't be added. Try again!");
-      },
-      success: function() {
-        getUsers();      
-      }
-    });	
-}
-
-function deleteRoleUser(i){
-u=$("#user"+i).html();
-r=$("#"+i).val();
-$.ajax({
-
-      type: "DELETE",
-      url: "./?a=ws&wspath=controlpanel_user_"+u+"_roles_"+r,
-      data: {user: u, role: r},
-      error: function() {
-        alert("ERROR! Role couldn't be removed! Try again.");
-      },
-      success: function() {
-        getUsers();      
-      }
-    });	
-}
 
 function appendRoles(u,i){
 $.getJSON( "./?a=ws&wspath=controlpanel_user_"+u+"_roles", function( data ) {
