@@ -36,7 +36,15 @@ function getUsers(){
 			});
 			
 		});
-    });
+  $('#panel').append('<form role="form">'+
+                        '<h2>Add User</h2>'+
+                        '<div class="form-group">'+
+                        '<label for="userlabel">Specify User Name</label>'+
+                        '<input type="username" class="form-control" id="userlabel" placeholder="username">'+
+                      '</div>'+
+                      '<button onclick="javascript:addRole(); return false;" class="btn btn-primary">Add</button>'+
+                    '</form>');
+  });
 }
 
 function addRoleUser(u,r,n){
@@ -112,7 +120,6 @@ function getRes(){
 		
 		var switchNumber=0;
 		$.getJSON( "./?a=ws&wspath=controlpanel_res",  function( data ) {
-			console.log(data);
 			$.each(data.result.res, function(j,resource){
 				$('#capBody').append('<tr id="path'+j+'"><th>'+resource.Path+'</th></tr>');
 				$.each(caps,function(i,cap){
@@ -192,7 +199,7 @@ function replacePath(path){
 /*
  *  For EditRoles
  */
- 
+var totalSwitches = 0;
 function getRoles(){
 
 //$('#panel').html("<h1>Edit Roles</h1><h3>Edit all the Editable Roles adding new capabilities or removing current ones</h3>"+
@@ -212,52 +219,133 @@ function getRoles(){
 		
 		var switchNumber=0;
 		$.getJSON( "./?a=ws&wspath=controlpanel_editableroles_caps",  function( data ) {
-			console.log(data);
 			$.each(data.result.roles, function(j,role){
-				$('#capBody').append('<tr id="role'+role.Role+'"><th>'+role.Role+'</th></tr>');
+				$('#capBody').append('<tr id="role_'+role.Role+'"><th>'+role.Role+
+                                '<a class="btn btn-danger btn-xs pull-right" href=javascript:deleteRole("'+role.Role+
+                                '");><i class="glyphicon glyphicon-trash"></i></a></th></tr>');
 				$.each(caps,function(i,cap){
 					switchNumber++;					
-					if ($.inArray(cap.Name, role.Caps) > -1){
-						$('#role'+role.Role).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+					if (($.inArray(cap.Name, role.Caps) > -1)&&(cap.Name != 'GET')){
+						$('#role_'+role.Role).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
 			                    '<div id="swtch'+switchNumber+'" '+
 			                    'onclick="javascript:deleteRoleCap(\''+role.Role+'\',\''+cap.Name+'\',\''+switchNumber+'\')"'+
 			                    ' "class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
 			                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
 			                    '</div></th>');
-					}else{
-						$('#role'+role.Role).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+					}else if (($.inArray(cap.Name, role.Caps) < 0)&&(cap.Name != 'GET')){
+						$('#role_'+role.Role).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
 			                    '<div id="swtch'+switchNumber+'" '+
 			                    'onclick="javascript:addRoleCap(\''+role.Role+'\',\''+cap.Name+'\',\''+switchNumber+'\')"'+
 			                    'class="switch-off switch-animate"><input type="checkbox" unchecked=""><span class="switch-left switch-success">ON</span>'+
 			                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
 			                    '</div></th>');
-					}
+					}else{
+            $('#role_'+role.Role).append('<th class="success"> <div class="make-switch has-switch deactivate" data-on="success" data-off="warning">'+
+                          '<div id="swtch'+switchNumber+'" '+
+                          //'onclick="javascript:addRoleCap(\''+role.Role+'\',\''+cap.Name+'\',\''+switchNumber+'\')"'+
+                          'class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
+                          '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+                          '</div></th>');
+          }
 				});
 				
-			});			
+			});
+      totalSwitches = switchNumber;
+      //displayNoCapRoles();
+      $('#panel').append('<div class="row">'+
+                        '<div class="col-lg-4">'+
+                        '<h2>Add role</h2>'+
+                        '<div class="input-group">'+
+                        '<span class="input-group-btn">'+
+                        '<button class="btn btn-primary" onclick="javascript:addRole(); return false;" type="button">Add</button></span>'+
+                        '<input type="username" class="form-control" id="userlabel" placeholder="Role name">'+
+                        '</div><!-- /input-group -->'+
+                        '</div><!-- /.col-lg-6 --> </div>'
+                        );
 		});
 		
 	});
+  
+}
+
+
+// function displayNoCapRoles(){
+//   $.getJSON("./?a=ws&wspath=controlpanel_editableroles", function (data){
+//     var switchNumber = totalSwitches;
+//     $.each(data.result.roles, function(i,role){
+//       var found = false;
+//       $('#capBody > tr').each(function(i,item){
+//         var roleName = $(item).attr('id').substring(5);
+//         if (role.Name === roleName)
+//           found = true;
+//       });
+//       if (!found){
+//         $('#capBody').append('<tr id="role_'+role.Name+'"><th>'+role.Name+
+//                                 '<a class="btn btn-danger btn-xs pull-right" href=javascript:deleteRole("'+role.Name+
+//                                 '");><i class="glyphicon glyphicon-trash"></i></a></th></tr>');
+//         $('#capHead > th').each(function(i,item){
+//           var capName = $(item).text();
+//           if (!(capName === 'Alias')){
+//             switchNumber++;
+//             $('#role_'+role.Name).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+//                           '<div id="swtch'+switchNumber+'" '+
+//                           'onclick="javascript:addRoleCap(\''+role.Name+'\',\''+capName+'\',\''+switchNumber+'\')"'+
+//                           'class="switch-off switch-animate"><input type="checkbox" unchecked=""><span class="switch-left switch-success">ON</span>'+
+//                           '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+//                           '</div></th>');
+//             }
+//           });
+//       }
+//     });
+//   });
+// }
+function appendRole(role){
+  var switchNumber = totalSwitches;
+  $('#capBody').append('<tr id="role_'+role+'"><th>'+role+
+                              '<a class="btn btn-danger btn-xs pull-right" href=javascript:deleteRole("'+role+
+                              '");><i class="glyphicon glyphicon-trash"></i></a></th></tr>');
+  $('#capHead > th').each(function(i,item){
+    var capName = $(item).text();
+    if (!(capName === 'Alias')){
+      switchNumber++;
+      if (capName === 'GET'){
+        $('#role_'+role).append('<th class="success"> <div class="make-switch has-switch deactivate" data-on="success" data-off="warning">'+
+                    '<div id="swtch'+switchNumber+'" '+
+                    'class="switch-on switch-animate"><input type="checkbox" unchecked=""><span class="switch-left switch-success">ON</span>'+
+                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+                    '</div></th>');
+      }else{
+        $('#role_'+role).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+                    '<div id="swtch'+switchNumber+'" '+
+                    'onclick="javascript:addRoleCap(\''+role+'\',\''+capName+'\',\''+switchNumber+'\')"'+
+                    'class="switch-off switch-animate"><input type="checkbox" unchecked=""><span class="switch-left switch-success">ON</span>'+
+                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+                    '</div></th>');
+      }
+    }
+  });
 }
 
 function addRole(){
-role=$('#new').val();
-$.ajax({
+  var role = $('#userlabel').val();
+  if (role === '')
+    return;
 
-      type: "POST",
-      url: "./?a=ws&wspath=controlpanel_role_create_"+role,
-      error: function() {
-        alert("ERROR! Capability couldn't be added. Try again!");
-      },
-      success: function() {
-        getRoles();      
-      }
-    });	
+  $.ajax({
+        type: "POST",
+        url: "./?a=ws&wspath=controlpanel_role_create_"+role,
+        error: function() {
+          alert("ERROR! Capability couldn't be added. Try again!");
+        },
+        success: function() {
+          appendRole(role);
+        }
+      });
+  $('#userlabel').val('');
+  return false;
 }
 
-function deleteRole(){
-
-role=$('#del_role').val();
+function deleteRole(role){
 $.ajax({
 
       type: "DELETE",
@@ -266,7 +354,8 @@ $.ajax({
         alert("ERROR! Role couldn't be deleted. Try again!");
       },
       success: function() {
-        getRoles();      
+        console.log("removing");
+        $('#role_'+role).remove();
       }
     });	
 
