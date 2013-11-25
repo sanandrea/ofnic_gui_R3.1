@@ -10,43 +10,104 @@ function getUsers(){
 		$.each(data1.result.roles, function (i,role){
 			$('#roleHead').append('<th>'+role.Name+'</th>');
 		});
+		
+		var switchNumber=0;
+		$.getJSON("./?a=ws&wspath=controlpanel_userroles",  function( data2 ) {
+			$.each(data2.result.user_roles, function(j,user){
+				$('#roleBody').append('<tr id="'+user.User+'"><th>'+user.User+
+						'<a class="btn btn-danger btn-xs pull-right" href=javascript:deleteUser("'+user.User+
+                        '");><i class="glyphicon glyphicon-trash"></i></a></th></tr>');
+				$.each(roles,function(i,r){
+					switchNumber++;
+					if (($.inArray(r.Name, user.Roles) > -1)&&(r.Name != 'Readonly')){
+						$('#'+user.User).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+								'<div id="swtch'+switchNumber+'" '+
+								'onclick="javascript:deleteRoleUser(\''+user.User+'\',\''+r.Name+'\',\''+switchNumber+'\')"'+
+								' "class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
+								'<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+						'</div></th>');
+					}else if (($.inArray(r.Name, user.Roles) < 0)&&(r.Name != 'Readonly')) {
+						$('#'+user.User).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+								'<div id="swtch'+switchNumber+'" '+
+								'onclick="javascript:addRoleUser(\''+user.User+'\',\''+r.Name+'\',\''+switchNumber+'\')"'+
+								'class="switch-off switch-animate"><input type="checkbox" unchecked=""><span class="switch-left switch-success">ON</span>'+
+								'<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+						'</div></th>');
+					}else{
+						$('#'+user.User).append('<th class="success"> <div class="make-switch has-switch deactivate" data-on="success" data-off="warning">'+
+								'<div id="swtch'+switchNumber+'" '+
+								'class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
+								'<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+						'</div></th>');
+					}
+				});
+				
+			});
+			$('#panel').append('<div class="row">'+
+					'<div class="col-lg-4">'+
+					'<h2>Add User</h2>'+
+					'<input type="username" class="form-control" id="userlabel" placeholder="Username">'+
+					'<span class="help-block"></span>'+
+					'<input type="password" class="form-control" id="pwdlabel" placeholder="password">'+
+					'<span class="help-block"></span>'+
+					'<button class="btn btn-primary" onclick="javascript:addUser(); return false;" type="button">Add</button>'+
+					'</div><!-- /.col-lg-6 --> </div>'
+			);
+		});
 	});
 
-	var switchNumber=0;
-	$.getJSON("./?a=ws&wspath=controlpanel_userroles",  function( data2 ) {
-		$.each(data2.result.user_roles, function(j,user){
-			$('#roleBody').append('<tr id="'+user.User+'"><th>'+user.User+'</th></tr>');
-			$.each(roles,function(i,r){
-				switchNumber++;
-				if ($.inArray(r.Name, user.Roles) > -1){
-					$('#'+user.User).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
-		                    '<div id="swtch'+switchNumber+'" '+
-		                    'onclick="javascript:deleteRoleUser(\''+user.User+'\',\''+r.Name+'\',\''+switchNumber+'\')"'+
-		                    ' "class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
-		                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
-		                    '</div></th>');
-				}else{
-					$('#'+user.User).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
-		                    '<div id="swtch'+switchNumber+'" '+
-		                    'onclick="javascript:addRoleUser(\''+user.User+'\',\''+r.Name+'\',\''+switchNumber+'\')"'+
-		                    'class="switch-off switch-animate"><input type="checkbox" unchecked=""><span class="switch-left switch-success">ON</span>'+
-		                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
-		                    '</div></th>');
-				}
-			});
-			
-		});
-  $('#panel').append('<form role="form">'+
-                        '<h2>Add User</h2>'+
-                        '<div class="form-group">'+
-                        '<label for="userlabel">Specify User Name</label>'+
-                        '<input type="username" class="form-control" id="userlabel" placeholder="username">'+
-                      '</div>'+
-                      '<button onclick="javascript:addRole(); return false;" class="btn btn-primary">Add</button>'+
-                    '</form>');
-  });
 }
 
+function addUser(){
+  var user = $('#userlabel').val();
+  var pass = $('#pwdlabel').val();
+  
+  if ((user === '')||(pass === ''))
+    return;
+
+  $.ajax({
+        type: "POST",
+        url: "./?a=register",
+        data: {uid: user, pwd: pass},
+        error: function() {
+          alert("ERROR! Capability couldn't be added. Try again!");
+        },
+        success: function(data) {
+        	//console.log(data);
+        	appendUser(user);
+        }
+      });
+  $('#userlabel').val('');
+  $('#pwdlabel').val('');
+  return false;
+}
+
+function appendUser(user){
+	var switchNumber = totalSwitches;
+	$('#roleBody').append('<tr id="'+user+'"><th>'+user+
+			'<a class="btn btn-danger btn-xs pull-right" href=javascript:deleteUser("'+user+
+	'");><i class="glyphicon glyphicon-trash"></i></a></th></tr>');
+	$('#roleHead > th').each(function(i,item){
+		var roleName = $(item).text();
+		if (!(roleName === 'Alias')){
+			switchNumber++;
+			if (roleName === 'Readonly'){
+				$('#'+user).append('<th class="success"> <div class="make-switch has-switch deactivate" data-on="success" data-off="warning">'+
+						'<div id="swtch'+switchNumber+'" '+
+						'class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
+						'<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+				'</div></th>');
+			}else{
+				$('#'+user).append('<th class="success"> <div class="make-switch has-switch" data-on="success" data-off="warning">'+
+						'<div id="swtch'+switchNumber+'" '+
+						'onclick="javascript:addRoleCap(\''+user+'\',\''+roleName+'\',\''+switchNumber+'\')"'+
+						'class="switch-off switch-animate"><input type="checkbox" unchecked=""><span class="switch-left switch-success">ON</span>'+
+						'<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+				'</div></th>');
+			}
+		}
+	});
+}
 function addRoleUser(u,r,n){
 	console.log("switch number is: "+ n);
 	$.ajax({
@@ -87,8 +148,7 @@ function deleteRoleUser(u,r,n){
 	});	
 }
 
-function deleteUser(){
-user=$("#del_user").val();
+function deleteUser(user){
 $.ajax({
 
       type: "DELETE",
@@ -96,9 +156,9 @@ $.ajax({
       error: function() {
         alert("ERROR! User couldn't be deleted. Try again!");
       },
-      success: function() {
-        getUsers();      
-     }
+      success: function(data) {
+    	$('#'+user).remove();
+      }
       
     });
 }
@@ -240,13 +300,13 @@ function getRoles(){
 			                    '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
 			                    '</div></th>');
 					}else{
-            $('#role_'+role.Role).append('<th class="success"> <div class="make-switch has-switch deactivate" data-on="success" data-off="warning">'+
-                          '<div id="swtch'+switchNumber+'" '+
-                          //'onclick="javascript:addRoleCap(\''+role.Role+'\',\''+cap.Name+'\',\''+switchNumber+'\')"'+
-                          'class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
-                          '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
-                          '</div></th>');
-          }
+			            $('#role_'+role.Role).append('<th class="success"> <div class="make-switch has-switch deactivate" data-on="success" data-off="warning">'+
+			                          '<div id="swtch'+switchNumber+'" '+
+			                          //'onclick="javascript:addRoleCap(\''+role.Role+'\',\''+cap.Name+'\',\''+switchNumber+'\')"'+
+			                          'class="switch-on switch-animate"><input type="checkbox" checked=""><span class="switch-left switch-success">ON</span>'+
+			                          '<label>&nbsp;</label><span class="switch-right switch-warning">OFF</span></div>'+
+			                          '</div></th>');
+					}
 				});
 				
 			});

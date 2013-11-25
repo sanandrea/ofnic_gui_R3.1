@@ -143,6 +143,28 @@ Class MainController Extends Controller {
 
 		return;
 	}
+	
+	public function register(){
+		$request = $this -> client -> post($this -> ofnicWSRoot.'/register', null, array(
+    			'username' => $_POST['uid'],
+    			'password' => $_POST['pwd']
+				));
+
+		try {
+    		$response = $request -> send();
+		} catch (Guzzle\Http\Exception\BadResponseException $e) {
+		    echo 'Uh oh! ' . $e->getMessage();
+		    #echo 'HTTP request URL: ' . $e->getRequest()->getUrl() . "\n";
+		    #echo 'HTTP request: ' . $e->getRequest() . "\n";
+		    echo 'Sent cookie: ' . $e -> getRequest()->getCookie($this->cookieName) . "\n";
+		    echo 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n";
+		    echo 'HTTP response: ' . $e->getResponse() . "\n";
+		}
+
+		echo $response->getBody();
+		
+		
+	}
 
 	public function logout(){
 		unset($_SESSION['cookieValue']);
