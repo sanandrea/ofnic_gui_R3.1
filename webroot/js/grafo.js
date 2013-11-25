@@ -36,10 +36,16 @@ function generateGraph(cbFun){
 	    sys.addNode(hosts[1],{color:colorBlue, label:hosts[1]});
         sys.addEdge(sys.getNode(hosts[0]),sys.getNode(hosts[1]),{lineWidth:1});
 	});	
+       })
+       .fail(function (jqxhr, textStatus, error){
+       	alertMessage("Could not synchronize network. Reason: "+jqxhr.status+" ("+error+")",false);
        });
           
       }
       else{alertMessage("None Nodes detected");}
+    })
+    .fail(function (jqxhr, textStatus, error){
+    	alertMessage("Could not synchronize network. Reason: "+jqxhr.status+" ("+error+")",false);
     });
 }
 
@@ -54,7 +60,11 @@ function findNode(nameNode){
 	}else{
 		setPorts(data.result,nameNode);
 	}	
-   });
+   })
+   
+    .fail(function (jqxhr, textStatus, error){
+    	alertMessage("Could not synchronize network node. Reason: "+jqxhr.status+" ("+error+")",false);
+    });
    }
 }
 
@@ -97,9 +107,15 @@ function generateGraphPort(nameInterface, selectedNode, index){
                             sys1.addEdge(sys1.getNode(nameInterface),sys1.getNode(data2.result.Name));
                         */
 					}
-			 	});
+			 	})
+			    .fail(function (jqxhr, textStatus, error){
+			    	alertMessage("Could not synchronize link. Reason: "+jqxhr.status+" ("+error+")",false);
+			    });
 		    });
         }
-	});   
+	})
+    .fail(function (jqxhr, textStatus, error){
+    	alertMessage("Could not synchronize port. Reason: "+jqxhr.status+" ("+error+")",false);
+    });   
 }
 

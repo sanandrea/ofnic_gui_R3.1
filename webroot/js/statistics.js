@@ -56,6 +56,9 @@ function populatePortList(result, aNode){
 	$.each(result.Port_Names, function(i,port) {
 		$.getJSON("./?a=ws&wspath=synchronize_network_node_"+aNode+"_port_"+result.Port_Index[i], function(data1) {
 			$('#portDropDown').append('<li><a onClick=PortSelectStat("'+port+'","'+result.Port_Index[i]+'");>'+port+'</a></li>');
+	    })
+	    .fail(function (jqxhr, textStatus, error){
+	    	alertMessage("Could not retrieve network nodes. Reason: "+jqxhr.status+" ("+error+")",false);
 	    });
 	});
 }
@@ -67,7 +70,10 @@ function PortSelectStat(intName,index)
       	// get port stat
       	  	$.getJSON("./?a=ws&wspath=statistics_node_"+nodeSelectBefore+"_port_"+index, function(data) {
 			displayPortStat(data.result,intName);	        
-		});   
+		})
+	    .fail(function (jqxhr, textStatus, error){
+	    	alertMessage("Could not retrieve statistics of port. Reason: "+jqxhr.status+" ("+error+")",false);
+	    });   
 	}
    
 }	
@@ -92,7 +98,10 @@ function displayVirtualPathStat(){
 				$('#flowDropDown').append("<li><a onclick=\"javascript:selectFlow('"+path+"')\">"+path+"</a></li>");
 			}
 		});
-	});
+	})
+    .fail(function (jqxhr, textStatus, error){
+    	alertMessage("Could not retrieve virtualpaths. Reason: "+jqxhr.status+" ("+error+")",false);
+    });
 	return;
 }
 
@@ -189,6 +198,9 @@ function displayMonitorStat(){
 			}
 	
 		});	
+    })
+    .fail(function (jqxhr, textStatus, error){
+    	alertMessage("Could not retrieve monitor tasks. Reason: "+jqxhr.status+" ("+error+")",false);
     });
 }
 

@@ -66,6 +66,9 @@ function setPorts(result,node)
 	if (data1.result.links == 'None'){
 		$("#"+port).attr('disabled','disabled');       
 	}	
+      })
+      .fail(function (jqxhr, textStatus, error){
+      	alertMessage("Could not retrieve node ports. Reason: "+jqxhr.status+" ("+error+")",false);
       });});
 
 

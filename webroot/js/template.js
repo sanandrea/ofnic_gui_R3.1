@@ -1,5 +1,15 @@
 var selectedContent = null;
 
+function alertMessage(mess,success){
+	$('#messageBox').append('<p>'+mess+'</p>');
+	if (success){
+		$('#messageBox').addClass('alert alert-success in');
+	}else{
+		$('#messageBox').addClass('alert alert-danger in');
+	}	
+	$('#messageBox').fadeIn();
+	setTimeout(function () { $("#messageBox").removeClass('alert alert-danger alert-success in'); $("#messageBox").empty();}, 4000);
+}
 
 function setContent(val){
     

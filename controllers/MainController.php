@@ -213,12 +213,9 @@ Class MainController Extends Controller {
 		try {
     		$response = $request -> send();
 		} catch (Guzzle\Http\Exception\BadResponseException $e) {
-		    echo 'Uh oh! ' . $e->getMessage();
-		    #echo 'HTTP request URL: ' . $e->getRequest()->getUrl() . "\n";
-		    #echo 'HTTP request: ' . $e->getRequest() . "\n";
-		    echo 'Sent cookie: ' . $e -> getRequest()->getCookie($this->cookieName) . "\n";
-		    echo 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n";
-		    echo 'HTTP response: ' . $e->getResponse() . "\n";
+		    $httpRC = $e->getResponse()->getStatusCode() . "\n";
+			http_response_code($httpRC);
+			return;
 		}
 
 		echo $response->getBody();

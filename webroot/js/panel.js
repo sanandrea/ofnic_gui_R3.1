@@ -2,6 +2,9 @@
  *  For EditUsers
  */
 function getUsers(){
+	$('#userButton').addClass('active');
+	$('#resButton').removeClass('active');
+	$('#rolesButton').removeClass('active');
 	var roles;
 	$.getJSON("./?a=ws&wspath=controlpanel_role", function (data1){
 		roles = data1.result.roles;
@@ -53,8 +56,14 @@ function getUsers(){
 					'<button class="btn btn-primary" onclick="javascript:addUser(); return false;" type="button">Add</button>'+
 					'</div><!-- /.col-lg-6 --> </div>'
 			);
-		});
-	});
+		})
+	    .fail(function (jqxhr, textStatus, error){
+	    	alertMessage("Could not retrieve Users. Reason: "+jqxhr.status+" ("+error+")",false);
+	    });
+	})
+    .fail(function (jqxhr, textStatus, error){
+    	alertMessage("Could not retrieve User Roles. Reason: "+jqxhr.status+" ("+error+")",false);
+    });
 
 }
 
@@ -69,9 +78,9 @@ function addUser(){
         type: "POST",
         url: "./?a=register",
         data: {uid: user, pwd: pass},
-        error: function() {
-          alert("ERROR! Capability couldn't be added. Try again!");
-        },
+        error: function (jqxhr, textStatus, error){
+	    	alertMessage("Could not register User. Reason: "+jqxhr.status+" ("+error+")",false);
+	    },
         success: function(data) {
         	//console.log(data);
         	appendUser(user);
@@ -115,10 +124,9 @@ function addRoleUser(u,r,n){
 		type: "POST",
 		url: "./?a=ws&wspath=controlpanel_user_"+u+"_roles_"+r,
 		data: {user: u, newrole: r},
-		error: function() {
-			alert("ERROR! Role couldn't be added. Try again!");
-			return false;
-		},
+		error: function (jqxhr, textStatus, error){
+	    	alertMessage("Could not add Role to User. Reason: "+jqxhr.status+" ("+error+")",false);
+	    },
 		success: function(data) {
 			console.log(data);
 			$('#swtch'+n).removeClass('switch-off');
@@ -135,10 +143,9 @@ function deleteRoleUser(u,r,n){
 		type: "DELETE",
 		url: "./?a=ws&wspath=controlpanel_user_"+u+"_roles_"+r,
 		data: {user: u, role: r},
-		error: function() {
-			alert("ERROR! Role couldn't be removed! Try again.");
-			return false;
-		},
+		error: function (jqxhr, textStatus, error){
+	    	alertMessage("Could not remove Role from User. Reason: "+jqxhr.status+" ("+error+")",false);
+	    },
 		success: function(data) {
 			console.log(data);
 			waitingForResponse = false;
@@ -155,9 +162,9 @@ $.ajax({
 
       type: "DELETE",
       url: "./?a=ws&wspath=controlpanel_user_"+user,
-      error: function() {
-        alert("ERROR! User couldn't be deleted. Try again!");
-      },
+      error: function (jqxhr, textStatus, error){
+	    	alertMessage("Could not delete User. Reason: "+jqxhr.status+" ("+error+")",false);
+	    },
       success: function(data) {
     	$('#'+user).remove();
       }
@@ -171,6 +178,9 @@ $.ajax({
  */
  
 function getRes(){
+	$('#userButton').removeClass('active');
+	$('#resButton').addClass('active');
+	$('#rolesButton').removeClass('active');
 	var caps;
 	$.getJSON("./?a=ws&wspath=controlpanel_caps", function (data){
 		caps = data.result.caps;
@@ -208,11 +218,17 @@ function getRes(){
 				});
 				
 			});			
-		});
+		})
+	    .fail(function (jqxhr, textStatus, error){
+	    	alertMessage("Could not retrieve WS Resources. Reason: "+jqxhr.status+" ("+error+")",false);
+	    });
 		
 		
 		
-	});
+	})
+    .fail(function (jqxhr, textStatus, error){
+    	alertMessage("Could not retrieve Capabilities. Reason: "+jqxhr.status+" ("+error+")",false);
+    });
 	return;
     
 }
@@ -269,7 +285,9 @@ function getRoles(){
 //"Delete role:<SELECT id='del_role'></SELECT><input type='button' value='Delete Role' onclick='deleteRole();' />"+
 //"<TABLE id='table'><tr align=center><td ><b>ROLE</b></td><td><b>CURRENT CAPABILITIES</b></td><td><b>OTHER CAPABILITIES</b></td></tr></TABLE>");
 
-	
+	$('#userButton').removeClass('active');
+	$('#resButton').removeClass('active');
+	$('#rolesButton').addClass('active');
 	var caps;
 	$.getJSON("./?a=ws&wspath=controlpanel_caps", function (data){
 		caps = data.result.caps;
@@ -324,9 +342,15 @@ function getRoles(){
                         '</div><!-- /input-group -->'+
                         '</div><!-- /.col-lg-6 --> </div>'
                         );
-		});
+		})
+	    .fail(function (jqxhr, textStatus, error){
+	    	alertMessage("Could not retrieve Editable roles. Reason: "+jqxhr.status+" ("+error+")",false);
+	    });
 		
-	});
+	})
+    .fail(function (jqxhr, textStatus, error){
+    	alertMessage("Could not retrieve Capabilities. Reason: "+jqxhr.status+" ("+error+")",false);
+    });
   
 }
 
@@ -396,9 +420,9 @@ function addRole(){
   $.ajax({
         type: "POST",
         url: "./?a=ws&wspath=controlpanel_role_create_"+role,
-        error: function() {
-          alert("ERROR! Capability couldn't be added. Try again!");
-        },
+        error: function (jqxhr, textStatus, error){
+	    	alertMessage("Could not add new Role. Reason: "+jqxhr.status+" ("+error+")",false);
+	    },
         success: function() {
           appendRole(role);
         }
@@ -412,9 +436,9 @@ $.ajax({
 
       type: "DELETE",
       url: "./?a=ws&wspath=controlpanel_role_"+role,
-      error: function() {
-        alert("ERROR! Role couldn't be deleted. Try again!");
-      },
+      error: function (jqxhr, textStatus, error){
+	    	alertMessage("Could not delete Role. Reason: "+jqxhr.status+" ("+error+")",false);
+	    },
       success: function() {
         console.log("removing");
         $('#role_'+role).remove();
@@ -429,9 +453,9 @@ $.ajax({
       type: "POST",
       url: "./?a=ws&wspath=controlpanel_role_"+r+"_caps_"+c,
       data: {role: r, newcap: c},
-      error: function() {
-        alert("ERROR! Capability couldn't be added. Try again!");
-      },
+      error: function (jqxhr, textStatus, error){
+	    	alertMessage("Could not add Capability to Role. Reason: "+jqxhr.status+" ("+error+")",false);
+	    },
       success: function() {
     	$('#swtch'+n).removeClass('switch-off');
 		$('#swtch'+n).addClass('switch-on');	
@@ -446,9 +470,9 @@ $.ajax({
       type: "DELETE",
       url: "./?a=ws&wspath=controlpanel_role_"+r+"_caps_"+c,
       data: {cap: c, role: r},
-      error: function() {
-        alert("ERROR! Capability couldn't be removed! Try again.");
-      },
+      error: function (jqxhr, textStatus, error){
+	    	alertMessage("Could not remove Capability to Role. Reason: "+jqxhr.status+" ("+error+")",false);
+	    },
       success: function() {
     	$('#swtch'+n).removeClass('switch-on');
   		$('#swtch'+n).addClass('switch-off');	

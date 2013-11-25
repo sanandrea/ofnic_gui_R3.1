@@ -192,12 +192,20 @@ function populatePortsInfo(target, aNode){
 						    }else{
 						    	$("#"+target).append("<li><a onClick=portPathSelect("+data.result.Port_Index[i]+",'"+target+"','"+data2.result['IP Addr']+"');>"+port+" --> "+data2.result.Name+"</a></li>");
 							}
-						 });
+						 }).fail(function (jqxhr, textStatus, error){
+					    	alertMessage("Could not retrieve node links. Reason: "+jqxhr.status+" ("+error+")",false);
+					    });
 					});
 				}
-			});
+			})
+		    .fail(function (jqxhr, textStatus, error){
+		    	alertMessage("Could not retrieve node ports. Reason: "+jqxhr.status+" ("+error+")",false);
+		    });
 		});
-	});
+	})
+    .fail(function (jqxhr, textStatus, error){
+    	alertMessage("Could not retrieve network nodes. Reason: "+jqxhr.status+" ("+error+")",false);
+    });
 }
 
 // setta la porta sorgente e di destinazione e visualizza la finestra dei parametri quando entrambe le porta sono settate
@@ -301,6 +309,9 @@ $.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 			}
 
 	});
+})
+.fail(function (jqxhr, textStatus, error){
+	alertMessage("Could not retrieve virtual paths. Reason: "+jqxhr.status+" ("+error+")",false);
 });
 }
 
@@ -339,6 +350,9 @@ function getInfoVirtualPath(path, cbFun){
 		eval('objGraft='+"{'nodes':{},'edges':{'"+nodesOfPath[i]+"':{'"+nodesOfPath[i+1]+"':{'lineWidth':5}}}}");
 		sys.graft(objGraft);
 	} 
+   })
+   .fail(function (jqxhr, textStatus, error){
+   	alertMessage("Could not retrieve virtual path info. Reason: "+jqxhr.status+" ("+error+")",false);
    });
 }
 
@@ -374,6 +388,9 @@ $.getJSON("./?a=ws&wspath=virtualpath", function(data) {
 		} 
 		pathExisting = data.result.Paths;
 	}
+       })
+       .fail(function (jqxhr, textStatus, error){
+       	alertMessage("Could not retrieve virtual paths. Reason: "+jqxhr.status+" ("+error+")",false);
        });
 
 }
