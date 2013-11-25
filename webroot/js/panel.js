@@ -113,13 +113,14 @@ function addRoleUser(u,r,n){
 	$.ajax({
 		
 		type: "POST",
-		url: "./?a=ws&wspath=controlpanel_userroles_"+u+"_roles_"+r,
+		url: "./?a=ws&wspath=controlpanel_user_"+u+"_roles_"+r,
 		data: {user: u, newrole: r},
 		error: function() {
 			alert("ERROR! Role couldn't be added. Try again!");
 			return false;
 		},
-		success: function() {
+		success: function(data) {
+			console.log(data);
 			$('#swtch'+n).removeClass('switch-off');
 			$('#swtch'+n).addClass('switch-on');	
 			$('#swtch'+n).attr('onclick','javascript:deleteRoleUser(\''+u+'\',\''+r+'\',\''+n+'\')');
@@ -132,13 +133,14 @@ function deleteRoleUser(u,r,n){
 	$.ajax({
 		
 		type: "DELETE",
-		url: "./?a=ws&wspath=controlpanel_userroles_"+u+"_roles_"+r,
+		url: "./?a=ws&wspath=controlpanel_user_"+u+"_roles_"+r,
 		data: {user: u, role: r},
 		error: function() {
 			alert("ERROR! Role couldn't be removed! Try again.");
 			return false;
 		},
-		success: function() {
+		success: function(data) {
+			console.log(data);
 			waitingForResponse = false;
 			$('#swtch'+n).removeClass('switch-on');
 			$('#swtch'+n).addClass('switch-off');
